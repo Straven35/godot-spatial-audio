@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://blshtb86lciak"]
+
+[ext_resource type="Script" path="res://Scenes/Camera/DebugCam.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://bc7k7qccir7ja" path="res://addons/gd_spatial_audio/spatial_audio_camera3d/SpatialAudioCamera3D.tscn" id="2_mvkma"]
+
+[sub_resource type="SphereShape3D" id="13"]
+radius = 0.1
+
+[node name="DebugCam" type="CharacterBody3D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("2")
+
+[node name="camera" parent="." instance=ExtResource("2_mvkma")]
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.183199, 0)
+shape = SubResource("13")
+disabled = true

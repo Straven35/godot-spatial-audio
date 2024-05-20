@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ExpandedPhysicsMaterialMapper" load_steps=4 format=3 uid="uid://dpfo2ey6lhsp3"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://rcmnpu0xstfx" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/DefaultExpandedPhysicsMaterial.tres" id="1_vkem4"]
+[ext_resource type="PhysicsMaterial" uid="uid://bymp37pvue4fn" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/StoneExpandedPhysicsMaterial.tres" id="2_tx4sl"]
+[ext_resource type="Script" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/ExpandedPhysicsMaterialDictionary.gd" id="3_ymal8"]
+
+[resource]
+script = ExtResource("3_ymal8")
+ExpandedPhysicsMaterialDictionary = {
+"/Stone_": ExtResource("2_tx4sl")
+}
+DefaultPhysicsMaterial = ExtResource("1_vkem4")

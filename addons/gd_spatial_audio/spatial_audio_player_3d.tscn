@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=3 uid="uid://brghx648neoli"]
+
+[ext_resource type="Script" path="res://addons/gd_spatial_audio/SpatialAudioPlayer3D.gd" id="1_hncxx"]
+[ext_resource type="Material" uid="uid://c4fhuofiq3sjg" path="res://Materials/sound_cone_1.tres" id="2_0vlss"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xgrvf"]
+flip_faces = true
+top_radius = 0.25
+bottom_radius = 0.0
+height = 0.5
+radial_segments = 6
+rings = 2
+cap_top = false
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2a7kt"]
+top_radius = 0.25
+bottom_radius = 0.0
+height = 0.5
+radial_segments = 6
+rings = 2
+cap_top = false
+
+[node name="SpatialAudioPlayer3D" type="AudioStreamPlayer3D"]
+attenuation_model = 3
+script = ExtResource("1_hncxx")
+
+[node name="RayCastPlayer" type="RayCast3D" parent="."]
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="RayCastForward" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 1)
+collision_mask = 9
+
+[node name="RayCastForwardLeft" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 1)
+collision_mask = 9
+
+[node name="RayCastForwardRight" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 1)
+collision_mask = 9
+
+[node name="RayCastBackward" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)
+collision_mask = 9
+
+[node name="RayCastBackwardLeft" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)
+collision_mask = 9
+
+[node name="RayCastBackwardRight" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)
+collision_mask = 9
+
+[node name="RayCastUp" type="RayCast3D" parent="."]
+target_position = Vector3(0, 1, 0)
+collision_mask = 9
+
+[node name="RayCastLeft" type="RayCast3D" parent="."]
+target_position = Vector3(1, 0, 0)
+collision_mask = 9
+
+[node name="RayCastRight" type="RayCast3D" parent="."]
+target_position = Vector3(-1, 0, 0)
+collision_mask = 9
+
+[node name="cone" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_xgrvf")
+surface_material_override/0 = ExtResource("2_0vlss")
+
+[node name="outside" type="MeshInstance3D" parent="cone"]
+mesh = SubResource("CylinderMesh_2a7kt")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_0vlss")

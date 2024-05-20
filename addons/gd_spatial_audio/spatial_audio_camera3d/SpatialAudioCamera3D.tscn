@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://bc7k7qccir7ja"]
+
+[ext_resource type="Script" path="res://addons/gd_spatial_audio/spatial_audio_camera3d/SpatialAudioCamera3D.gd" id="1_yl4hs"]
+
+[node name="SpatialAudioCamera3d" type="Camera3D"]
+script = ExtResource("1_yl4hs")
+
+[node name="Raycasts" type="Node3D" parent="."]
+
+[node name="0" type="RayCast3D" parent="Raycasts"]
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="1" type="RayCast3D" parent="Raycasts"]
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="2" type="RayCast3D" parent="Raycasts"]
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="3" type="RayCast3D" parent="Raycasts"]
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="4" type="RayCast3D" parent="Raycasts"]
+debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="5" type="RayCast3D" parent="Raycasts"]
+debug_shape_custom_color = Color(0, 0, 0, 0)

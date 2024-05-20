@@ -1,0 +1,613 @@
+[gd_scene load_steps=19 format=3 uid="uid://bwbk37btcxme5"]
+
+[ext_resource type="PackedScene" uid="uid://b8gor0xpq18o2" path="res://Scenes/csg/CSGBasicBlock.tscn" id="1_1b2o2"]
+[ext_resource type="PackedScene" uid="uid://blshtb86lciak" path="res://Scenes/Camera/DebugCam.tscn" id="1_hpre6"]
+[ext_resource type="PhysicsMaterial" uid="uid://31h5d02diwdp" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Wood.tres" id="1_m0wam"]
+[ext_resource type="PhysicsMaterial" uid="uid://c01o42c8uontn" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Concrete.tres" id="1_tlck8"]
+[ext_resource type="PackedScene" uid="uid://brghx648neoli" path="res://addons/gd_spatial_audio/spatial_audio_player_3d.tscn" id="2_2ux6k"]
+[ext_resource type="AudioStream" uid="uid://bfj1qn5re4pym" path="res://Sounds/repairsound1.wav" id="3_qckxd"]
+[ext_resource type="AudioStream" uid="uid://cn7lp4g6ldx24" path="res://Sounds/windstuff1.wav" id="4_6em6o"]
+[ext_resource type="AudioStream" uid="uid://cej5lybn0m1vt" path="res://Sounds/truckengine.mp3" id="5_os0wn"]
+[ext_resource type="Material" uid="uid://btpy6b0h6kbiw" path="res://Materials/grass_1.tres" id="6_3rje8"]
+[ext_resource type="Material" uid="uid://crlpdpx8xcx2l" path="res://Materials/wood_1.tres" id="6_xbdyh"]
+[ext_resource type="PhysicsMaterial" uid="uid://ckq4pr1iskyox" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Grass.tres" id="7_dcqm8"]
+[ext_resource type="PhysicsMaterial" uid="uid://e5hxe3qrhchi" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/super_concrete.tres" id="8_hgv8c"]
+[ext_resource type="Script" path="res://Scenes/Main/bell_player.gd" id="12_vfy3s"]
+[ext_resource type="AudioStream" uid="uid://cloj2py5tv488" path="res://Sounds/bell_sound_1.wav" id="13_p7dor"]
+[ext_resource type="Script" path="res://Scenes/Main/pillars.gd" id="15_tjgbf"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mlksx"]
+sky_top_color = Color(0.235294, 0.596078, 0.792157, 1)
+sky_curve = 0.053033
+
+[sub_resource type="Sky" id="Sky_tqrsa"]
+sky_material = SubResource("ProceduralSkyMaterial_mlksx")
+
+[sub_resource type="Environment" id="Environment_u0s7v"]
+background_mode = 2
+sky = SubResource("Sky_tqrsa")
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.986343, 0.0198624, 0.163505, -0.160778, 0.331643, 0.929604, -0.0357611, -0.943196, 0.330307, -5, 26.2564, 12)
+shadow_enabled = true
+
+[node name="DebugCam" parent="." instance=ExtResource("1_hpre6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 3, 0)
+
+[node name="crook" parent="." instance=ExtResource("2_2ux6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, 0.0741999)
+stream = ExtResource("3_qckxd")
+attenuation_model = 0
+autoplay = true
+max_distance = 50.0
+update_frequency_seconds = 0.25
+max_reverb_wetness = 1.0
+
+[node name="wind" parent="." instance=ExtResource("2_2ux6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.17707, 6.46688, 51.3523)
+stream = ExtResource("4_6em6o")
+attenuation_model = 0
+autoplay = true
+max_distance = 80.0
+update_frequency_seconds = 0.25
+max_reverb_wetness = 0.25
+max_stereo_distance = 40.0
+
+[node name="truck" parent="." instance=ExtResource("2_2ux6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.1771, 1.46688, 49.3523)
+stream = ExtResource("5_os0wn")
+autoplay = true
+max_distance = 15.0
+update_frequency_seconds = 0.25
+max_reverb_wetness = 0.25
+max_stereo_distance = 20.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_u0s7v")
+
+[node name="csgstuff" type="Node3D" parent="."]
+
+[node name="CsgBasicBlock" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 10)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(20, 3, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock68" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 2, 10)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(8, 3, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock69" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 0)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(21, 1, 21)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock70" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 6.75, 0.5)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(1, 6.5, 20)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock71" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 19, 6.75, 10)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(1, 6.5, 17)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock72" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(-0.707107, -0.707107, -6.18172e-08, -0.707107, 0.707107, -6.18172e-08, 8.74228e-08, 0, -1, 24, 13.75, 0)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(1, 11, 19)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock73" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(0.707107, 0.707107, -2.56055e-08, -0.707107, 0.707107, -6.18172e-08, -2.56055e-08, 6.18172e-08, 1, 14, 13.75, 0)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(1, 11, 19)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock74" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 17.75, 0)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(3, 2, 19)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock4" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(20, 3, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock5" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 0)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 3, 20)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock6" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 40)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 20, 100)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock16" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 5, 40)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 100)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock17" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, -10)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(20, 10, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock23" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock24" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock25" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock26" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock27" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock28" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock29" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock30" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock31" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock32" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock33" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock34" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock35" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock36" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock37" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock38" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock39" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock40" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock41" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock42" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock43" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock44" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock45" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock46" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock47" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock48" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock49" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock50" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock51" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock52" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock53" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock54" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock55" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock56" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock57" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock59" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 9, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock58" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 5, 56)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 10, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock18" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -23)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(20, 15, 1)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock19" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 8, -17)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 15, 15)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock20" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 8, -17)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 15, 15)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock7" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2, 30)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(1, 3, 40)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock8" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 30)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(3, 1, 40)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock9" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 12)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(5, 1, 5.5)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock10" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 18)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(5, 1, 5.5)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock11" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4, 24)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(15, 1, 5.5)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock66" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 27)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(11, 3, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock67" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 21)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(11, 3, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock12" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 30)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(5, 1, 5.5)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock13" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 36)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(5, 1, 5.5)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock14" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 42)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(5, 1, 5.5)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock15" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 48)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(5, 1, 5.5)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock60" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 5, 48)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(8, 1, 8)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock61" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 3, 52)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(8, 5, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock62" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 3, 44)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(8, 5, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock63" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 3, 48)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 5, 8)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock64" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 3, 50)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 5, 4)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock65" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 4, 46)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 2, 4)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock2" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(20, 1, 20)
+physics_material = ExtResource("1_tlck8")
+
+[node name="CsgBasicBlock21" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 33)
+physics_material_override = ExtResource("7_dcqm8")
+size = Vector3(35, 1, 45)
+material = ExtResource("6_3rje8")
+physics_material = ExtResource("7_dcqm8")
+
+[node name="CsgBasicBlock22" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 53)
+physics_material_override = ExtResource("7_dcqm8")
+size = Vector3(3, 1, 6)
+material = ExtResource("6_3rje8")
+physics_material = ExtResource("7_dcqm8")
+
+[node name="CsgBasicBlock3" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+physics_material_override = ExtResource("1_tlck8")
+size = Vector3(20, 1, 20)
+physics_material = ExtResource("1_tlck8")
+
+[node name="BellPlayer" type="Node3D" parent="."]
+script = ExtResource("12_vfy3s")
+
+[node name="blop" parent="BellPlayer" instance=ExtResource("2_2ux6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.1771, 7.46688, 31.1365)
+stream = ExtResource("13_p7dor")
+autoplay = true
+max_distance = 80.0
+update_frequency_seconds = 0.25
+max_stereo_distance = 50.0
+
+[node name="blop2" parent="BellPlayer" instance=ExtResource("2_2ux6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.1771, 7.46688, -2.86351)
+stream = ExtResource("13_p7dor")
+autoplay = true
+max_distance = 80.0
+update_frequency_seconds = 0.25
+max_stereo_distance = 50.0
+
+[node name="pillars" type="Node3D" parent="."]
+script = ExtResource("15_tjgbf")
+
+[node name="CsgBasicBlock75" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -5)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock76" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock77" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, -5)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock78" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock84" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(3, 1, 3)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock79" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock80" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 0)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock81" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 5)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock82" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")
+
+[node name="CsgBasicBlock83" parent="pillars" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 5)
+physics_material_override = ExtResource("1_m0wam")
+size = Vector3(1, 3, 1)
+material = ExtResource("6_xbdyh")
+physics_material = ExtResource("1_m0wam")

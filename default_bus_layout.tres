@@ -1,0 +1,25 @@
+[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://bm8uufm1g7nrx"]
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_ucnce"]
+resource_name = "StereoEnhance"
+pan_pullout = 0.5
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_oy1lq"]
+resource_name = "Reverb"
+wet = 1.0
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_sm4i5"]
+resource_name = "LowPassFilter"
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_paarf"]
+resource_name = "EQ"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectStereoEnhance_ucnce")
+bus/0/effect/0/enabled = false
+bus/0/effect/1/effect = SubResource("AudioEffectReverb_oy1lq")
+bus/0/effect/1/enabled = false
+bus/0/effect/2/effect = SubResource("AudioEffectLowPassFilter_sm4i5")
+bus/0/effect/2/enabled = false
+bus/0/effect/3/effect = SubResource("AudioEffectEQ_paarf")
+bus/0/effect/3/enabled = false

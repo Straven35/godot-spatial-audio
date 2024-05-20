@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8gor0xpq18o2"]
+
+[ext_resource type="Script" path="res://Scenes/csg/CSGBasicBlock.gd" id="1_pxlga"]
+[ext_resource type="Material" uid="uid://77cl4k61nhia" path="res://Materials/concrete_1.tres" id="2_07we8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bs8eh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tp7x7"]
+
+[node name="CsgBasicBlock" type="StaticBody3D"]
+script = ExtResource("1_pxlga")
+material = ExtResource("2_07we8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_bs8eh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_tp7x7")
+surface_material_override/0 = ExtResource("2_07we8")

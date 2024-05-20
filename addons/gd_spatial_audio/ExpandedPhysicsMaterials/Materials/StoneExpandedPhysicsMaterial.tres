@@ -1,0 +1,26 @@
+[gd_resource type="PhysicsMaterial" script_class="ExpandedPhysicsMaterial" load_steps=13 format=3 uid="uid://bymp37pvue4fn"]
+
+[ext_resource type="Script" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/ExpandedPhysicsMaterial.gd" id="1_2dl0r"]
+[ext_resource type="AudioStream" uid="uid://b0o5g5gdhgg5g" path="res://audio/footsteps_stone/stone-1.wav" id="1_h3x7k"]
+[ext_resource type="AudioStream" uid="uid://c6pghv51vn8bt" path="res://audio/footsteps_stone/stone-2.wav" id="2_ijdtk"]
+[ext_resource type="AudioStream" uid="uid://d20d8y7b67gxb" path="res://audio/footsteps_stone/stone-3.wav" id="3_str7b"]
+[ext_resource type="AudioStream" uid="uid://bq6ckv86o7mtf" path="res://audio/footsteps_stone/stone-4.wav" id="4_mlbyp"]
+[ext_resource type="AudioStream" uid="uid://cee8p1k8116b6" path="res://audio/footsteps_stone/stone-5.wav" id="5_edq06"]
+[ext_resource type="AudioStream" uid="uid://psbao0t616cq" path="res://audio/footsteps_stone/stone-6.wav" id="6_rebyc"]
+[ext_resource type="AudioStream" uid="uid://c8vxutiyndxh0" path="res://audio/footsteps_stone/stone-7.wav" id="7_plvhy"]
+[ext_resource type="AudioStream" uid="uid://dfj6iowa1qhga" path="res://audio/footsteps_stone/stone-8.wav" id="8_pprxn"]
+[ext_resource type="AudioStream" uid="uid://djf5wp6aojvjb" path="res://audio/footsteps_stone/stone-9.wav" id="9_lgjst"]
+[ext_resource type="AudioStream" uid="uid://cf1fvic0wumle" path="res://audio/footsteps_stone/stone-11.wav" id="10_2k6ru"]
+[ext_resource type="AudioStream" uid="uid://mluuogmc06we" path="res://audio/footsteps_stone/stone-12.wav" id="11_ydn0e"]
+
+[resource]
+script = ExtResource("1_2dl0r")
+materialName = "Stone"
+footStepSounds = Array[AudioStream]([ExtResource("1_h3x7k"), ExtResource("2_ijdtk"), ExtResource("3_str7b"), ExtResource("4_mlbyp"), ExtResource("5_edq06"), ExtResource("6_rebyc"), ExtResource("7_plvhy"), ExtResource("8_pprxn"), ExtResource("9_lgjst"), ExtResource("10_2k6ru"), ExtResource("11_ydn0e")])
+dampening = 0.2
+band_32_hz = 0.36
+band_100_hz = 0.36
+band_320_hz = 0.44
+band_1000_hz = 0.29
+band_3200_hz = 0.25
+band_10000_hz = 0.82

@@ -1,0 +1,16 @@
+[gd_resource type="PhysicsMaterial" script_class="ExpandedPhysicsMaterial" load_steps=2 format=3 uid="uid://ckq4pr1iskyox"]
+
+[ext_resource type="Script" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/ExpandedPhysicsMaterial.gd" id="1_lt4c0"]
+
+[resource]
+script = ExtResource("1_lt4c0")
+materialName = "Concrete"
+footStepSounds = Array[AudioStream]([])
+dampening = -0.268
+reverberation = 0.064
+band_32_hz = 0.306
+band_100_hz = 0.203
+band_320_hz = 0.238
+band_1000_hz = 0.159
+band_3200_hz = 0.172
+band_10000_hz = 0.136
