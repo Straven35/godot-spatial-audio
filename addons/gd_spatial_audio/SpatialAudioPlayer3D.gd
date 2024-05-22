@@ -41,6 +41,7 @@ var _target_reverb_dryness : float = 1.0
 var _target_volume_db : float = 0.0
 var _target_reverb_dampening: float = 0.5
 var _target_reverb_reflection_time: float = 0.0
+var _target_reverb_reflection_feedback : float = 0.4
 var _target_stereo_pan_pullout : float = 0.5
 
 var _target_32hz_reduction:float = 0.0
@@ -52,7 +53,7 @@ var _target_10000hz_reduction:float = 0.0
 
 func _ready():
 	_sleep_update_frequency_seconds = update_frequency_seconds + 1.0
-	if max_distance > 0:
+	if max_distance > 0 && max_raycast_distance < max_distance:
 		max_raycast_distance = max_distance
 	# Make new audio bus
 	_audio_bus_idx = AudioServer.bus_count
@@ -248,6 +249,7 @@ func _on_update_reverb(player: Node3D):
 	var wetness = 1.0
 	var dampening = 0.5
 	var reflectionTime = 0.0
+	var reflectionFeedback = 0.4
 	for dist in _total_distance_checks:
 		if dist["material"]:
 			dampening += dist["material"].dampening
@@ -265,23 +267,31 @@ func _on_update_reverb(player: Node3D):
 			room_size += max_raycast_distance
 			wetness -= 1.0/float(_total_distance_checks.size());
 			wetness = max(wetness, 0.0);
-	
+	# if name == "blop":
+	# 	print("FULL SIZE:  ", room_size, "  OUT OF:  ", max_raycast_distance * float(_total_distance_checks.size()))
 	room_size = (room_size / float(_total_distance_checks.size())) / max_raycast_distance
 	# wetness = min(wetness, 1.0)
 
-	if name == "crook":
-		print(room_size)
-		print(wetness)
 	# wetness = (wetness / float(_total_distance_checks.size()))
 	if _dist_to_player < 8.0:
 		room_size = (room_size * min((_dist_to_player / 8.0), 1.0))
 		wetness = (wetness * min((_dist_to_player / 8.0), 1.0))
 	
+	reflectionFeedback = (room_size + wetness) / 2.0
+
+	# if name == "blop":
+	# 	print("DAMPENING:  ", dampening/_total_distance_checks.size())
+	# 	print("TIME:  ", reflectionTime/_total_distance_checks.size())
+	# 	print("FEEDBACK:  ", reflectionFeedback)
+	# 	print("WETNESS:  ", wetness)
+	# 	print("ROOMSIZE:  ", room_size)
+
 	_target_reverb_dryness = 1.0;
 	_target_reverb_wetness = wetness;
 	_target_reverb_room_size = room_size;
 	_target_reverb_dampening = dampening/_total_distance_checks.size()
 	_target_reverb_reflection_time = reflectionTime/_total_distance_checks.size()
+	_target_reverb_reflection_feedback = reflectionFeedback
 
 func _on_update_stereo(player: Node3D):
 	if !_stereo_effect:
@@ -356,6 +366,7 @@ func _lerp_parameters(delta):
 	_reverb_effect.room_size = lerp(_reverb_effect.room_size, _target_reverb_room_size, delta* 5.0);
 	_reverb_effect.damping = lerp(_reverb_effect.damping, _target_reverb_dampening, delta*5.0);
 	_reverb_effect.predelay_msec = lerp(_reverb_effect.predelay_msec, _target_reverb_reflection_time, delta * 5.0);
+	_reverb_effect.predelay_feedback = lerp(_reverb_effect.predelay_feedback, _target_reverb_reflection_feedback, delta * 5.0);
 	_eq_filter.set_band_gain_db(0, lerp(_eq_filter.get_band_gain_db(0), _target_32hz_reduction, delta*3.0))
 	_eq_filter.set_band_gain_db(1, lerp(_eq_filter.get_band_gain_db(1), _target_100hz_reduction, delta*3.0))
 	_eq_filter.set_band_gain_db(2, lerp(_eq_filter.get_band_gain_db(2), _target_320hz_reduction, delta*3.0))

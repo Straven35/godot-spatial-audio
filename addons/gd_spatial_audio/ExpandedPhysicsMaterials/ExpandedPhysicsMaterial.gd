@@ -4,7 +4,9 @@ extends PhysicsMaterial
 @export var materialName: String = "Default"
 @export var footStepSounds: Array[AudioStream]
 @export_category("Reverb settings")
+## positive value gives reverb; negative value removes reverb.
 @export_range(-1,1) var dampening: float = 0.5
+## dont look at me
 @export_range(0,1) var reverberation: float = 0.5
 @export_category("Sound absoprtion coefficients")
 # See https://www.acoustic.ua/st/web_absorption_data_eng.pdf for common

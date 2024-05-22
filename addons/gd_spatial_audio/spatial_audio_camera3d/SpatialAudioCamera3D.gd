@@ -8,6 +8,10 @@ class_name SpatialAudioCamera3D
 @export var raycast_update_time : float = 0.3
 var _nearby_sounds : Array = []
 
+var _sleep_update_frequency_seconds : float = 0.0
+var _previous_position : Vector3 = Vector3.ZERO
+var _has_moved : bool = true
+
 @export var max_raycast_distance: float = 100.0;
 @export var update_frequency_seconds: float = 0.25 + randf()*0.2; # Don't want to do them all at the same time
 @export var max_reverb_wetness: float = 0.5;
@@ -18,19 +22,12 @@ var verticalCheck:float = 0.8;
 
 var _raycast_array: Array = []
 var _distance_array: Array = [{},{},{},{},{}, {},{},{},{},{}]
+var _total_distance_checks : Array = []
 var _last_update_time : float = 0.0
 var _update_distances : bool = true
 var _current_raycast_index : int = 0
 
 var _dist_to_player : float = 0.0
-
-var _audio_bus_idx = null
-var _audio_bus_name = ""
-
-var _stereo_effect : AudioEffectStereoEnhance
-var _reverb_effect : AudioEffectReverb
-var _lowpass_filter : AudioEffectLowPassFilter
-var _eq_filter : AudioEffectEQ
 
 var _target_lowpass_cutoff : float = 20000
 var _target_reverb_room_size : float = 0.0
@@ -38,6 +35,7 @@ var _target_reverb_wetness : float = 0.0
 var _target_volume_db : float = 0.0
 var _target_reverb_dampening: float = 0.5
 var _target_reverb_reflection_time: float = 0.0
+var _target_reverb_reflection_feedback : float = 0.4
 var _target_stereo_pan_pullout : float = 0.5
 
 var _target_32hz_reduction:float = 0.0
@@ -138,16 +136,20 @@ func cycle_raycast_direction(raycast: RayCast3D):
 func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 	cycle_raycast_direction(raycast)
 	var colliding : bool = raycast.is_colliding()
-	_distance_array[raycast_index]["distance"] = -1
-	_distance_array[raycast_index]["material"] = null
+	var _raycast_keys : Dictionary = {"distance": -1.0, "material": null} # i dont want to use dictionaries
+	# _distance_array[raycast_index]["distance"] = -1
+	# _distance_array[raycast_index]["material"] = null
 	if colliding:
 		var collider : CollisionObject3D = raycast.get_collider()
-		_distance_array[raycast_index]["distance"] = self.global_position.distance_to(raycast.get_collision_point());
+		# _distance_array[raycast_index]["distance"] = self.global_position.distance_to(raycast.get_collision_point());
+		_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
 		
 		if (collider is StaticBody3D and
 			collider.physics_material_override and
 			collider.physics_material_override is ExpandedPhysicsMaterial):
-			_distance_array[raycast_index]["material"] = collider.physics_material_override
+			# _distance_array[raycast_index]["material"] = collider.physics_material_override
+			_raycast_keys["material"] = collider.physics_material_override
+	_total_distance_checks.push_back(_raycast_keys);
 	# raycast.enabled = false;
 
 func _on_update_spatial_audio(player: Node3D):
@@ -155,35 +157,57 @@ func _on_update_spatial_audio(player: Node3D):
 
 func _on_update_reverb(player: Node3D):
 	var room_size = 0.0
-	var wetness = 0.0
+	var wetness = 1.0
 	var dampening = 0.5
 	var reflectionTime = 0.0
-	for dist in _distance_array:
+	var reflectionFeedback = 0.4
+	for dist in _total_distance_checks:
 		if dist["material"]:
 			dampening += dist["material"].dampening
-			wetness += min((dist["material"].reverberation * 0.1), 1.0)
+			# wetness += min((dist["material"].reverberation * 0.5), 1.0)
 		else:
 			dampening += 0.5
 		# Getting how long for reflections.
+		# if dist["distance"] >= 0:
+		# 	reflectionTime += (dist["distance"] * 343 * 0.001) # Speed of sound
 		if dist["distance"] >= 0:
 			reflectionTime += (dist["distance"] * 343 * 0.001) # Speed of sound
 			# find average room size based on valid distances
 			room_size += dist["distance"]
 		else:
 			room_size += max_raycast_distance
-			wetness -= 1.0/float(_distance_array.size());
+			wetness -= 1.0/float(_total_distance_checks.size());
 			wetness = max(wetness, 0.0);
+	# if name == "blop":
+	# 	print("FULL SIZE:  ", room_size, "  OUT OF:  ", max_raycast_distance * float(_total_distance_checks.size()))
+	room_size = (room_size / float(_total_distance_checks.size())) / max_raycast_distance
+	# wetness = min(wetness, 1.0)
 
-	room_size = (room_size / float(_distance_array.size())) / max_raycast_distance
+	# wetness = (wetness / float(_total_distance_checks.size()))
+	if _dist_to_player < 8.0:
+		room_size = (room_size * min((_dist_to_player / 8.0), 1.0))
+		wetness = (wetness * min((_dist_to_player / 8.0), 1.0))
+	
+	reflectionFeedback = (room_size + wetness) / 2.0
+
+	# if name == "blop":
+	# 	print("DAMPENING:  ", dampening/_total_distance_checks.size())
+	# 	print("TIME:  ", reflectionTime/_total_distance_checks.size())
+	# 	print("FEEDBACK:  ", reflectionFeedback)
+	# 	print("WETNESS:  ", wetness)
+	# 	print("ROOMSIZE:  ", room_size)
 
 	_target_reverb_wetness = wetness;
 	_target_reverb_room_size = room_size;
-	_target_reverb_dampening = dampening/_distance_array.size()
-	_target_reverb_reflection_time = reflectionTime/_distance_array.size()
+	_target_reverb_dampening = dampening/_total_distance_checks.size()
+	_target_reverb_reflection_time = reflectionTime/_total_distance_checks.size()
+	_target_reverb_reflection_feedback = reflectionFeedback
 
 func _physics_process(delta):
 	_last_update_time += delta
-	if _update_distances:
+	if !_full_cycle || _update_distances:
+		if (_full_cycle && _update_distances && _current_raycast_index == 0):
+			_total_distance_checks = []
 		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
 		_current_raycast_index +=1
 		if _current_raycast_index >= _distance_array.size():
@@ -197,3 +221,31 @@ func _physics_process(delta):
 			_on_update_spatial_audio(player_camera);
 		_update_distances = true
 		_last_update_time = 0.0
+	if _has_moved:
+		if _last_update_time > update_frequency_seconds:
+			var player_camera = self
+			if player_camera:
+				if _full_cycle:
+					_on_update_spatial_audio(player_camera);
+			_update_distances = true
+			_last_update_time = 0.0
+
+			if _previous_position == global_position:
+				_has_moved = false
+			if _previous_position != global_position:
+				_has_moved = true
+			_previous_position = global_position
+	else:
+		if _last_update_time > _sleep_update_frequency_seconds:
+			var player_camera = self
+			if player_camera:
+				if _full_cycle:
+					_on_update_spatial_audio(player_camera);
+			_update_distances = true
+			_last_update_time = 0.0
+
+			if _previous_position == global_position:
+				_has_moved = false
+			if _previous_position != global_position:
+				_has_moved = true
+			_previous_position = global_position

@@ -6,7 +6,8 @@ pan_pullout = 0.5
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_oy1lq"]
 resource_name = "Reverb"
-wet = 1.0
+room_size = 0.18
+wet = 0.88
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_sm4i5"]
 resource_name = "LowPassFilter"
