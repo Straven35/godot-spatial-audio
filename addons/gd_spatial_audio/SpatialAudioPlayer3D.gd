@@ -281,47 +281,6 @@ func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 			collider.physics_material_override is ExpandedPhysicsMaterial):
 			_raycast_keys["material"] = collider.physics_material_override
 		_all_keys.push_back(_raycast_keys)
-
-		# if !_looping: # no loop, get first raycast result and skidaddle
-		# 	_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
-		# 	if (collider is StaticBody3D and
-		# 		collider.physics_material_override and
-		# 		collider.physics_material_override is ExpandedPhysicsMaterial):
-		# 		_raycast_keys["material"] = collider.physics_material_override
-		# 	_all_keys.push_back(_raycast_keys)
-		# while _looping:
-		# 	var _touchy_touch = raycast.get_collision_point()
-		# 	var _touchy_bounce = raycast.get_collision_normal().normalized()
-
-		# 	_raycast_keys = {"distance": -1.0, "material": null}
-		# 	collider = raycast.get_collider()
-		# 	_raycast_keys["distance"] = self.global_position.distance_to(_touchy_touch);
-		# 	if (collider is StaticBody3D and
-		# 		collider.physics_material_override and
-		# 		collider.physics_material_override is ExpandedPhysicsMaterial):
-		# 		_raycast_keys["material"] = collider.physics_material_override
-
-		# 	_all_keys.push_back(_raycast_keys)
-			
-		# 	raycast.global_position = _touchy_touch
-		# 	if _touchy_bounce.is_normalized():
-		# 		var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
-		# 		print("go fuck yourself  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
-		# 		raycast.target_position = _new_pos * max_raycast_distance
-		# 	else:
-		# 		print("what the fuck?  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
-		# 	raycast.force_raycast_update()
-
-		# 	colliding = raycast.is_colliding()
-
-		# 	if colliding: # can do more bounces
-		# 		_iterator += 1
-		# 	else:
-		# 		_iterator = max_raycast_bounces+1 # reached the end
-			
-		# 	if _iterator > max_raycast_bounces:
-		# 			_looping = false
-		# 			break
 		
 	_total_distance_checks.append_array(_all_keys);
 	# raycast.enabled = false;
@@ -403,7 +362,7 @@ func _on_update_reverb(player: Node3D):
 	wetness = (wetness / float(_total_distance_checks.size()))
 	spread = average_ray_distance / largest_ray_distance
 
-	
+	print(_total_distance_checks.size())
 	# wetness = min(wetness, 1.0)
 
 	# wetness = (wetness / float(_total_distance_checks.size()))
@@ -530,7 +489,7 @@ func _physics_process(delta):
 	_last_update_time += delta
 	_loop_rotation(delta)
 	if !_full_cycle || _update_distances:
-		if (_full_cycle && _update_distances && _current_raycast_index == 0):
+		if (_full_cycle && _update_distances && _current_raycast_index == 0) || _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
 			_total_distance_checks = []
 		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
 		_current_raycast_index +=1
