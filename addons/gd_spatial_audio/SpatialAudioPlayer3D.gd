@@ -23,6 +23,8 @@ var _last_update_time : float = 0.0
 var _update_distances : bool = true
 var _current_raycast_index : int = 0
 
+var _debug_usec_avg : int = 0
+var _debug_total_checks : int = 0
 
 var _dist_to_player : float = 0.0
 var _player_position : Vector3 = Vector3.ZERO
@@ -111,15 +113,19 @@ var _cycle_x : int = 0
 var _cycle_y : int = 0
 var _full_cycle : bool = false
 var _bounce_set : int = 0
+var __time : int = 0
 
 func cycle_raycast_direction(raycast: RayCast3D):
 	if _full_cycle:
 		_full_cycle = false
 	
 	if _bounce_set > 0 && max_raycast_bounces > 0:
+		__time = Time.get_ticks_usec()
 		if !raycast.is_colliding(): # reset this raycast if no more bounces to do
 			_bounce_set = 0
 			raycast.position = Vector3.ZERO
+			_debug_usec_avg += Time.get_ticks_usec() - __time
+			_debug_total_checks += 1
 			return
 
 		var _touchy_touch = raycast.get_collision_point()
@@ -133,14 +139,18 @@ func cycle_raycast_direction(raycast: RayCast3D):
 		else:
 			_bounce_set = 0
 			raycast.position = Vector3.ZERO
+			_debug_usec_avg += Time.get_ticks_usec() - __time
+			_debug_total_checks += 1
 			return
 		_bounce_set += 1
-
+		_debug_usec_avg += Time.get_ticks_usec() - __time
+		_debug_total_checks += 1
 		if _bounce_set > max_raycast_bounces:
 			_bounce_set = 0
 		return
 		# do bouncing here
 
+	__time = Time.get_ticks_usec()
 	raycast.position = Vector3.ZERO
 
 	var _x_axis_position : Vector3
@@ -182,6 +192,8 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	_total_position = _total_position.normalized()
 	raycast.target_position = _total_position * max_raycast_distance
 
+	_debug_usec_avg += Time.get_ticks_usec() - __time
+	_debug_total_checks += 1
 	if max_raycast_bounces > 0:
 		_bounce_set = 1
 	# raycast.force_raycast_update()
@@ -362,7 +374,7 @@ func _on_update_reverb(player: Node3D):
 	wetness = (wetness / float(_total_distance_checks.size()))
 	spread = average_ray_distance / largest_ray_distance
 
-	print(name, "  ", _total_distance_checks.size())
+	# print(name, "  ", _total_distance_checks.size())
 	# wetness = min(wetness, 1.0)
 
 	# wetness = (wetness / float(_total_distance_checks.size()))
@@ -373,13 +385,13 @@ func _on_update_reverb(player: Node3D):
 	# 	print(_target_reverb_wetness, "  ", _target_reverb_spread, "  ", _target_reverb_room_size, "  ", _target_reverb_damping, "  ",_target_reverb_reflection_time, "  ", _target_reverb_reflection_feedback)
 	reflectionFeedback = (room_size + wetness) / 2.0
 
-	if name == "crook":
-		print("DAMPING:  ", _target_reverb_damping)
-		print("SPREAD: ", _target_reverb_spread)
-		print("TIME:  ", _target_reverb_reflection_time)
-		print("FEEDBACK:  ", _target_reverb_reflection_feedback)
-		print("WETNESS:  ", _target_reverb_wetness)
-		print("ROOMSIZE:  ", _target_reverb_room_size)
+	# if name == "crook":
+	# 	print("DAMPING:  ", _target_reverb_damping)
+	# 	print("SPREAD: ", _target_reverb_spread)
+	# 	print("TIME:  ", _target_reverb_reflection_time)
+	# 	print("FEEDBACK:  ", _target_reverb_reflection_feedback)
+	# 	print("WETNESS:  ", _target_reverb_wetness)
+	# 	print("ROOMSIZE:  ", _target_reverb_room_size)
 
 	_target_reverb_dryness = 1.0;
 	
@@ -483,37 +495,24 @@ func _lerp_parameters(delta):
 	_eq_filter.set_band_gain_db(5, lerp(_eq_filter.get_band_gain_db(5), _target_10000hz_reduction, delta*3.0))
 	AudioServer.unlock()
 	#_reverb_effect.predelay_feedback = 0.8
-	
+
+var _just_used_params : bool = false
 
 func _physics_process(delta):
 	_last_update_time += delta
 	_loop_rotation(delta)
-	if !_full_cycle || _update_distances:
-		if (_full_cycle) || _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
-			_total_distance_checks = []
-		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
-		_current_raycast_index +=1
-		# if _current_raycast_index >= _distance_array.size():
-		if _current_raycast_index >= _raycast_array.size():
-			_current_raycast_index = 0
-			# if !playing:
-			# 	if !stream.is_class("AudioStreamWAV") && !stream.is_class("AudioStreamMP3"):
-			# 		return
-			# 	print("howdy howdy")
-			# 	playing = true
-			# 	_finished_ready = true
-			_update_distances = false
 	
 	if _has_moved:
 		if _last_update_time > update_frequency_seconds:
 			var player_camera = get_viewport().get_camera_3d()
 			if player_camera:
 				_player_position = player_camera.global_position
-				if _full_cycle:
+				if !_just_used_params && _full_cycle:
 					if player_camera is SpatialAudioCamera3D:
 						_on_check_spatial_camera(player_camera);
 					else:
 						_on_update_spatial_audio(player_camera);
+					_just_used_params = true
 			_update_distances = true
 			_last_update_time = 0.0
 
@@ -527,11 +526,13 @@ func _physics_process(delta):
 			var player_camera = get_viewport().get_camera_3d()
 			if player_camera:
 				_player_position = player_camera.global_position
-				if _full_cycle:
+				if !_just_used_params && _full_cycle:
 					if player_camera is SpatialAudioCamera3D:
 						_on_check_spatial_camera(player_camera);
 					else:
 						_on_update_spatial_audio(player_camera);
+					_just_used_params = true
+
 			_update_distances = true
 			_last_update_time = 0.0
 
@@ -541,6 +542,30 @@ func _physics_process(delta):
 				_has_moved = true
 			_previous_position = global_position
 	
+	if !_full_cycle || _update_distances:
+		# if (_full_cycle) && _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
+		# 	print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
+		# 	_debug_usec_avg = 0
+		# 	_debug_total_checks = 0
+		if _just_used_params && (_full_cycle) && _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
+			_just_used_params = false
+			_total_distance_checks = []
+			print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
+			_debug_usec_avg = 0
+			_debug_total_checks = 0
+		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
+		_current_raycast_index +=1
+		# if _current_raycast_index >= _distance_array.size():
+		if _current_raycast_index >= _raycast_array.size():
+			_current_raycast_index = 0
+			# if !playing:
+			# 	if !stream.is_class("AudioStreamWAV") && !stream.is_class("AudioStreamMP3"):
+			# 		return
+			# 	print("howdy howdy")
+			# 	playing = true
+			# 	_finished_ready = true
+			_update_distances = false
+
 	_lerp_parameters(delta)
 
 func _loop_rotation(delta):

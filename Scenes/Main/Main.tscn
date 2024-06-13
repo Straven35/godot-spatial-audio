@@ -64,6 +64,7 @@ max_distance = 15.0
 update_frequency_seconds = 0.25
 max_reverb_wetness = 0.25
 max_stereo_distance = 20.0
+max_raycast_bounces = 2
 
 [node name="truck2" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8229, 2.46688, 24.3523)
@@ -73,6 +74,8 @@ max_distance = 15.0
 update_frequency_seconds = 0.25
 max_reverb_wetness = 0.25
 max_stereo_distance = 30.0
+max_raycast_bounces = 2
+raycast_count = 8
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_u0s7v")
