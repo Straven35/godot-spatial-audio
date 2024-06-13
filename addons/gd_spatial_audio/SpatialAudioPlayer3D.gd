@@ -7,7 +7,7 @@ extends AudioStreamPlayer3D
 @export var max_reverb_wetness: float = 0.5;
 @export var wall_lowpass_cutoff_amount: int = 1000;
 @export var max_stereo_distance : float = 16.0;
-@export var max_raycast_bounces : int = 0;
+@export_range(0, 4) var max_raycast_bounces : int = 0;
 @export_range(2, 16) var raycast_count : int = 4;
 @export var raycast_exclude_parent : bool = true;
 @export var raycast_collide_with_areas : bool = false;
