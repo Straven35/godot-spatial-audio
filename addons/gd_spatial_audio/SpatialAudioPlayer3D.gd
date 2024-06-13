@@ -25,6 +25,7 @@ var _current_raycast_index : int = 0
 
 var _debug_usec_avg : int = 0
 var _debug_total_checks : int = 0
+var _debug_use : bool = false
 
 var _dist_to_player : float = 0.0
 var _player_position : Vector3 = Vector3.ZERO
@@ -64,7 +65,7 @@ var _target_10000hz_reduction:float = 0.0
 var _finished_ready : bool = false
 
 func _ready():
-	_sleep_update_frequency_seconds = update_frequency_seconds + 0.0
+	_sleep_update_frequency_seconds = update_frequency_seconds + 1.0
 	if max_distance > 0 && max_raycast_distance < max_distance:
 		max_raycast_distance = max_distance
 	for i in raycast_count:
@@ -120,12 +121,14 @@ func cycle_raycast_direction(raycast: RayCast3D):
 		_full_cycle = false
 	
 	if _bounce_set > 0 && max_raycast_bounces > 0:
-		__time = Time.get_ticks_usec()
+		if _debug_use:
+			__time = Time.get_ticks_usec()
 		if !raycast.is_colliding(): # reset this raycast if no more bounces to do
 			_bounce_set = 0
 			raycast.position = Vector3.ZERO
-			_debug_usec_avg += Time.get_ticks_usec() - __time
-			_debug_total_checks += 1
+			if _debug_use:
+				_debug_usec_avg += Time.get_ticks_usec() - __time
+				_debug_total_checks += 1
 			return
 
 		var _touchy_touch = raycast.get_collision_point()
@@ -139,18 +142,21 @@ func cycle_raycast_direction(raycast: RayCast3D):
 		else:
 			_bounce_set = 0
 			raycast.position = Vector3.ZERO
-			_debug_usec_avg += Time.get_ticks_usec() - __time
-			_debug_total_checks += 1
+			if _debug_use:
+				_debug_usec_avg += Time.get_ticks_usec() - __time
+				_debug_total_checks += 1
 			return
 		_bounce_set += 1
-		_debug_usec_avg += Time.get_ticks_usec() - __time
-		_debug_total_checks += 1
+		if _debug_use:
+			_debug_usec_avg += Time.get_ticks_usec() - __time
+			_debug_total_checks += 1
 		if _bounce_set > max_raycast_bounces:
 			_bounce_set = 0
 		return
 		# do bouncing here
 
-	__time = Time.get_ticks_usec()
+	if _debug_use:
+		__time = Time.get_ticks_usec()
 	raycast.position = Vector3.ZERO
 
 	var _x_axis_position : Vector3
@@ -192,8 +198,9 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	_total_position = _total_position.normalized()
 	raycast.target_position = _total_position * max_raycast_distance
 
-	_debug_usec_avg += Time.get_ticks_usec() - __time
-	_debug_total_checks += 1
+	if _debug_use:
+		_debug_usec_avg += Time.get_ticks_usec() - __time
+		_debug_total_checks += 1
 	if max_raycast_bounces > 0:
 		_bounce_set = 1
 	# raycast.force_raycast_update()
@@ -550,9 +557,10 @@ func _physics_process(delta):
 		if _just_used_params && (_full_cycle) && _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
 			_just_used_params = false
 			_total_distance_checks = []
-			print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
-			_debug_usec_avg = 0
-			_debug_total_checks = 0
+			if _debug_use:
+				print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
+				_debug_usec_avg = 0
+				_debug_total_checks = 0
 		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
 		_current_raycast_index +=1
 		# if _current_raycast_index >= _distance_array.size():
