@@ -362,7 +362,7 @@ func _on_update_reverb(player: Node3D):
 	wetness = (wetness / float(_total_distance_checks.size()))
 	spread = average_ray_distance / largest_ray_distance
 
-	print(_total_distance_checks.size())
+	print(name, "  ", _total_distance_checks.size())
 	# wetness = min(wetness, 1.0)
 
 	# wetness = (wetness / float(_total_distance_checks.size()))
@@ -489,7 +489,7 @@ func _physics_process(delta):
 	_last_update_time += delta
 	_loop_rotation(delta)
 	if !_full_cycle || _update_distances:
-		if (_full_cycle && _update_distances && _current_raycast_index == 0) || _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
+		if (_full_cycle) || _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
 			_total_distance_checks = []
 		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
 		_current_raycast_index +=1
