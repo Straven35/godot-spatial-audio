@@ -23,45 +23,8 @@ cap_top = false
 [node name="SpatialAudioPlayer3D" type="AudioStreamPlayer3D"]
 attenuation_model = 3
 script = ExtResource("1_hncxx")
-
-[node name="RayCastPlayer" type="RayCast3D" parent="."]
-debug_shape_custom_color = Color(0, 0, 0, 0)
-
-[node name="RayCastForward" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, 1)
-collision_mask = 9
-
-[node name="RayCastForwardLeft" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, 1)
-collision_mask = 9
-
-[node name="RayCastForwardRight" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, 1)
-collision_mask = 9
-
-[node name="RayCastBackward" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, -1)
-collision_mask = 9
-
-[node name="RayCastBackwardLeft" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, -1)
-collision_mask = 9
-
-[node name="RayCastBackwardRight" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, -1)
-collision_mask = 9
-
-[node name="RayCastUp" type="RayCast3D" parent="."]
-target_position = Vector3(0, 1, 0)
-collision_mask = 9
-
-[node name="RayCastLeft" type="RayCast3D" parent="."]
-target_position = Vector3(1, 0, 0)
-collision_mask = 9
-
-[node name="RayCastRight" type="RayCast3D" parent="."]
-target_position = Vector3(-1, 0, 0)
-collision_mask = 9
+raycast_count = 2
+raycast_collision_mask = 9
 
 [node name="cone" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0)

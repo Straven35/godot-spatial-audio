@@ -8,6 +8,11 @@ extends AudioStreamPlayer3D
 @export var wall_lowpass_cutoff_amount: int = 1000;
 @export var max_stereo_distance : float = 16.0;
 @export var max_raycast_bounces : int = 0;
+@export_range(2, 16) var raycast_count : int = 4;
+@export var raycast_exclude_parent : bool = true;
+@export var raycast_collide_with_areas : bool = false;
+@export var raycast_collide_with_bodies : bool = true;
+@export_flags_3d_physics var raycast_collision_mask;
 var horizontalCheck:float = 1.0;
 var verticalCheck:float = 0.8;
 
@@ -60,6 +65,14 @@ func _ready():
 	_sleep_update_frequency_seconds = update_frequency_seconds + 0.0
 	if max_distance > 0 && max_raycast_distance < max_distance:
 		max_raycast_distance = max_distance
+	for i in raycast_count:
+		var __ray : RayCast3D = RayCast3D.new()
+		__ray.collision_mask = raycast_collision_mask
+		__ray.collide_with_areas = raycast_collide_with_areas
+		__ray.collide_with_bodies = raycast_collide_with_bodies
+		__ray.exclude_parent = raycast_exclude_parent
+		add_child(__ray)
+		_raycast_array.push_back(__ray)
 	# Make new audio bus
 	_audio_bus_idx = AudioServer.bus_count
 	_audio_bus_name = "SpatialBus#"+str(_audio_bus_idx)
@@ -78,13 +91,13 @@ func _ready():
 	
 	_target_volume_db = volume_db;
 	volume_db = -60.0;
-	_raycast_array.append_array([
-		$RayCastBackward, $RayCastBackwardLeft, $RayCastBackwardRight,
-		$RayCastForward, $RayCastForwardLeft, $RayCastForwardRight,
-		$RayCastLeft, $RayCastRight,
-		$RayCastUp,
-		$RayCastPlayer
-		]);
+	# _raycast_array.append_array([
+	# 	$RayCastBackward, $RayCastBackwardLeft, $RayCastBackwardRight,
+	# 	$RayCastForward, $RayCastForwardLeft, $RayCastForwardRight,
+	# 	$RayCastLeft, $RayCastRight,
+	# 	$RayCastUp,
+	# 	$RayCastPlayer
+	# 	]);
 
 	for raycast:RayCast3D in _raycast_array:
 		raycast.target_position *= max_raycast_distance
@@ -97,11 +110,37 @@ func _ready():
 var _cycle_x : int = 0
 var _cycle_y : int = 0
 var _full_cycle : bool = false
+var _bounce_set : int = 0
 
 func cycle_raycast_direction(raycast: RayCast3D):
 	if _full_cycle:
 		_full_cycle = false
 	
+	if _bounce_set > 0 && max_raycast_bounces > 0:
+		if !raycast.is_colliding(): # reset this raycast if no more bounces to do
+			_bounce_set = 0
+			raycast.position = Vector3.ZERO
+			return
+
+		var _touchy_touch = raycast.get_collision_point()
+		var _touchy_bounce = raycast.get_collision_normal()
+
+		raycast.global_position = _touchy_touch
+		if _touchy_bounce.is_normalized():
+			var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
+			# print("go fuck yourself  ", raycast.name, "   ", _touchy_touch, "  ", _bounce_set)
+			raycast.target_position = _new_pos.normalized() * max_raycast_distance
+		else:
+			_bounce_set = 0
+			raycast.position = Vector3.ZERO
+			return
+		_bounce_set += 1
+
+		if _bounce_set > max_raycast_bounces:
+			_bounce_set = 0
+		return
+		# do bouncing here
+
 	raycast.position = Vector3.ZERO
 
 	var _x_axis_position : Vector3
@@ -142,6 +181,9 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	_total_position = _x_axis_position + _y_axis_position
 	_total_position = _total_position.normalized()
 	raycast.target_position = _total_position * max_raycast_distance
+
+	if max_raycast_bounces > 0:
+		_bounce_set = 1
 	# raycast.force_raycast_update()
 
 	# if raycast.is_colliding():
@@ -214,7 +256,7 @@ func retrieve_raycast_hits(raycast : RayCast3D):
 
 func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 	# randomise_raycast_direction(raycast)
-	if raycast.name != "RayCastPlayer":
+	if raycast_index > 0:
 		cycle_raycast_direction(raycast)
 		# raycast.force_raycast_update()
 	else:
@@ -233,46 +275,53 @@ func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 		var _looping : bool = max_raycast_bounces > 0
 		var collider : CollisionObject3D = raycast.get_collider()
 
-		if !_looping: # no loop, get first raycast result and skidaddle
-			_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
-			if (collider is StaticBody3D and
-				collider.physics_material_override and
-				collider.physics_material_override is ExpandedPhysicsMaterial):
-				_raycast_keys["material"] = collider.physics_material_override
-			_all_keys.push_back(_raycast_keys)
-		while _looping:
-			var _touchy_touch = raycast.get_collision_point()
-			var _touchy_bounce = raycast.get_collision_normal().normalized()
+		_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
+		if (collider is StaticBody3D and
+			collider.physics_material_override and
+			collider.physics_material_override is ExpandedPhysicsMaterial):
+			_raycast_keys["material"] = collider.physics_material_override
+		_all_keys.push_back(_raycast_keys)
 
-			_raycast_keys = {"distance": -1.0, "material": null}
-			collider = raycast.get_collider()
-			_raycast_keys["distance"] = self.global_position.distance_to(_touchy_touch);
-			if (collider is StaticBody3D and
-				collider.physics_material_override and
-				collider.physics_material_override is ExpandedPhysicsMaterial):
-				_raycast_keys["material"] = collider.physics_material_override
+		# if !_looping: # no loop, get first raycast result and skidaddle
+		# 	_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
+		# 	if (collider is StaticBody3D and
+		# 		collider.physics_material_override and
+		# 		collider.physics_material_override is ExpandedPhysicsMaterial):
+		# 		_raycast_keys["material"] = collider.physics_material_override
+		# 	_all_keys.push_back(_raycast_keys)
+		# while _looping:
+		# 	var _touchy_touch = raycast.get_collision_point()
+		# 	var _touchy_bounce = raycast.get_collision_normal().normalized()
 
-			_all_keys.push_back(_raycast_keys)
+		# 	_raycast_keys = {"distance": -1.0, "material": null}
+		# 	collider = raycast.get_collider()
+		# 	_raycast_keys["distance"] = self.global_position.distance_to(_touchy_touch);
+		# 	if (collider is StaticBody3D and
+		# 		collider.physics_material_override and
+		# 		collider.physics_material_override is ExpandedPhysicsMaterial):
+		# 		_raycast_keys["material"] = collider.physics_material_override
+
+		# 	_all_keys.push_back(_raycast_keys)
 			
-			raycast.global_position = _touchy_touch
-			if _touchy_bounce.is_normalized():
-				var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
-				print("go fuck yourself  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
-				raycast.target_position = _new_pos * max_raycast_distance
-			else:
-				print("what the fuck?  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
-			raycast.force_raycast_update()
+		# 	raycast.global_position = _touchy_touch
+		# 	if _touchy_bounce.is_normalized():
+		# 		var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
+		# 		print("go fuck yourself  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
+		# 		raycast.target_position = _new_pos * max_raycast_distance
+		# 	else:
+		# 		print("what the fuck?  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
+		# 	raycast.force_raycast_update()
 
-			colliding = raycast.is_colliding()
+		# 	colliding = raycast.is_colliding()
 
-			if colliding: # can do more bounces
-				_iterator += 1
-			else:
-				_iterator = max_raycast_bounces+1 # reached the end
+		# 	if colliding: # can do more bounces
+		# 		_iterator += 1
+		# 	else:
+		# 		_iterator = max_raycast_bounces+1 # reached the end
 			
-			if _iterator > max_raycast_bounces:
-					_looping = false
-					break
+		# 	if _iterator > max_raycast_bounces:
+		# 			_looping = false
+		# 			break
 		
 	_total_distance_checks.append_array(_all_keys);
 	# raycast.enabled = false;
@@ -365,7 +414,7 @@ func _on_update_reverb(player: Node3D):
 	# 	print(_target_reverb_wetness, "  ", _target_reverb_spread, "  ", _target_reverb_room_size, "  ", _target_reverb_damping, "  ",_target_reverb_reflection_time, "  ", _target_reverb_reflection_feedback)
 	reflectionFeedback = (room_size + wetness) / 2.0
 
-	if name == "truck2":
+	if name == "crook":
 		print("DAMPING:  ", _target_reverb_damping)
 		print("SPREAD: ", _target_reverb_spread)
 		print("TIME:  ", _target_reverb_reflection_time)
@@ -415,13 +464,14 @@ func _on_update_lowpass_filter(player: Node3D):
 		Vector3(0,0,0)
 	]:
 		# $RayCastPlayer.target_position = (player.global_position - self.global_position + i).normalized() * max_raycast_distance
-		$RayCastPlayer.target_position = (player.global_position - self.global_position + i)
-		$RayCastPlayer.force_raycast_update()
-		var collider = $RayCastPlayer.get_collider();
+		var __ray : RayCast3D = _raycast_array[0]
+		__ray.target_position = (player.global_position - self.global_position + i)
+		__ray.force_raycast_update()
+		var collider = __ray.get_collider();
 		var _lowpass_cutoff = 20000;
-		_walls_in_way = $RayCastPlayer.is_colliding()
+		_walls_in_way = __ray.is_colliding()
 		if collider:
-			var ray_distance : float = self.global_position.distance_to($RayCastPlayer.get_collision_point());
+			var ray_distance : float = self.global_position.distance_to(__ray.get_collision_point());
 			var distance_to_player : float = _dist_to_player
 			var wall_to_player_ratio : float = ray_distance / max(distance_to_player, 0.001)
 			if ray_distance < distance_to_player:

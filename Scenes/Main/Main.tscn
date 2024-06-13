@@ -43,6 +43,8 @@ autoplay = true
 max_distance = 50.0
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
+max_raycast_bounces = 2
+raycast_count = 10
 
 [node name="wind" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.17707, 6.46688, 51.3523)
@@ -428,7 +430,7 @@ physics_material = ExtResource("8_hgv8c")
 [node name="CsgBasicBlock75" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 24)
 physics_material_override = ExtResource("8_hgv8c")
-size = Vector3(15, 1, 5.5)
+size = Vector3(15, 1, 5)
 physics_material = ExtResource("8_hgv8c")
 
 [node name="CsgBasicBlock66" parent="csgstuff" instance=ExtResource("1_1b2o2")]
@@ -543,6 +545,7 @@ stream = ExtResource("13_p7dor")
 max_distance = 80.0
 update_frequency_seconds = 0.25
 max_stereo_distance = 50.0
+max_raycast_bounces = 2
 
 [node name="blop2" parent="BellPlayer" instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.1771, 7.46688, -2.86351)
@@ -550,6 +553,7 @@ stream = ExtResource("13_p7dor")
 max_distance = 80.0
 update_frequency_seconds = 0.25
 max_stereo_distance = 50.0
+max_raycast_bounces = 2
 
 [node name="pillars" type="Node3D" parent="."]
 script = ExtResource("15_tjgbf")
