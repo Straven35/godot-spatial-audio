@@ -2,11 +2,12 @@
 
 [sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_ucnce"]
 resource_name = "StereoEnhance"
-pan_pullout = 0.5
+pan_pullout = 0.0
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_oy1lq"]
 resource_name = "Reverb"
-room_size = 0.18
+room_size = 0.62
+damping = 0.75
 wet = 0.88
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_sm4i5"]

@@ -7,6 +7,7 @@ extends AudioStreamPlayer3D
 @export var max_reverb_wetness: float = 0.5;
 @export var wall_lowpass_cutoff_amount: int = 1000;
 @export var max_stereo_distance : float = 16.0;
+@export var max_raycast_bounces : int = 0;
 var horizontalCheck:float = 1.0;
 var verticalCheck:float = 0.8;
 
@@ -16,6 +17,7 @@ var _total_distance_checks : Array = []
 var _last_update_time : float = 0.0
 var _update_distances : bool = true
 var _current_raycast_index : int = 0
+
 
 var _dist_to_player : float = 0.0
 var _player_position : Vector3 = Vector3.ZERO
@@ -36,10 +38,11 @@ var _eq_filter : AudioEffectEQ
 
 var _target_lowpass_cutoff : float = 20000
 var _target_reverb_room_size : float = 0.0
+var _target_reverb_spread : float = 0.0
 var _target_reverb_wetness : float = 0.0
 var _target_reverb_dryness : float = 1.0
 var _target_volume_db : float = 0.0
-var _target_reverb_dampening: float = 0.5
+var _target_reverb_damping: float = 0.5
 var _target_reverb_reflection_time: float = 0.0
 var _target_reverb_reflection_feedback : float = 0.4
 var _target_stereo_pan_pullout : float = 0.5
@@ -51,8 +54,10 @@ var _target_1000hz_reduction:float = 0.0
 var _target_3200hz_reduction:float = 0.0
 var _target_10000hz_reduction:float = 0.0
 
+var _finished_ready : bool = false
+
 func _ready():
-	_sleep_update_frequency_seconds = update_frequency_seconds + 1.0
+	_sleep_update_frequency_seconds = update_frequency_seconds + 0.0
 	if max_distance > 0 && max_raycast_distance < max_distance:
 		max_raycast_distance = max_distance
 	# Make new audio bus
@@ -86,8 +91,9 @@ func _ready():
 	AudioServer.playback_speed_scale = 1.0
 
 # takes the raycast and places it in a certain predefined orientation
-# 4 cycles on x axis;
-# 8 cycles on y axis.
+# 5 cycles on x axis;
+# 9 cycles on y axis.
+# 45 total cycles.
 var _cycle_x : int = 0
 var _cycle_y : int = 0
 var _full_cycle : bool = false
@@ -96,6 +102,8 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	if _full_cycle:
 		_full_cycle = false
 	
+	raycast.position = Vector3.ZERO
+
 	var _x_axis_position : Vector3
 	var _y_axis_position : Vector3
 	var _total_position : Vector3
@@ -134,7 +142,19 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	_total_position = _x_axis_position + _y_axis_position
 	_total_position = _total_position.normalized()
 	raycast.target_position = _total_position * max_raycast_distance
-	
+	# raycast.force_raycast_update()
+
+	# if raycast.is_colliding():
+	# 	var _touchy_touch = raycast.get_collision_point()
+	# 	var _touchy_bounce = raycast.get_collision_normal()
+
+	# 	var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
+	# 	raycast.global_position = _touchy_touch
+	# 	print(_new_pos)
+	# 	raycast.target_position = _new_pos * max_raycast_distance
+	# 	raycast.force_raycast_update()
+	# 	print(raycast.name)
+
 	if _cycle_y < 8:
 		_cycle_y += 1
 	else:
@@ -170,6 +190,7 @@ func randomise_raycast_direction(raycast: RayCast3D):
 	raycast.target_position = Vector3((randf()*2.0)-1.0, (randf()*2.0)-1.0, (randf()*2.0)-1.0)*max_raycast_distance
 
 func retrieve_raycast_hits(raycast : RayCast3D):
+	return
 	raycast.target_position = to_local(_player_position)
 	raycast.force_raycast_update()
 	var _colliding : bool = raycast.is_colliding()
@@ -200,20 +221,60 @@ func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 		retrieve_raycast_hits(raycast)
 		return
 	var colliding : bool = raycast.is_colliding()
-	var _raycast_keys : Dictionary = {"distance": -1.0, "material": null} # i dont want to use dictionaries
+	# var _raycast_keys : Dictionary = {"distance": -1.0, "material": null} # i dont want to use dictionaries
+	var _all_keys : Array = []
+	# but if i must
+	# dictionaries are fine i suppose
 	# _distance_array[raycast_index]["distance"] = -1
 	# _distance_array[raycast_index]["material"] = null
 	if colliding:
+		var _raycast_keys : Dictionary = {"distance": -1.0, "material": null} # i dont want to use dictionaries
+		var _iterator : int = 0
+		var _looping : bool = max_raycast_bounces > 0
 		var collider : CollisionObject3D = raycast.get_collider()
-		# _distance_array[raycast_index]["distance"] = self.global_position.distance_to(raycast.get_collision_point());
-		_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
+
+		if !_looping: # no loop, get first raycast result and skidaddle
+			_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
+			if (collider is StaticBody3D and
+				collider.physics_material_override and
+				collider.physics_material_override is ExpandedPhysicsMaterial):
+				_raycast_keys["material"] = collider.physics_material_override
+			_all_keys.push_back(_raycast_keys)
+		while _looping:
+			var _touchy_touch = raycast.get_collision_point()
+			var _touchy_bounce = raycast.get_collision_normal().normalized()
+
+			_raycast_keys = {"distance": -1.0, "material": null}
+			collider = raycast.get_collider()
+			_raycast_keys["distance"] = self.global_position.distance_to(_touchy_touch);
+			if (collider is StaticBody3D and
+				collider.physics_material_override and
+				collider.physics_material_override is ExpandedPhysicsMaterial):
+				_raycast_keys["material"] = collider.physics_material_override
+
+			_all_keys.push_back(_raycast_keys)
+			
+			raycast.global_position = _touchy_touch
+			if _touchy_bounce.is_normalized():
+				var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
+				print("go fuck yourself  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
+				raycast.target_position = _new_pos * max_raycast_distance
+			else:
+				print("what the fuck?  ", raycast.name, "   ", _touchy_touch, "  ", _iterator)
+			raycast.force_raycast_update()
+
+			colliding = raycast.is_colliding()
+
+			if colliding: # can do more bounces
+				_iterator += 1
+			else:
+				_iterator = max_raycast_bounces+1 # reached the end
+			
+			if _iterator > max_raycast_bounces:
+					_looping = false
+					break
 		
-		if (collider is StaticBody3D and
-			collider.physics_material_override and
-			collider.physics_material_override is ExpandedPhysicsMaterial):
-			# _distance_array[raycast_index]["material"] = collider.physics_material_override
-			_raycast_keys["material"] = collider.physics_material_override
-	_total_distance_checks.push_back(_raycast_keys);
+	_total_distance_checks.append_array(_all_keys);
 	# raycast.enabled = false;
 
 func _on_check_spatial_camera(player: Node3D):
@@ -221,17 +282,18 @@ func _on_check_spatial_camera(player: Node3D):
 	_on_update_stereo(player);
 	_on_update_lowpass_filter(player);
 
+	return
 	var _camera_room_size : float = player._target_reverb_room_size
 	if _camera_room_size < _target_reverb_room_size:
 		if !_walls_in_way:
 			_target_reverb_room_size = _camera_room_size
-			_target_reverb_dampening = player._target_reverb_dampening
+			_target_reverb_damping = player._target_reverb_damping
 			_target_reverb_reflection_time = player._target_reverb_reflection_time
 			_target_reverb_dryness = lerp(_target_reverb_dryness, 1.0, get_physics_process_delta_time())
 			return
 		
 		_target_reverb_room_size = _camera_room_size
-		_target_reverb_dampening = player._target_reverb_dampening
+		_target_reverb_damping = player._target_reverb_damping
 		_target_reverb_reflection_time = player._target_reverb_reflection_time
 		_target_reverb_dryness = player._target_reverb_wetness
 	else:
@@ -246,52 +308,88 @@ func _on_update_reverb(player: Node3D):
 	if !_reverb_effect:
 		return
 	var room_size = 0.0
-	var wetness = 1.0
-	var dampening = 0.5
+	var wetness = 0.0
+	var damping = 0.0
+	var spread = 1.0
+	var largest_ray_distance : float = 0.0
+	var average_ray_distance : float = 0.0
 	var reflectionTime = 0.0
 	var reflectionFeedback = 0.4
-	for dist in _total_distance_checks:
+	var _total_raycasts_allowed = 45 + (45 * max_raycast_bounces)
+	for i in _total_raycasts_allowed:
+
+		var dist : Dictionary
+		if i < _total_distance_checks.size():
+			dist = _total_distance_checks[i]
+		
+		if dist.is_empty():
+			# room_size += (max_raycast_distance / _total_raycasts_allowed)
+			reflectionTime += (max_raycast_distance * 343 * 0.01)
+			continue
 		if dist["material"]:
-			dampening += dist["material"].dampening
+			damping += dist["material"].damping
+			wetness += dist["material"].transmission
 			# wetness += min((dist["material"].reverberation * 0.5), 1.0)
 		else:
-			dampening += 0.5
+			damping += 0.5
+			wetness += 0.1
 		# Getting how long for reflections.
 		# if dist["distance"] >= 0:
 		# 	reflectionTime += (dist["distance"] * 343 * 0.001) # Speed of sound
 		if dist["distance"] >= 0:
+			if dist["distance"] > largest_ray_distance:
+				largest_ray_distance = dist["distance"]
+			average_ray_distance += dist["distance"]
+			# spread -= (spread / _total_raycasts_allowed)
 			reflectionTime += (dist["distance"] * 343 * 0.001) # Speed of sound
-			# find average room size based on valid distances
 			room_size += dist["distance"]
-		else:
-			room_size += max_raycast_distance
-			wetness -= 1.0/float(_total_distance_checks.size());
-			wetness = max(wetness, 0.0);
+		# else:
+		# 	room_size += max_raycast_distance
+		# 	wetness -= 1.0/float(_total_distance_checks.size());
+		# 	wetness = max(wetness, 0.0);
 	# if name == "blop":
 	# 	print("FULL SIZE:  ", room_size, "  OUT OF:  ", max_raycast_distance * float(_total_distance_checks.size()))
-	room_size = (room_size / float(_total_distance_checks.size())) / max_raycast_distance
+	average_ray_distance = average_ray_distance / _total_distance_checks.size()
+	room_size = min(1.0, (room_size / float(_total_distance_checks.size())) / largest_ray_distance)
+	wetness = (wetness / float(_total_distance_checks.size()))
+	spread = average_ray_distance / largest_ray_distance
+
+	
 	# wetness = min(wetness, 1.0)
 
 	# wetness = (wetness / float(_total_distance_checks.size()))
 	if _dist_to_player < 8.0:
 		room_size = (room_size * min((_dist_to_player / 8.0), 1.0))
 		wetness = (wetness * min((_dist_to_player / 8.0), 1.0))
-	
+	# if name == "crook":
+	# 	print(_target_reverb_wetness, "  ", _target_reverb_spread, "  ", _target_reverb_room_size, "  ", _target_reverb_damping, "  ",_target_reverb_reflection_time, "  ", _target_reverb_reflection_feedback)
 	reflectionFeedback = (room_size + wetness) / 2.0
 
-	# if name == "blop":
-	# 	print("DAMPENING:  ", dampening/_total_distance_checks.size())
-	# 	print("TIME:  ", reflectionTime/_total_distance_checks.size())
-	# 	print("FEEDBACK:  ", reflectionFeedback)
-	# 	print("WETNESS:  ", wetness)
-	# 	print("ROOMSIZE:  ", room_size)
+	if name == "truck2":
+		print("DAMPING:  ", _target_reverb_damping)
+		print("SPREAD: ", _target_reverb_spread)
+		print("TIME:  ", _target_reverb_reflection_time)
+		print("FEEDBACK:  ", _target_reverb_reflection_feedback)
+		print("WETNESS:  ", _target_reverb_wetness)
+		print("ROOMSIZE:  ", _target_reverb_room_size)
 
 	_target_reverb_dryness = 1.0;
-	_target_reverb_wetness = wetness;
-	_target_reverb_room_size = room_size;
-	_target_reverb_dampening = dampening/_total_distance_checks.size()
-	_target_reverb_reflection_time = reflectionTime/_total_distance_checks.size()
-	_target_reverb_reflection_feedback = reflectionFeedback
+	
+	if _finished_ready:
+		_target_reverb_wetness = wetness;
+		_target_reverb_spread = spread;
+		_target_reverb_room_size = room_size;
+		_target_reverb_damping = damping/_total_distance_checks.size()
+		_target_reverb_reflection_time = reflectionTime/_total_distance_checks.size()
+		_target_reverb_reflection_feedback = reflectionFeedback
+	else:
+		_target_reverb_wetness = 0.0;
+		_target_reverb_spread = 0.0;
+		_target_reverb_room_size = 0.0;
+		_target_reverb_damping = 0.5;
+		_target_reverb_reflection_time = 0.0
+		_target_reverb_reflection_feedback = 0.4
+	_finished_ready = true
 
 func _on_update_stereo(player: Node3D):
 	if !_stereo_effect:
@@ -362,9 +460,10 @@ func _lerp_parameters(delta):
 	_stereo_effect.pan_pullout = lerp(_stereo_effect.pan_pullout, _target_stereo_pan_pullout, delta*3.0);
 	_lowpass_filter.cutoff_hz = lerp(_lowpass_filter.cutoff_hz, _target_lowpass_cutoff, delta*3.0);
 	_reverb_effect.wet = lerp(_reverb_effect.wet, _target_reverb_wetness * max_reverb_wetness, delta * 5.0);
+	_reverb_effect.spread = lerp(_reverb_effect.spread, _target_reverb_spread, delta * 5.0);
 	_reverb_effect.dry = lerp(_reverb_effect.dry, _target_reverb_dryness, delta * 5.0);
 	_reverb_effect.room_size = lerp(_reverb_effect.room_size, _target_reverb_room_size, delta* 5.0);
-	_reverb_effect.damping = lerp(_reverb_effect.damping, _target_reverb_dampening, delta*5.0);
+	_reverb_effect.damping = lerp(_reverb_effect.damping, _target_reverb_damping, delta*5.0);
 	_reverb_effect.predelay_msec = lerp(_reverb_effect.predelay_msec, _target_reverb_reflection_time, delta * 5.0);
 	_reverb_effect.predelay_feedback = lerp(_reverb_effect.predelay_feedback, _target_reverb_reflection_feedback, delta * 5.0);
 	_eq_filter.set_band_gain_db(0, lerp(_eq_filter.get_band_gain_db(0), _target_32hz_reduction, delta*3.0))
@@ -385,9 +484,15 @@ func _physics_process(delta):
 			_total_distance_checks = []
 		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
 		_current_raycast_index +=1
-		if _current_raycast_index >= _distance_array.size():
+		# if _current_raycast_index >= _distance_array.size():
+		if _current_raycast_index >= _raycast_array.size():
 			_current_raycast_index = 0
-
+			# if !playing:
+			# 	if !stream.is_class("AudioStreamWAV") && !stream.is_class("AudioStreamMP3"):
+			# 		return
+			# 	print("howdy howdy")
+			# 	playing = true
+			# 	_finished_ready = true
 			_update_distances = false
 	
 	if _has_moved:

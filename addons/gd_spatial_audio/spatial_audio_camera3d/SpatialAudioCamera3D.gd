@@ -33,7 +33,7 @@ var _target_lowpass_cutoff : float = 20000
 var _target_reverb_room_size : float = 0.0
 var _target_reverb_wetness : float = 0.0
 var _target_volume_db : float = 0.0
-var _target_reverb_dampening: float = 0.5
+var _target_reverb_damping: float = 0.5
 var _target_reverb_reflection_time: float = 0.0
 var _target_reverb_reflection_feedback : float = 0.4
 var _target_stereo_pan_pullout : float = 0.5
@@ -158,15 +158,15 @@ func _on_update_spatial_audio(player: Node3D):
 func _on_update_reverb(player: Node3D):
 	var room_size = 0.0
 	var wetness = 1.0
-	var dampening = 0.5
+	var damping = 0.5
 	var reflectionTime = 0.0
 	var reflectionFeedback = 0.4
 	for dist in _total_distance_checks:
 		if dist["material"]:
-			dampening += dist["material"].dampening
+			damping += dist["material"].damping
 			# wetness += min((dist["material"].reverberation * 0.5), 1.0)
 		else:
-			dampening += 0.5
+			damping += 0.5
 		# Getting how long for reflections.
 		# if dist["distance"] >= 0:
 		# 	reflectionTime += (dist["distance"] * 343 * 0.001) # Speed of sound
@@ -199,7 +199,7 @@ func _on_update_reverb(player: Node3D):
 
 	_target_reverb_wetness = wetness;
 	_target_reverb_room_size = room_size;
-	_target_reverb_dampening = dampening/_total_distance_checks.size()
+	_target_reverb_damping = damping/_total_distance_checks.size()
 	_target_reverb_reflection_time = reflectionTime/_total_distance_checks.size()
 	_target_reverb_reflection_feedback = reflectionFeedback
 
