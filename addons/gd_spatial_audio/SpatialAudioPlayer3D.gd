@@ -392,13 +392,13 @@ func _on_update_reverb(player: Node3D):
 	# 	print(_target_reverb_wetness, "  ", _target_reverb_spread, "  ", _target_reverb_room_size, "  ", _target_reverb_damping, "  ",_target_reverb_reflection_time, "  ", _target_reverb_reflection_feedback)
 	reflectionFeedback = (room_size + wetness) / 2.0
 
-	# if name == "crook":
-	# 	print("DAMPING:  ", _target_reverb_damping)
-	# 	print("SPREAD: ", _target_reverb_spread)
-	# 	print("TIME:  ", _target_reverb_reflection_time)
-	# 	print("FEEDBACK:  ", _target_reverb_reflection_feedback)
-	# 	print("WETNESS:  ", _target_reverb_wetness)
-	# 	print("ROOMSIZE:  ", _target_reverb_room_size)
+	if _debug_use:
+		print("DAMPING:  ", _target_reverb_damping)
+		print("SPREAD: ", _target_reverb_spread)
+		print("TIME:  ", _target_reverb_reflection_time)
+		print("FEEDBACK:  ", _target_reverb_reflection_feedback)
+		print("WETNESS:  ", _target_reverb_wetness)
+		print("ROOMSIZE:  ", _target_reverb_room_size)
 
 	_target_reverb_dryness = 1.0;
 	
@@ -422,6 +422,8 @@ func _on_update_stereo(player: Node3D):
 	if !_stereo_effect:
 		return
 	var _stereo_dist_player : float = _dist_to_player
+	if _debug_use:
+		print(_stereo_dist_player)
 	if max_stereo_distance == 0:
 		_target_stereo_pan_pullout = 0.3
 	else:
@@ -478,6 +480,9 @@ func _on_update_lowpass_filter(player: Node3D):
 	_target_1000hz_reduction = bandReductions[3]*5.0
 	_target_3200hz_reduction = bandReductions[4]*5.0
 	_target_10000hz_reduction = bandReductions[5]*5.0
+	if _debug_use:
+		print("bands ", bandReductions, "  ", total)
+		print("volume ", volume_db)
 
 func _lerp_parameters(delta):
 	# if max_distance > 0:
@@ -509,70 +514,72 @@ func _physics_process(delta):
 	_last_update_time += delta
 	_loop_rotation(delta)
 	
+	var _this_update_time : int = 0
 	if _has_moved:
-		if _last_update_time > update_frequency_seconds:
-			var player_camera = get_viewport().get_camera_3d()
-			if player_camera:
-				_player_position = player_camera.global_position
-				if !_just_used_params && _full_cycle:
-					if player_camera is SpatialAudioCamera3D:
-						_on_check_spatial_camera(player_camera);
-					else:
-						_on_update_spatial_audio(player_camera);
-					_just_used_params = true
-			_update_distances = true
-			_last_update_time = 0.0
-
-			if _previous_position == global_position:
-				_has_moved = false
-			if _previous_position != global_position:
-				_has_moved = true
-			_previous_position = global_position
+		_this_update_time = update_frequency_seconds
 	else:
-		if _last_update_time > _sleep_update_frequency_seconds:
-			var player_camera = get_viewport().get_camera_3d()
-			if player_camera:
-				_player_position = player_camera.global_position
-				if !_just_used_params && _full_cycle:
-					if player_camera is SpatialAudioCamera3D:
-						_on_check_spatial_camera(player_camera);
-					else:
-						_on_update_spatial_audio(player_camera);
-					_just_used_params = true
+		_this_update_time = _sleep_update_frequency_seconds
 
-			_update_distances = true
-			_last_update_time = 0.0
+	if _last_update_time > _this_update_time:
+		var player_camera = get_viewport().get_camera_3d()
+		if player_camera:
+			_player_position = player_camera.global_position
+			if !_just_used_params && _full_cycle:
+				if player_camera is SpatialAudioCamera3D:
+					_on_check_spatial_camera(player_camera);
+				else:
+					_on_update_spatial_audio(player_camera);
+				_just_used_params = true
+		_update_distances = true
+		_last_update_time = 0.0
 
-			if _previous_position == global_position:
-				_has_moved = false
-			if _previous_position != global_position:
-				_has_moved = true
-			_previous_position = global_position
+		if _previous_position == global_position:
+			_has_moved = false
+		if _previous_position != global_position:
+			_has_moved = true
+		_previous_position = global_position
 	
+	# if name == "crook":
+		# print("hoohoo ", _full_cycle, "  ", _update_distances, "  ", _total_distance_checks.size())
 	if !_full_cycle || _update_distances:
 		# if (_full_cycle) && _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
 		# 	print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
 		# 	_debug_usec_avg = 0
 		# 	_debug_total_checks = 0
-		if _just_used_params && (_full_cycle) && _total_distance_checks.size() > 45 + (45 * max_raycast_bounces):
+		if _just_used_params:
 			_just_used_params = false
 			_total_distance_checks = []
 			if _debug_use:
 				print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
 				_debug_usec_avg = 0
 				_debug_total_checks = 0
-		_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
-		_current_raycast_index +=1
-		# if _current_raycast_index >= _distance_array.size():
-		if _current_raycast_index >= _raycast_array.size():
+		elif _update_distances:
+			while _current_raycast_index < _raycast_array.size():
+				_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
+				if _current_raycast_index == 0:
+					_current_raycast_index += 1
+					continue
+				if _bounce_set == 0:
+					_current_raycast_index += 1
+				if _full_cycle:
+					_bounce_set = 0
+					_update_distances = false
+					break
 			_current_raycast_index = 0
+			
+			# _update_distances = false
+		# if _total_distance_checks.size() >= 45 + (45 * max_raycast_bounces):
+		# 	_update_distances = false
+		# if _current_raycast_index >= _distance_array.size():
+		# if _current_raycast_index >= _raycast_array.size():
+		# 	_current_raycast_index = 0
 			# if !playing:
 			# 	if !stream.is_class("AudioStreamWAV") && !stream.is_class("AudioStreamMP3"):
 			# 		return
 			# 	print("howdy howdy")
 			# 	playing = true
 			# 	_finished_ready = true
-			_update_distances = false
+			# _update_distances = false
 
 	_lerp_parameters(delta)
 
