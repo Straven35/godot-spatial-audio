@@ -2,11 +2,12 @@ class_name SpatialAudioPlayer3D
 extends AudioStreamPlayer3D
 
 static var _total_turns_taken : int = 0
-static var _total_turns : int = 8
+static var _total_turns : int = 4
 static var _next_turn : int = 0
 static var _total_using_turns : Array = []
 static var _audio_server_locked : bool = false
 
+@export var is_active : bool = true;
 @export var max_raycast_distance: float = 100.0;
 @export var update_frequency_seconds: float = 0.25 + randf()*0.5; # Don't want to do them all at the same time
 @export var max_reverb_wetness: float = 0.5;
@@ -72,6 +73,8 @@ var _target_10000hz_reduction:float = 0.0
 var _finished_ready : bool = false
 
 func _ready():
+	if !is_active:
+		return
 	if _total_using_turns.size() == 0:
 		_total_using_turns.resize(_total_turns+1)
 	_turn = _next_turn
@@ -508,6 +511,8 @@ func _lerp_parameters(delta):
 var _just_used_params : bool = false
 
 func _physics_process(delta):
+	if !is_active:
+		return
 	_last_update_time += delta
 	_loop_rotation(delta)
 	
