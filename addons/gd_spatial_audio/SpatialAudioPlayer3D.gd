@@ -599,7 +599,7 @@ func _physics_process(delta):
 		_fuckyou += delta
 	if _do_sweeping && _waiter <= _fuckyou:
 		_fuckyou = 0.0
-		print(_sweep_h_pos, "   ", _sweep_v_pos)
+		# print(_sweep_h_pos, "   ", _sweep_v_pos)
 		if _sweep_v:
 			_sweeper.position.y = (sweep_cell * _sweep_v_pos)
 			_sweep_v_pos += 1
@@ -624,20 +624,37 @@ func _physics_process(delta):
 			_sweeper.position.y = (sweep_cell * _sweep_v_pos)
 			_sweeper.position.z -= (sweep_cell)
 			_sweep_v = true
-		var __d : Dictionary = {"position": _sweeper.position, "edges": {}}
+		# if !_sweeper.has_overlapping_bodies() && !_sweeper.has_overlapping_areas():
+		# 	var __d : Dictionary = {"position": _sweeper.position, "edges": {}}
+		# 	_graph[_sweep_id] = __d
+		# 	_sweep_id += 1
+		# print(_sweeper.get_overlapping_bodies().size())
+		print(_sweeper.has_overlapping_bodies())
+
+		var __d : Dictionary = {"bad": _sweeper.has_overlapping_bodies(), "position": _sweeper.position, "edges": {}}
 		_graph[_sweep_id] = __d
 		_sweep_id += 1
-		print(_player_position.distance_squared_to(_sweeper.global_position))
+		# print(_player_position.distance_squared_to(_sweeper.global_position))
 		if _player_position.distance_squared_to(_sweeper.global_position) < sweep_cell:
 			can_sweep = false
-			print(_graph.keys().size())
-			print(_graph)
+			# print(_graph.keys().size())
+			# print(_graph)
+			for i in $space/spots.get_child_count():
+				if _graph.keys().size() <= i:
+					break
+				$space/spots.get_child(i).position = _graph[i].position
+				$space/spots.get_child(i).set_surface_override_material(0, $space/spots.get_child(i).get_active_material(0).duplicate())
+				# print(_graph[i].good)
+				if _graph[i].bad:
+					$space/spots.get_child(i).get_surface_override_material(0).albedo_color.r = 1.0
+					$space/spots.get_child(i).get_surface_override_material(0).albedo_color.a = 1.0
+				
 			_sweeper.position.z = 0.0
 
-	
+	Area3D
 
 @onready var _sweeper = $space/hodl
-var _waiter : float = 0.0
+var _waiter : float = 0.03
 var _fuckyou : float = 0.0
 var _do_sweeping : bool = false
 var _sweep_v : bool = false
@@ -657,3 +674,8 @@ func _loop_rotation(delta):
 
 	if $cone.rotation_degrees.y >= 360:
 		$cone.rotation.y = 0.0
+
+
+func _on_hodl_body_entered(body:Node3D):
+	print("howdy")
+	pass # Replace with function body.
