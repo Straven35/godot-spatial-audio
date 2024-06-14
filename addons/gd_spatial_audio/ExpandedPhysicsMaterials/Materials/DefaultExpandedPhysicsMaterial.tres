@@ -6,7 +6,8 @@
 script = ExtResource("1_4lu3m")
 materialName = "Concrete"
 footStepSounds = Array[AudioStream]([])
-dampening = 0.5
+damping = 0.5
+transmission = 0.5
 band_32_hz = 0.0
 band_100_hz = 0.0
 band_320_hz = 0.0
