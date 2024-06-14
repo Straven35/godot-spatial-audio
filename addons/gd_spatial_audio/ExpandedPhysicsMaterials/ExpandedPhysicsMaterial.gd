@@ -8,8 +8,6 @@ extends PhysicsMaterial
 @export_range(0,1) var damping: float = 0.5
 ## higher adds more wetness.
 @export_range(0,1) var transmission : float = 0.5
-## dont look at me
-@export_range(0,1) var reverberation: float = 0.5
 @export_category("Sound absoprtion coefficients")
 # See https://www.acoustic.ua/st/web_absorption_data_eng.pdf for common
 # values

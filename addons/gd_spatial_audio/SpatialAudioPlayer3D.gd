@@ -7,6 +7,9 @@ static var _next_turn : int = 0
 static var _total_using_turns : Array = []
 static var _audio_server_locked : bool = false
 
+@export var sweep_max : int = 25;
+@export var sweep_cell : float = 0.5;
+@export var can_sweep : bool = false;
 @export var is_active : bool = true;
 @export var max_raycast_distance: float = 100.0;
 @export var update_frequency_seconds: float = 0.25 + randf()*0.5; # Don't want to do them all at the same time
@@ -556,6 +559,7 @@ func _physics_process(delta):
 		# 	_debug_usec_avg = 0
 		# 	_debug_total_checks = 0
 		if _just_used_params:
+			_do_sweeping = can_sweep
 			_just_used_params = false
 			_total_distance_checks = []
 			if _debug_use:
@@ -589,8 +593,64 @@ func _physics_process(delta):
 			# 	playing = true
 			# 	_finished_ready = true
 			# _update_distances = false
-
 	_lerp_parameters(delta)
+	
+	if _do_sweeping:
+		_fuckyou += delta
+	if _do_sweeping && _waiter <= _fuckyou:
+		_fuckyou = 0.0
+		print(_sweep_h_pos, "   ", _sweep_v_pos)
+		if _sweep_v:
+			_sweeper.position.y = (sweep_cell * _sweep_v_pos)
+			_sweep_v_pos += 1
+			if _sweep_v_pos >= sweep_max:
+				_sweep_v_pos = -sweep_max
+				_sweep_v = false
+				_sweep_h = true
+				if _sweep_h_pos >= sweep_max:
+					_sweep_h_pos = -sweep_max
+					_sweep_h = false
+		elif _sweep_h:
+			_sweeper.position.x = (sweep_cell * _sweep_h_pos)
+			_sweep_h_pos += 1
+			_sweep_v = true
+			_sweep_h = false
+			return
+		elif !_sweep_h && !_sweep_v:
+			$space.look_at(_player_position)
+			_sweep_v_pos = -sweep_max
+			_sweep_h_pos = -sweep_max
+			_sweeper.position.x = (sweep_cell * _sweep_h_pos)
+			_sweeper.position.y = (sweep_cell * _sweep_v_pos)
+			_sweeper.position.z -= (sweep_cell)
+			_sweep_v = true
+		var __d : Dictionary = {"position": _sweeper.position, "edges": {}}
+		_graph[_sweep_id] = __d
+		_sweep_id += 1
+		print(_player_position.distance_squared_to(_sweeper.global_position))
+		if _player_position.distance_squared_to(_sweeper.global_position) < sweep_cell:
+			can_sweep = false
+			print(_graph.keys().size())
+			print(_graph)
+			_sweeper.position.z = 0.0
+
+	
+
+@onready var _sweeper = $space/hodl
+var _waiter : float = 0.0
+var _fuckyou : float = 0.0
+var _do_sweeping : bool = false
+var _sweep_v : bool = false
+var _sweep_h : bool = false
+var _sweep_v_pos : int = -3
+var _sweep_h_pos : int = -3
+var _sweep_id : int = 0
+
+# graph implementation
+# dictionary
+# total number of nodes?
+# node id, global position, edges : {node id, distance}
+var _graph : Dictionary = {}
 
 func _loop_rotation(delta):
 	$cone.rotation.y += delta

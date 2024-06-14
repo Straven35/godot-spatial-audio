@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://brghx648neoli"]
+[gd_scene load_steps=8 format=3 uid="uid://brghx648neoli"]
 
 [ext_resource type="Script" path="res://addons/gd_spatial_audio/SpatialAudioPlayer3D.gd" id="1_hncxx"]
 [ext_resource type="Material" uid="uid://c4fhuofiq3sjg" path="res://Materials/sound_cone_1.tres" id="2_0vlss"]
@@ -20,6 +20,17 @@ radial_segments = 6
 rings = 2
 cap_top = false
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_ehr8q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_opjuv"]
+transparency = 1
+albedo_color = Color(0.678431, 0.678431, 0.678431, 0.4)
+
+[sub_resource type="SphereMesh" id="SphereMesh_b3ciq"]
+material = SubResource("StandardMaterial3D_opjuv")
+radial_segments = 8
+rings = 4
+
 [node name="SpatialAudioPlayer3D" type="AudioStreamPlayer3D"]
 attenuation_model = 3
 script = ExtResource("1_hncxx")
@@ -35,3 +46,13 @@ surface_material_override/0 = ExtResource("2_0vlss")
 mesh = SubResource("CylinderMesh_2a7kt")
 skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_0vlss")
+
+[node name="space" type="Node3D" parent="."]
+
+[node name="hodl" type="Area3D" parent="space"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="space/hodl"]
+shape = SubResource("SphereShape3D_ehr8q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="space/hodl"]
+mesh = SubResource("SphereMesh_b3ciq")
