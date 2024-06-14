@@ -47,6 +47,10 @@ var _sleep_update_frequency_seconds : float = 0.0
 var _previous_position : Vector3 = Vector3.ZERO
 var _has_moved : bool = true
 
+var _total_effects : int = 0
+var _current_effect_processed : int = 0
+var _effect_functions : Array = []
+
 var _audio_bus_idx = null
 var _audio_bus_name = ""
 
@@ -113,6 +117,7 @@ func _ready():
 	_reverb_effect = AudioServer.get_bus_effect(_audio_bus_idx, 1);
 	_lowpass_filter = AudioServer.get_bus_effect(_audio_bus_idx, 2);
 	_eq_filter = AudioServer.get_bus_effect(_audio_bus_idx, 3);
+	_total_effects = AudioServer.get_bus_effect_count(_audio_bus_idx);
 	
 	_target_volume_db = volume_db;
 	volume_db = -60.0;
@@ -286,6 +291,7 @@ func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 	# randomise_raycast_direction(raycast)
 	if raycast_index > 0:
 		cycle_raycast_direction(raycast)
+		raycast.force_raycast_update()
 	else:
 		retrieve_raycast_hits(raycast)
 		return
@@ -308,9 +314,18 @@ func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 	_total_distance_checks.append_array(_all_keys);
 
 func _on_check_spatial_camera(player: Node3D):
-	_on_update_reverb(player);
-	_on_update_stereo(player);
-	_on_update_lowpass_filter(player);
+	if _effect_functions.is_empty():
+		_effect_functions.append(Callable(_on_update_reverb));
+		_effect_functions.append(Callable(_on_update_stereo));
+		_effect_functions.append(Callable(_on_update_lowpass_filter));
+
+		_total_effects = _effect_functions.size()
+	
+	_effect_functions[_current_effect_processed].call(player);
+
+	# _on_update_reverb(player);
+	# _on_update_stereo(player);
+	# _on_update_lowpass_filter(player);
 
 	return
 	var _camera_room_size : float = player._target_reverb_room_size
@@ -330,9 +345,14 @@ func _on_check_spatial_camera(player: Node3D):
 		_target_reverb_dryness = lerp(_target_reverb_dryness, 1.0, get_physics_process_delta_time())
 
 func _on_update_spatial_audio(player: Node3D):
-	_on_update_reverb(player);
-	_on_update_stereo(player);
-	_on_update_lowpass_filter(player);
+	if _effect_functions.is_empty():
+		_effect_functions.append(Callable(_on_update_reverb));
+		_effect_functions.append(Callable(_on_update_stereo));
+		_effect_functions.append(Callable(_on_update_lowpass_filter));
+
+		_total_effects = _effect_functions.size()
+	
+	_effect_functions[_current_effect_processed].call(player);
 
 func _on_update_reverb(player: Node3D):
 	if !_reverb_effect:
@@ -534,9 +554,20 @@ func _physics_process(delta):
 					_on_check_spatial_camera(player_camera);
 				else:
 					_on_update_spatial_audio(player_camera);
-				_just_used_params = true
-		_update_distances = true
-		_last_update_time = 0.0
+				
+				_current_effect_processed += 1
+				if _current_effect_processed >= _total_effects:
+					_just_used_params = true
+					_current_effect_processed = 0
+					_update_distances = true
+					_last_update_time = 0.0
+
+					_total_turns_taken += 1
+					if _total_turns_taken > _total_using_turns[_turn]:
+						_total_turns_taken = 0
+						_next_turn += 1
+						if _next_turn > _total_turns:
+							_next_turn = 0
 
 		if _previous_position == global_position:
 			_has_moved = false
@@ -544,12 +575,7 @@ func _physics_process(delta):
 			_has_moved = true
 		_previous_position = global_position
 
-		_total_turns_taken += 1
-		if _total_turns_taken > _total_using_turns[_turn]:
-			_total_turns_taken = 0
-			_next_turn += 1
-			if _next_turn > _total_turns:
-				_next_turn = 0
+		
 	
 	# if name == "crook":
 		# print("hoohoo ", _full_cycle, "  ", _update_distances, "  ", _total_distance_checks.size())
