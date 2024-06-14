@@ -630,7 +630,6 @@ func _physics_process(delta):
 		# 	_sweep_id += 1
 		# print(_sweeper.get_overlapping_bodies().size())
 		print(_sweeper.has_overlapping_bodies())
-
 		var __d : Dictionary = {"bad": _sweeper.has_overlapping_bodies(), "position": _sweeper.position, "edges": {}}
 		_graph[_sweep_id] = __d
 		_sweep_id += 1
@@ -654,7 +653,7 @@ func _physics_process(delta):
 	Area3D
 
 @onready var _sweeper = $space/hodl
-var _waiter : float = 0.03
+var _waiter : float = 0.0
 var _fuckyou : float = 0.0
 var _do_sweeping : bool = false
 var _sweep_v : bool = false
@@ -677,5 +676,7 @@ func _loop_rotation(delta):
 
 
 func _on_hodl_body_entered(body:Node3D):
+	# if _graph.find_key(_sweep_id):
+	# 	_graph[_sweep_id].bad = true
 	print("howdy")
 	pass # Replace with function body.

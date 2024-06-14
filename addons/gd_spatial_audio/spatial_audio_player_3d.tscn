@@ -821,3 +821,5 @@ skeleton = NodePath("../..")
 [node name="MeshInstance3D190" type="MeshInstance3D" parent="space/spots"]
 mesh = SubResource("SphereMesh_b3ciq")
 skeleton = NodePath("../..")
+
+[connection signal="body_entered" from="space/hodl" to="." method="_on_hodl_body_entered"]
