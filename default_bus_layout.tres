@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://bm8uufm1g7nrx"]
+[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://bm8uufm1g7nrx"]
 
 [sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_ucnce"]
 resource_name = "StereoEnhance"
@@ -8,13 +8,21 @@ pan_pullout = 0.5
 resource_name = "Reverb"
 predelay_msec = 60.0
 predelay_feedback = 0.3
-wet = 1.0
+room_size = 0.3
+damping = 0.59
+spread = 0.25
+wet = 0.78
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_sm4i5"]
 resource_name = "LowPassFilter"
+resonance = 0.91
 
 [sub_resource type="AudioEffectEQ" id="AudioEffectEQ_paarf"]
 resource_name = "EQ"
+
+[sub_resource type="AudioEffectPanner" id="AudioEffectPanner_ec0kk"]
+resource_name = "Panner"
+pan = -0.3
 
 [resource]
 bus/0/effect/0/effect = SubResource("AudioEffectStereoEnhance_ucnce")
@@ -25,3 +33,5 @@ bus/0/effect/2/effect = SubResource("AudioEffectLowPassFilter_sm4i5")
 bus/0/effect/2/enabled = false
 bus/0/effect/3/effect = SubResource("AudioEffectEQ_paarf")
 bus/0/effect/3/enabled = false
+bus/0/effect/4/effect = SubResource("AudioEffectPanner_ec0kk")
+bus/0/effect/4/enabled = false

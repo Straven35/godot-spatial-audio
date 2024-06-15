@@ -38,12 +38,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.37984, 3, 9.11208)
 
 [node name="crook" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, 0.0741999)
-visible = false
 stream = ExtResource("3_qckxd")
+autoplay = true
 max_distance = 50.0
-emission_angle_degrees = 44.0
 sweep_max = 2
-is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 8.0
@@ -940,8 +938,11 @@ max_stereo_distance = 50.0
 
 [node name="blop3" parent="BellPlayer" instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8229, 2.46688, 0.13649)
+visible = false
 stream = ExtResource("13_p7dor")
+volume_db = -60.0
 max_distance = 80.0
+is_active = false
 update_frequency_seconds = 0.25
 max_stereo_distance = 50.0
 
@@ -963,9 +964,9 @@ material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
 [node name="CsgBasicBlock77" parent="pillars" instance=ExtResource("1_1b2o2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, -6)
 physics_material_override = ExtResource("1_m0wam")
-size = Vector3(1, 3, 1)
+size = Vector3(1, 3, 7)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
