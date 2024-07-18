@@ -42,8 +42,14 @@ func _physics_process(_delta):
 				_changes_detected = false
 			_update_time = 0.0
 
+# var _planes : Array[Plane] = []
+
 func set_stuff():
 	_collision.shape.size = size
 	_mesh.mesh.size = size
 	physics_material_override = physics_material
 	_mesh.set_surface_override_material(0, material)
+	# var _shape_data : Vector3 = PhysicsServer3D.shape_get_data(_collision.shape.get_rid())
+	# _planes = Geometry3D.build_box_planes(_shape_data)
+
+	# print(PhysicsServer3D.shape_get_data(_collision.shape.get_rid()))

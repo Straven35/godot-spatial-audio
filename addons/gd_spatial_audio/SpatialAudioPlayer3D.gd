@@ -7,11 +7,15 @@ static var _total_turns_taken : int = 0
 static var _total_turns : int = 1
 # set this to however many processing steps you want audio nodes to process on.
 # higher = better frametime, lower = better audio effect syncing
-static var _total_turns_max : int = 10
+static var _total_turns_max : int = 15
 # dont touch this
 static var _next_turn : int = 0
 # dont touch this
-static var _total_using_turns : Array = []
+static var _total_using_turns : Array
+# dont touch this
+static var _total_init_time : int = 0
+# dont touch this
+static var _finished_init : bool = false
 
 ## maximum amount of cells for the audio pathing system to expand out to.
 @export var sweep_max : int = 25;
@@ -44,6 +48,7 @@ var _update_distances : bool = true
 var _current_raycast_index : int = 0
 
 var _debug_usec_avg : int = 0
+var _debug_usec_mesh_avg : int = 0
 var _debug_total_checks : int = 0
 var _debug_use : bool = false
 
@@ -92,17 +97,27 @@ func _ready():
 	if !is_active:
 		return
 	if _total_using_turns.size() == 0:
-		_total_using_turns.resize(_total_turns+1)
+		_total_using_turns = [null]
+		_total_init_time = Time.get_ticks_msec() + 100
+	else:
+		_total_init_time = _total_init_time + 100
+	
+	if _next_turn >= _total_turns: # reset turn loop
+		if _total_turns < _total_turns_max: # we can fill up more turns
+			_total_turns += 1
+			print(_total_turns, "   ", _turn)
+			_total_using_turns.resize(_total_turns) # expensive resizing of array, avoid doing every frame
+			print(_total_using_turns.size())
+		else:
+			_next_turn = 0
+
 	_turn = _next_turn
 	_total_using_turns[_turn] = _total_using_turns[_turn] + 1 if _total_using_turns[_turn] != null else 0
 	_next_turn += 1
-	if _next_turn > _total_turns: # reset turn loop
-		if _total_turns < _total_turns_max: # we can fill up more turns
-			_total_turns += 1
-			_total_using_turns.resize(_total_turns+1) # expensive resizing of array, avoid doing every frame
-		else:
-			_next_turn = 0
-		
+
+	
+	# print(_total_using_turns.size())
+	# print(_total_turns)
 
 	_debug_use = do_print_debug
 	_sleep_update_frequency_seconds = update_frequency_seconds + 1.0
@@ -156,6 +171,14 @@ var _cycle_y : int = 0
 var _full_cycle : bool = false
 var _bounce_set : int = 0
 var __time : int = 0
+var rs = RenderingServer
+var _scenario : RID
+var __result : PackedInt64Array
+var _first_mesh : MeshInstance3D = null
+# print("TIME TO INTERSECT GEOMETRY ", Time.get_ticks_usec() - ___time)
+# ___time = Time.get_ticks_usec()
+# print(instance_from_id(__result[0]).name)
+# print("TIME TO GET NODE FROM ID USING FUNCTION ", Time.get_ticks_usec() - ___time)
 
 func cycle_raycast_direction(raycast: RayCast3D):
 	if _full_cycle:
@@ -179,17 +202,36 @@ func cycle_raycast_direction(raycast: RayCast3D):
 		if _touchy_bounce.is_normalized():
 			var _new_pos : Vector3 = raycast.target_position.normalized().bounce(_touchy_bounce)
 			raycast.target_position = _new_pos.normalized() * max_raycast_distance
+			if _debug_use:
+				_debug_usec_avg += Time.get_ticks_usec() - __time
+				_debug_total_checks += 1
 		else:
 			_bounce_set = 0
 			raycast.position = Vector3.ZERO
 			if _debug_use:
 				_debug_usec_avg += Time.get_ticks_usec() - __time
 				_debug_total_checks += 1
+			if _debug_use:
+				__time = Time.get_ticks_usec()
+			__result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
+			if !__result.is_empty():
+				_first_mesh = instance_from_id(__result[0])
+			if _debug_use:
+				_debug_usec_mesh_avg += Time.get_ticks_usec() - __time
 			return
 		_bounce_set += 1
 		if _debug_use:
 			_debug_usec_avg += Time.get_ticks_usec() - __time
 			_debug_total_checks += 1
+		
+		if _debug_use:
+			__time = Time.get_ticks_usec()
+		__result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
+		if !__result.is_empty():
+			_first_mesh = instance_from_id(__result[0])
+		if _debug_use:
+			_debug_usec_mesh_avg += Time.get_ticks_usec() - __time
+
 		if _bounce_set > max_raycast_bounces:
 			_bounce_set = 0
 		return
@@ -241,6 +283,15 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	if _debug_use:
 		_debug_usec_avg += Time.get_ticks_usec() - __time
 		_debug_total_checks += 1
+	
+	if _debug_use:
+		__time = Time.get_ticks_usec()
+	__result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
+	if !__result.is_empty():
+		_first_mesh = instance_from_id(__result[0])
+	if _debug_use:
+		_debug_usec_mesh_avg += Time.get_ticks_usec() - __time
+
 	if max_raycast_bounces > 0:
 		_bounce_set = 1
 
@@ -414,13 +465,13 @@ func _on_update_reverb(player: Node3D):
 	
 	reflectionFeedback = (room_size + wetness) / 2.0
 
-	if _debug_use:
-		print("DAMPING:  ", _target_reverb_damping)
-		print("SPREAD: ", _target_reverb_spread)
-		print("TIME:  ", _target_reverb_reflection_time)
-		print("FEEDBACK:  ", _target_reverb_reflection_feedback)
-		print("WETNESS:  ", _target_reverb_wetness)
-		print("ROOMSIZE:  ", _target_reverb_room_size)
+	# if _debug_use:
+	# 	print("DAMPING:  ", _target_reverb_damping)
+	# 	print("SPREAD: ", _target_reverb_spread)
+	# 	print("TIME:  ", _target_reverb_reflection_time)
+	# 	print("FEEDBACK:  ", _target_reverb_reflection_feedback)
+	# 	print("WETNESS:  ", _target_reverb_wetness)
+	# 	print("ROOMSIZE:  ", _target_reverb_room_size)
 
 	_target_reverb_dryness = 1.0;
 	
@@ -445,16 +496,16 @@ func _on_update_stereo(player: Node3D):
 	if !_stereo_effect:
 		return
 	var _stereo_dist_player : float = _dist_to_player
-	if _debug_use:
-		print(_stereo_dist_player)
+	# if _debug_use:
+	# 	print(_stereo_dist_player)
 	if max_stereo_distance == 0:
 		_target_stereo_pan_pullout = 0.3
 	else:
-		if _debug_use:
-			if _target_reverb_room_size > _target_reverb_spread:
-				print("room size bigger ", _target_reverb_room_size, "  ", _target_reverb_spread)
-			else:
-				print("spread bigger ", _target_reverb_room_size, "  ", _target_reverb_spread)
+		# if _debug_use:
+		# 	if _target_reverb_room_size > _target_reverb_spread:
+		# 		print("room size bigger ", _target_reverb_room_size, "  ", _target_reverb_spread)
+		# 	else:
+		# 		print("spread bigger ", _target_reverb_room_size, "  ", _target_reverb_spread)
 		_stereo_dist_player = clamp(
 			_dist_to_player * max(_target_reverb_room_size, _target_reverb_spread), 
 			max_stereo_distance * 0.25, 
@@ -511,9 +562,9 @@ func _on_update_lowpass_filter(player: Node3D):
 	_target_1000hz_reduction = bandReductions[3]*5.0
 	_target_3200hz_reduction = bandReductions[4]*5.0
 	_target_10000hz_reduction = bandReductions[5]*5.0
-	if _debug_use:
-		print("bands ", bandReductions, "  ", total)
-		print("volume ", volume_db)
+	# if _debug_use:
+	# 	print("bands ", bandReductions, "  ", total)
+	# 	print("volume ", volume_db)
 
 func _lerp_parameters(delta):
 	# if max_distance > 0:
@@ -550,16 +601,36 @@ var _just_used_params : bool = false
 func _physics_process(delta):
 	if !is_active:
 		return
+	if get_world_3d() != null:
+		_scenario = get_world_3d().scenario
 	_last_update_time += delta
 	_loop_rotation(delta)
-	
-	var _this_update_time : int = 0
+
+	if _total_init_time < Time.get_ticks_msec() && !_finished_init:
+		print("done diddly")
+		print(_next_turn, "    ", _total_turns)
+		_finished_init = true
+		# _next_turn = 0
+	if name == "blop2" && _finished_init:
+		print(_next_turn, "   ", _turn)
+
+	var _this_update_time : float = 0.0
 	if _has_moved:
 		_this_update_time = update_frequency_seconds
 	else:
 		_this_update_time = _sleep_update_frequency_seconds
 	
 	if _last_update_time > _this_update_time && _next_turn == _turn:
+		# if name == "crook":
+		# 	var ___time : int = Time.get_ticks_usec()
+		# 	var rs = RenderingServer
+		# 	var _scenario = get_world_3d().scenario
+		# 	var __result : PackedInt64Array = rs.instances_cull_ray(position, position + Vector3(20.0, 0.0, 0.0), _scenario)
+		# 	print("TIME TO INTERSECT GEOMETRY ", Time.get_ticks_usec() - ___time)
+		# 	___time = Time.get_ticks_usec()
+		# 	print(instance_from_id(__result[0]).name)
+		# 	print("TIME TO GET NODE FROM ID USING FUNCTION ", Time.get_ticks_usec() - ___time)
+
 		var player_camera = get_viewport().get_camera_3d()
 		if player_camera:
 			_player_position = player_camera.global_position
@@ -603,8 +674,32 @@ func _physics_process(delta):
 			_just_used_params = false
 			_total_distance_checks = []
 			if _debug_use:
-				print(name, "  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, ", total avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds")
+				print(name, 
+				"  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, 
+				", total physics ray avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds",
+				", total mesh ray avg time: ", max(1, _debug_usec_mesh_avg) / max(1, _debug_total_checks), " microseconds",
+				", first mesh result from LAST ray: ", _first_mesh.name
+				)
+				var _planes_thing : PackedVector3Array = _first_mesh.mesh.get_faces()
+				# print(_planes_thing)
+				var __planes : Array[Plane] = []
+				var __i : int = 0
+				var __v : Array = [Vector3.ZERO, Vector3.ZERO, Vector3.ZERO]
+				var __vert : int = 0
+				while __i < _planes_thing.size():
+					if __vert == 3:
+						__planes.append(Plane(__v[0], __v[1], __v[2]))
+						__vert = 0
+					__v[__vert] = _planes_thing[__i]
+					__vert += 1
+					
+					__i += 1
+				
+				print(__planes)
+				# for i : Vector3 in _planes_thing:
+				# 	__planes.append(Plane(i.x, i.y, i.z))
 				_debug_usec_avg = 0
+				_debug_usec_mesh_avg = 0
 				_debug_total_checks = 0
 		elif _update_distances:
 			while _current_raycast_index < _raycast_array.size():
@@ -669,8 +764,7 @@ func _physics_process(delta):
 		# 	_graph[_sweep_id] = __d
 		# 	_sweep_id += 1
 		# print(_sweeper.get_overlapping_bodies().size())
-		print(_sweeper.has_overlapping_bodies())
-		var __d : Dictionary = {"bad": _sweeper.has_overlapping_bodies(), "position": _sweeper.position, "edges": {}}
+		var __d : Dictionary = {"bad": _sweeper.is_colliding(), "position": _sweeper.position, "edges": {}}
 		_graph[_sweep_id] = __d
 		_sweep_id += 1
 		# print(_player_position.distance_squared_to(_sweeper.global_position))
@@ -690,9 +784,7 @@ func _physics_process(delta):
 				
 			_sweeper.position.z = 0.0
 
-	Area3D
-
-@onready var _sweeper = $space/hodl
+@onready var _sweeper : ShapeCast3D = $space/hodl
 var _waiter : float = 0.0
 var _fuckyou : float = 0.0
 var _do_sweeping : bool = false

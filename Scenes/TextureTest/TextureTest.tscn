@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://deupsqq2dcva3"]
+
+[ext_resource type="PackedScene" uid="uid://b8gor0xpq18o2" path="res://Scenes/csg/CSGBasicBlock.tscn" id="1_be4x6"]
+[ext_resource type="PhysicsMaterial" uid="uid://e5hxe3qrhchi" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/super_concrete.tres" id="2_5q2tk"]
+[ext_resource type="Material" uid="uid://btpy6b0h6kbiw" path="res://Materials/grass_1.tres" id="3_5uta7"]
+[ext_resource type="PackedScene" uid="uid://brghx648neoli" path="res://addons/gd_spatial_audio/spatial_audio_player_3d.tscn" id="4_aldue"]
+[ext_resource type="AudioStream" uid="uid://bfj1qn5re4pym" path="res://Sounds/repairsound1.wav" id="5_ria1b"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_g1jqa"]
+material = ExtResource("3_5uta7")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rnjxj"]
+
+[node name="TextureTest" type="Node3D"]
+
+[node name="CsgBasicBlock" parent="." instance=ExtResource("1_be4x6")]
+physics_material_override = ExtResource("2_5q2tk")
+size = Vector3(20, 1, 20)
+physics_material = ExtResource("2_5q2tk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("SphereMesh_g1jqa")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("SphereShape3D_rnjxj")
+
+[node name="crook" parent="." instance=ExtResource("4_aldue")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 0)
+stream = ExtResource("5_ria1b")
+autoplay = true
+max_distance = 50.0
+sweep_max = 2
+update_frequency_seconds = 0.25
+max_reverb_wetness = 1.0
+max_stereo_distance = 8.0
+max_raycast_bounces = 2
+raycast_count = 4

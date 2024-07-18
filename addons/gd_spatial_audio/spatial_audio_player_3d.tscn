@@ -49,13 +49,11 @@ surface_material_override/0 = ExtResource("2_0vlss")
 
 [node name="space" type="Node3D" parent="."]
 
-[node name="hodl" type="Area3D" parent="space"]
-collision_layer = 9
-collision_mask = 9
-input_ray_pickable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="space/hodl"]
+[node name="hodl" type="ShapeCast3D" parent="space"]
 shape = SubResource("SphereShape3D_ehr8q")
+target_position = Vector3(0, 0, 0)
+max_results = 1
+collision_mask = 9
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="space/hodl"]
 mesh = SubResource("SphereMesh_b3ciq")
@@ -822,4 +820,762 @@ skeleton = NodePath("../..")
 mesh = SubResource("SphereMesh_b3ciq")
 skeleton = NodePath("../..")
 
-[connection signal="body_entered" from="space/hodl" to="." method="_on_hodl_body_entered"]
+[node name="MeshInstance3D191" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D192" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D193" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D194" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D195" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D196" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D197" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D198" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D199" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D200" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D201" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D202" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D203" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D204" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D205" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D206" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D207" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D208" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D209" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D210" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D211" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D212" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D213" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D214" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D215" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D216" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D217" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D218" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D219" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D220" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D221" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D222" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D223" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D224" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D225" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D226" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D227" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D228" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D229" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D230" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D231" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D232" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D233" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D234" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D235" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D236" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D237" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D238" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D239" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D240" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D241" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D242" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D243" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D244" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D245" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D246" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D247" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D248" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D249" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D250" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D251" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D252" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D253" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D254" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D255" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D256" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D257" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D258" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D259" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D260" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D261" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D262" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D263" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D264" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D265" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D266" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D267" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D268" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D269" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D270" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D271" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D272" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D273" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D274" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D275" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D276" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D277" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D278" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D279" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D280" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D281" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D282" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D283" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D284" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D285" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D286" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D287" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D288" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D289" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D290" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D291" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D292" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D293" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D294" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D295" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D296" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D297" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D298" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D299" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D300" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D301" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D302" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D303" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D304" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D305" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D306" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D307" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D308" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D309" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D310" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D311" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D312" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D313" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D314" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D315" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D316" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D317" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D318" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D319" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D320" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D321" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D322" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D323" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D324" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D325" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D326" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D327" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D328" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D329" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D330" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D331" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D332" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D333" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D334" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D335" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D336" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D337" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D338" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D339" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D340" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D341" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D342" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D343" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D344" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D345" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D346" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D347" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D348" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D349" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D350" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D351" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D352" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D353" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D354" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D355" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D356" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D357" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D358" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D359" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D360" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D361" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D362" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D363" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D364" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D365" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D366" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D367" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D368" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D369" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D370" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D371" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D372" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D373" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D374" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D375" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D376" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D377" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D378" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D379" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D380" type="MeshInstance3D" parent="space/spots"]
+mesh = SubResource("SphereMesh_b3ciq")
+skeleton = NodePath("../..")
