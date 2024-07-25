@@ -4,7 +4,7 @@ extends AudioStreamPlayer3D
 # dont touch this
 static var _total_turns_taken : int = 0
 # dont touch this
-static var _total_turns : int = 1
+static var _total_turns : int = 0
 # set this to however many processing steps you want audio nodes to process on.
 # higher = better frametime, lower = better audio effect syncing
 static var _total_turns_max : int = 15
@@ -97,25 +97,29 @@ func _ready():
 	if !is_active:
 		return
 	if _total_using_turns.size() == 0:
-		_total_using_turns = [null]
+		_total_using_turns = [0]
+		_total_turns = _total_using_turns.size()
 		_total_init_time = Time.get_ticks_msec() + 100
 	else:
 		_total_init_time = _total_init_time + 100
-	
+
 	if _next_turn >= _total_turns: # reset turn loop
 		if _total_turns < _total_turns_max: # we can fill up more turns
 			_total_turns += 1
 			print(_total_turns, "   ", _turn)
 			_total_using_turns.resize(_total_turns) # expensive resizing of array, avoid doing every frame
-			print(_total_using_turns.size())
+			_total_using_turns[_total_turns-1] = 0
+			print(_total_using_turns)
 		else:
 			_next_turn = 0
 
 	_turn = _next_turn
-	_total_using_turns[_turn] = _total_using_turns[_turn] + 1 if _total_using_turns[_turn] != null else 0
 	_next_turn += 1
 
+	print("HEEEELP   ", _turn)
+	_total_using_turns[_turn] = _total_using_turns[_turn] + 1
 	
+
 	# print(_total_using_turns.size())
 	# print(_total_turns)
 
@@ -608,7 +612,10 @@ func _physics_process(delta):
 
 	if _total_init_time < Time.get_ticks_msec() && !_finished_init:
 		print("done diddly")
+		if (_total_turns < _total_turns_max):
+			_next_turn = 0
 		print(_next_turn, "    ", _total_turns)
+		print(_total_using_turns)
 		_finished_init = true
 		# _next_turn = 0
 	if name == "blop2" && _finished_init:
@@ -648,10 +655,10 @@ func _physics_process(delta):
 					_last_update_time = 0.0
 
 					_total_turns_taken += 1
-					if _total_turns_taken > _total_using_turns[_turn]:
+					if _total_turns_taken >= _total_using_turns[_turn]:
 						_total_turns_taken = 0
 						_next_turn += 1
-						if _next_turn > _total_turns:
+						if _next_turn >= _total_turns:
 							_next_turn = 0
 
 		if _previous_position == global_position:

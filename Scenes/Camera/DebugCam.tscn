@@ -17,3 +17,14 @@ script = ExtResource("2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.183199, 0)
 shape = SubResource("13")
 disabled = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FPS" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

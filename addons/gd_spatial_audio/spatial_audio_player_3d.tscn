@@ -59,6 +59,7 @@ collision_mask = 9
 mesh = SubResource("SphereMesh_b3ciq")
 
 [node name="spots" type="Node3D" parent="space"]
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="space/spots"]
 mesh = SubResource("SphereMesh_b3ciq")

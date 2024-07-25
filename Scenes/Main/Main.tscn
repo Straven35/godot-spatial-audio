@@ -43,7 +43,6 @@ autoplay = true
 max_distance = 50.0
 sweep_max = 3
 sweep_cell = 1.0
-can_sweep = true
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 8.0

@@ -21,6 +21,7 @@ var movelock := false
 
 func _physics_process(delta):
 	_do_move(delta)
+	$Control/FPS.text = str(Engine.get_frames_per_second())
 	
 
 func _do_move(delta):
