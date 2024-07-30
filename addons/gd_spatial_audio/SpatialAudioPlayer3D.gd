@@ -1,13 +1,16 @@
 class_name SpatialAudioPlayer3D
 extends AudioStreamPlayer3D
 
+# set this to the max amount of raycasts you want processed by each audio player per
+# physics frame.
+static var __max_rays_per_frame : int = 3
 # dont touch this
 static var _total_turns_taken : int = 0
 # dont touch this
 static var _total_turns : int = 0
 # set this to however many processing steps you want audio nodes to process on.
 # higher = better frametime, lower = better audio effect syncing
-static var _total_turns_max : int = 15
+static var _total_turns_max : int = 5
 # dont touch this
 static var _next_turn : int = 0
 # dont touch this
@@ -217,9 +220,9 @@ func cycle_raycast_direction(raycast: RayCast3D):
 				_debug_total_checks += 1
 			if _debug_use:
 				__time = Time.get_ticks_usec()
-			__result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
-			if !__result.is_empty():
-				_first_mesh = instance_from_id(__result[0])
+			# __result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
+			# if !__result.is_empty():
+			# 	_first_mesh = instance_from_id(__result[0])
 			if _debug_use:
 				_debug_usec_mesh_avg += Time.get_ticks_usec() - __time
 			return
@@ -230,9 +233,9 @@ func cycle_raycast_direction(raycast: RayCast3D):
 		
 		if _debug_use:
 			__time = Time.get_ticks_usec()
-		__result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
-		if !__result.is_empty():
-			_first_mesh = instance_from_id(__result[0])
+		# __result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
+		# if !__result.is_empty():
+		# 	_first_mesh = instance_from_id(__result[0])
 		if _debug_use:
 			_debug_usec_mesh_avg += Time.get_ticks_usec() - __time
 
@@ -290,9 +293,9 @@ func cycle_raycast_direction(raycast: RayCast3D):
 	
 	if _debug_use:
 		__time = Time.get_ticks_usec()
-	__result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
-	if !__result.is_empty():
-		_first_mesh = instance_from_id(__result[0])
+	# __result = rs.instances_cull_ray(raycast.global_position, to_global(raycast.target_position), _scenario)
+	# if !__result.is_empty():
+	# 	_first_mesh = instance_from_id(__result[0])
 	if _debug_use:
 		_debug_usec_mesh_avg += Time.get_ticks_usec() - __time
 
@@ -356,21 +359,19 @@ func retrieve_raycast_hits(raycast : RayCast3D):
 	_wall_distance = _total_distance
 	raycast.position = Vector3.ZERO
 
+var _raycast_keys : Dictionary = {"distance": -1.0, "material": null}
+
 func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 	# randomise_raycast_direction(raycast)
-	if raycast_index > 0:
-		cycle_raycast_direction(raycast)
-		raycast.force_raycast_update()
-	else:
+	# print("Current Frame: ", Engine.get_process_frames(), " This: ", name)
+	if raycast_index == 0:
 		retrieve_raycast_hits(raycast)
 		return
 	var colliding : bool = raycast.is_colliding()
-	var _all_keys : Array = []
 	# dictionaries are fine i suppose
 	if colliding:
-		var _raycast_keys : Dictionary = {"distance": -1.0, "material": null} # i dont want to use dictionaries
+		_raycast_keys = {"distance": -1.0, "material": null} # i dont want to use dictionaries
 		var _iterator : int = 0
-		var _looping : bool = max_raycast_bounces > 0
 		var collider : CollisionObject3D = raycast.get_collider()
 
 		_raycast_keys["distance"] = self.global_position.distance_to(raycast.get_collision_point());
@@ -378,9 +379,12 @@ func _on_update_raycast_distance(raycast: RayCast3D, raycast_index: int):
 			collider.physics_material_override and
 			collider.physics_material_override is ExpandedPhysicsMaterial):
 			_raycast_keys["material"] = collider.physics_material_override
-		_all_keys.push_back(_raycast_keys)
-		
-	_total_distance_checks.append_array(_all_keys);
+		_total_distance_checks.append(_raycast_keys);
+	else:
+		_total_distance_checks.append({});
+	
+	if raycast_index > 0:
+		cycle_raycast_direction(raycast)
 
 func _on_check_spatial_camera(player: Node3D):
 	if _effect_functions.is_empty():
@@ -601,6 +605,8 @@ func _lerp_parameters(delta):
 	#_reverb_effect.predelay_feedback = 0.8
 
 var _just_used_params : bool = false
+var player_camera = null
+var __rays_used_this_frame : int = 0
 
 func _physics_process(delta):
 	if !is_active:
@@ -627,47 +633,11 @@ func _physics_process(delta):
 	else:
 		_this_update_time = _sleep_update_frequency_seconds
 	
-	if _last_update_time > _this_update_time && _next_turn == _turn:
-		# if name == "crook":
-		# 	var ___time : int = Time.get_ticks_usec()
-		# 	var rs = RenderingServer
-		# 	var _scenario = get_world_3d().scenario
-		# 	var __result : PackedInt64Array = rs.instances_cull_ray(position, position + Vector3(20.0, 0.0, 0.0), _scenario)
-		# 	print("TIME TO INTERSECT GEOMETRY ", Time.get_ticks_usec() - ___time)
-		# 	___time = Time.get_ticks_usec()
-		# 	print(instance_from_id(__result[0]).name)
-		# 	print("TIME TO GET NODE FROM ID USING FUNCTION ", Time.get_ticks_usec() - ___time)
-
-		var player_camera = get_viewport().get_camera_3d()
-		if player_camera:
-			_player_position = player_camera.global_position
-			if !_just_used_params && _full_cycle:
-				if player_camera is SpatialAudioCamera3D:
-					_on_check_spatial_camera(player_camera);
-				else:
-					_on_update_spatial_audio(player_camera);
-				
-				_current_effect_processed += 1
-				if _current_effect_processed >= _total_effects:
-					_just_used_params = true
-					_current_effect_processed = 0
-					_update_distances = true
-					_last_update_time = 0.0
-
-					_total_turns_taken += 1
-					if _total_turns_taken >= _total_using_turns[_turn]:
-						_total_turns_taken = 0
-						_next_turn += 1
-						if _next_turn >= _total_turns:
-							_next_turn = 0
-
-		if _previous_position == global_position:
-			_has_moved = false
-		if _previous_position != global_position:
-			_has_moved = true
-		_previous_position = global_position
-
-		
+	if _next_turn == _turn && _total_using_turns[_turn] == _total_turns_taken && !_update_distances:
+		_total_turns_taken = 0
+		_next_turn += 1
+		if _next_turn >= _total_turns:
+			_next_turn = 0
 	
 	# if name == "crook":
 		# print("hoohoo ", _full_cycle, "  ", _update_distances, "  ", _total_distance_checks.size())
@@ -687,30 +657,35 @@ func _physics_process(delta):
 				", total mesh ray avg time: ", max(1, _debug_usec_mesh_avg) / max(1, _debug_total_checks), " microseconds",
 				", first mesh result from LAST ray: ", _first_mesh.name
 				)
-				var _planes_thing : PackedVector3Array = _first_mesh.mesh.get_faces()
-				# print(_planes_thing)
-				var __planes : Array[Plane] = []
-				var __i : int = 0
-				var __v : Array = [Vector3.ZERO, Vector3.ZERO, Vector3.ZERO]
-				var __vert : int = 0
-				while __i < _planes_thing.size():
-					if __vert == 3:
-						__planes.append(Plane(__v[0], __v[1], __v[2]))
-						__vert = 0
-					__v[__vert] = _planes_thing[__i]
-					__vert += 1
+				# var _planes_thing : PackedVector3Array = _first_mesh.mesh.get_faces()
+				# # print(_planes_thing)
+				# var __planes : Array[Plane] = []
+				# var __i : int = 0
+				# var __v : Array = [Vector3.ZERO, Vector3.ZERO, Vector3.ZERO]
+				# var __vert : int = 0
+				# while __i < _planes_thing.size():
+				# 	if __vert == 3:
+				# 		__planes.append(Plane(__v[0], __v[1], __v[2]))
+				# 		__vert = 0
+				# 	__v[__vert] = _planes_thing[__i]
+				# 	__vert += 1
 					
-					__i += 1
+				# 	__i += 1
 				
-				print(__planes)
+				# print(__planes)
 				# for i : Vector3 in _planes_thing:
 				# 	__planes.append(Plane(i.x, i.y, i.z))
 				_debug_usec_avg = 0
 				_debug_usec_mesh_avg = 0
 				_debug_total_checks = 0
 		elif _update_distances:
-			while _current_raycast_index < _raycast_array.size():
+			if _current_raycast_index >= _raycast_array.size():
+				_current_raycast_index = 0
+			while __rays_used_this_frame < __max_rays_per_frame:
+				if _current_raycast_index >= _raycast_array.size():
+					_current_raycast_index = 0
 				_on_update_raycast_distance(_raycast_array[_current_raycast_index], _current_raycast_index);
+				__rays_used_this_frame += 1
 				if _current_raycast_index == 0:
 					_current_raycast_index += 1
 					continue
@@ -720,7 +695,8 @@ func _physics_process(delta):
 					_bounce_set = 0
 					_update_distances = false
 					break
-			_current_raycast_index = 0
+			__rays_used_this_frame = 0
+			
 			
 			# _update_distances = false
 		# if _total_distance_checks.size() >= 45 + (45 * max_raycast_bounces):
@@ -735,6 +711,46 @@ func _physics_process(delta):
 			# 	playing = true
 			# 	_finished_ready = true
 			# _update_distances = false
+
+	if _last_update_time > _this_update_time && _next_turn == _turn:
+		# if name == "crook":
+		# 	var ___time : int = Time.get_ticks_usec()
+		# 	var rs = RenderingServer
+		# 	var _scenario = get_world_3d().scenario
+		# 	var __result : PackedInt64Array = rs.instances_cull_ray(position, position + Vector3(20.0, 0.0, 0.0), _scenario)
+		# 	print("TIME TO INTERSECT GEOMETRY ", Time.get_ticks_usec() - ___time)
+		# 	___time = Time.get_ticks_usec()
+		# 	print(instance_from_id(__result[0]).name)
+		# 	print("TIME TO GET NODE FROM ID USING FUNCTION ", Time.get_ticks_usec() - ___time)
+
+		
+		if player_camera:
+			_player_position = player_camera.global_position
+			if !_just_used_params && _full_cycle:
+				if player_camera is SpatialAudioCamera3D:
+					_on_check_spatial_camera(player_camera);
+				else:
+					_on_update_spatial_audio(player_camera);
+				
+				_current_effect_processed += 1
+				if _current_effect_processed >= _total_effects:
+					_just_used_params = true
+					_current_effect_processed = 0
+					_update_distances = true
+					_last_update_time = 0.0
+
+					print(_next_turn)
+
+					_total_turns_taken += 1
+		else:
+			player_camera = get_viewport().get_camera_3d()
+		
+		if _previous_position == global_position:
+			_has_moved = false
+		if _previous_position != global_position:
+			_has_moved = true
+		_previous_position = global_position
+	
 	_lerp_parameters(delta)
 	
 	if _do_sweeping:
