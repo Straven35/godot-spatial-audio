@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8lmijd3cg8se"]
+
+[ext_resource type="Script" path="res://addons/material_phys_geometry_gen/material_phys_geometry_gen.gd" id="1_lvtjl"]
+
+[node name="MaterialPhysGeometryGen" type="Node"]
+script = ExtResource("1_lvtjl")

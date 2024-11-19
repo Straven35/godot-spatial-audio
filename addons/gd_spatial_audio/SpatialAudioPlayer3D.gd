@@ -109,17 +109,14 @@ func _ready():
 	if _next_turn >= _total_turns: # reset turn loop
 		if _total_turns < _total_turns_max: # we can fill up more turns
 			_total_turns += 1
-			print(_total_turns, "   ", _turn)
 			_total_using_turns.resize(_total_turns) # expensive resizing of array, avoid doing every frame
 			_total_using_turns[_total_turns-1] = 0
-			print(_total_using_turns)
 		else:
 			_next_turn = 0
 
 	_turn = _next_turn
 	_next_turn += 1
 
-	print("HEEEELP   ", _turn)
 	_total_using_turns[_turn] = _total_using_turns[_turn] + 1
 	
 
@@ -617,11 +614,8 @@ func _physics_process(delta):
 	_loop_rotation(delta)
 
 	if _total_init_time < Time.get_ticks_msec() && !_finished_init:
-		print("done diddly")
 		if (_total_turns < _total_turns_max):
 			_next_turn = 0
-		print(_next_turn, "    ", _total_turns)
-		print(_total_using_turns)
 		_finished_init = true
 		# _next_turn = 0
 	if name == "blop2" && _finished_init:
@@ -738,8 +732,6 @@ func _physics_process(delta):
 					_current_effect_processed = 0
 					_update_distances = true
 					_last_update_time = 0.0
-
-					print(_next_turn)
 
 					_total_turns_taken += 1
 		else:

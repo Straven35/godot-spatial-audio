@@ -51,12 +51,14 @@ raycast_count = 4
 
 [node name="crook2" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, -1.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -65,12 +67,14 @@ raycast_count = 4
 
 [node name="crook3" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, -3.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -79,12 +83,14 @@ raycast_count = 4
 
 [node name="crook4" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, -5.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -93,12 +99,14 @@ raycast_count = 4
 
 [node name="crook5" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, 6.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -107,12 +115,14 @@ raycast_count = 4
 
 [node name="crook6" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, 4.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -121,12 +131,14 @@ raycast_count = 4
 
 [node name="crook7" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, 2.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -135,12 +147,14 @@ raycast_count = 4
 
 [node name="crook8" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, 0.0741999)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -149,12 +163,14 @@ raycast_count = 4
 
 [node name="crook9" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, -1.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -163,12 +179,14 @@ raycast_count = 4
 
 [node name="crook10" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, -3.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -177,12 +195,14 @@ raycast_count = 4
 
 [node name="crook11" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, -5.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -191,12 +211,14 @@ raycast_count = 4
 
 [node name="crook12" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, 6.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -205,12 +227,14 @@ raycast_count = 4
 
 [node name="crook13" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, 4.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -219,12 +243,14 @@ raycast_count = 4
 
 [node name="crook14" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.18931, 2.46688, 2.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -233,12 +259,14 @@ raycast_count = 4
 
 [node name="crook15" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, 0.0741999)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -247,12 +275,14 @@ raycast_count = 4
 
 [node name="crook16" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, -1.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -261,12 +291,14 @@ raycast_count = 4
 
 [node name="crook17" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, -3.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -275,12 +307,14 @@ raycast_count = 4
 
 [node name="crook18" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, -5.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -289,12 +323,14 @@ raycast_count = 4
 
 [node name="crook19" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, 6.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -303,12 +339,14 @@ raycast_count = 4
 
 [node name="crook20" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, 4.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -317,12 +355,14 @@ raycast_count = 4
 
 [node name="crook21" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.81069, 2.46688, 2.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -331,12 +371,14 @@ raycast_count = 4
 
 [node name="crook22" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, 0.0741999)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -345,12 +387,14 @@ raycast_count = 4
 
 [node name="crook23" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, -1.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -359,12 +403,14 @@ raycast_count = 4
 
 [node name="crook24" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, -3.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -373,12 +419,14 @@ raycast_count = 4
 
 [node name="crook25" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, -5.9258)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -387,12 +435,14 @@ raycast_count = 4
 
 [node name="crook26" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, 6.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -401,12 +451,14 @@ raycast_count = 4
 
 [node name="crook27" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, 4.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0
@@ -415,12 +467,14 @@ raycast_count = 4
 
 [node name="crook28" parent="." instance=ExtResource("2_2ux6k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.81069, 2.46688, 2.0742)
+visible = false
 stream = ExtResource("3_qckxd")
 volume_db = -20.0
 unit_size = 1.0
 max_db = 0.0
 max_distance = 20.0
 emission_angle_degrees = 44.0
+is_active = false
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 2.0

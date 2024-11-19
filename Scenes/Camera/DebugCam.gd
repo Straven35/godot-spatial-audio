@@ -22,7 +22,18 @@ var movelock := false
 func _physics_process(delta):
 	_do_move(delta)
 	$Control/FPS.text = str(Engine.get_frames_per_second())
+
+func _unhandled_input(event):
+	if !(event is InputEventMouseButton):
+		return
 	
+	if event.button_index == 1:
+		var _cast : RayCast3D = $camera/RayCast3D
+		
+		if !_cast.is_colliding():
+			return
+		
+		print(_cast.get_collider_shape())
 
 func _do_move(delta):
 	var head_basis : Basis

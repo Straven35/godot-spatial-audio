@@ -36,8 +36,9 @@ func _physics_process(_delta):
 	if Engine.is_editor_hint:
 		_update_time += _delta
 		if _update_time >= _update_interval:
-			if _update_interval > 4.0:
+			if _update_interval > 16.0:
 				_update_time = 0.0
+				_update_interval = 1.0
 				return
 			_changes_detected = _collision.shape.size != size
 			if _changes_detected:
