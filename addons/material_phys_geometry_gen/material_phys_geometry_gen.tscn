@@ -4,3 +4,6 @@
 
 [node name="MaterialPhysGeometryGen" type="Node"]
 script = ExtResource("1_lvtjl")
+default_material_mapper = null
+default_material_res = null
+default_phys_material = null

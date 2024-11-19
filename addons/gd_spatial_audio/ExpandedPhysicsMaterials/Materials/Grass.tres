@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_lt4c0")
-materialName = "Concrete"
+materialName = "Grass"
 footStepSounds = Array[AudioStream]([])
 damping = 0.01
 transmission = 0.065

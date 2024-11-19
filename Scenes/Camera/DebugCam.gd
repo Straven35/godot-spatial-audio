@@ -32,8 +32,17 @@ func _unhandled_input(event):
 		
 		if !_cast.is_colliding():
 			return
+		var _target = _cast.get_collider() # A CollisionObject3D.
+		var _shape_id = _cast.get_collider_shape() # The shape index in the collider.
+		var _owner_id = _target.shape_find_owner(_shape_id) # The owner ID in the collider.
+		var _shape = _target.shape_owner_get_owner(_owner_id)
+
+		if !_shape.has_meta("ext_phys_material"):
+			return
 		
-		print(_cast.get_collider_shape())
+		print(_shape.get_meta("ext_phys_material").materialName)
+		print(_shape.get_meta("ext_phys_material").damping)
+		print(_shape.get_meta("ext_phys_material").transmission)
 
 func _do_move(delta):
 	var head_basis : Basis

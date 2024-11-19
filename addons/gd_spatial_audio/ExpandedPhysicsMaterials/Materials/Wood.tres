@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_hquad")
-materialName = "Concrete"
+materialName = "Wood"
 footStepSounds = Array[AudioStream]([])
 damping = 0.33
 transmission = 0.06

@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="ExpandedPhysicsMaterialMapper" load_steps=4 format=3 uid="uid://dpfo2ey6lhsp3"]
+[gd_resource type="Resource" script_class="ExpandedPhysicsMaterialMapper" load_steps=5 format=3 uid="uid://dpfo2ey6lhsp3"]
 
-[ext_resource type="PhysicsMaterial" uid="uid://rcmnpu0xstfx" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/DefaultExpandedPhysicsMaterial.tres" id="1_vkem4"]
-[ext_resource type="PhysicsMaterial" uid="uid://bymp37pvue4fn" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/StoneExpandedPhysicsMaterial.tres" id="2_tx4sl"]
+[ext_resource type="PhysicsMaterial" uid="uid://ckq4pr1iskyox" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Grass.tres" id="1_lxngm"]
+[ext_resource type="PhysicsMaterial" uid="uid://c01o42c8uontn" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Concrete.tres" id="2_qmcr6"]
+[ext_resource type="PhysicsMaterial" uid="uid://31h5d02diwdp" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Wood.tres" id="3_x7g80"]
 [ext_resource type="Script" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/ExpandedPhysicsMaterialDictionary.gd" id="3_ymal8"]
 
 [resource]
 script = ExtResource("3_ymal8")
 ExpandedPhysicsMaterialDictionary = {
-"/Stone_": ExtResource("2_tx4sl")
+"asphalt": ExtResource("2_qmcr6"),
+"concrete_1": ExtResource("2_qmcr6"),
+"grass_1": ExtResource("1_lxngm"),
+"wood_1": ExtResource("3_x7g80")
 }
-DefaultPhysicsMaterial = ExtResource("1_vkem4")
+DefaultPhysicsMaterial = ExtResource("1_lxngm")

@@ -11,11 +11,12 @@
 [ext_resource type="AudioStream" uid="uid://bfj1qn5re4pym" path="res://Sounds/repairsound1.wav" id="5_ria1b"]
 [ext_resource type="Texture2D" uid="uid://dgmhlmbopp340" path="res://Scenes/TextureTest/PlaygroundV3_GrassNormal.png" id="6_y8aib"]
 [ext_resource type="Texture2D" uid="uid://bvhy8h0m2bes6" path="res://Scenes/TextureTest/PlaygroundV3_BricksRed.png" id="8_7fkqb"]
+[ext_resource type="Material" uid="uid://77cl4k61nhia" path="res://Materials/concrete_1.tres" id="8_7wis3"]
 [ext_resource type="Texture2D" uid="uid://dy3lliu7ldyq5" path="res://Scenes/TextureTest/PlaygroundV3_BricksRedRough.png" id="9_mjy7w"]
+[ext_resource type="PhysicsMaterial" uid="uid://ckq4pr1iskyox" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Grass.tres" id="10_611kh"]
 [ext_resource type="Texture2D" uid="uid://c1t22sogm4vsm" path="res://Scenes/TextureTest/PlaygroundV3_BricksRedNormal.png" id="10_pmid2"]
-[ext_resource type="Texture2D" uid="uid://sftibavd1ipy" path="res://Scenes/TextureTest/PlaygroundV3_Asphalt.png" id="11_rnh3w"]
-[ext_resource type="Texture2D" uid="uid://bth0qlfn8nnxq" path="res://Scenes/TextureTest/PlaygroundV3_AsphaltRough.png" id="12_40yg0"]
-[ext_resource type="Texture2D" uid="uid://cug1glrjn4ios" path="res://Scenes/TextureTest/PlaygroundV3_AsphaltNormal.png" id="13_n42kw"]
+[ext_resource type="PhysicsMaterial" uid="uid://c01o42c8uontn" path="res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Concrete.tres" id="10_uegvn"]
+[ext_resource type="Material" uid="uid://sg6oqls8byw2" path="res://Materials/asphalt.tres" id="14_4hlxw"]
 [ext_resource type="PackedScene" uid="uid://blshtb86lciak" path="res://Scenes/Camera/DebugCam.tscn" id="17_34nja"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_py24l"]
@@ -434,10 +435,10 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_yln14")
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ehx0d"]
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_j7xlc"]
 data = PackedVector3Array(-55.0844, -0.00102139, -55.0844, 55.0846, 0.999499, -55.0844, -55.0844, 0.999499, -55.0844, -55.0844, -0.00102139, -55.0844, 55.0846, -0.00102139, -55.0844, 55.0846, 0.999499, -55.0844, -55.0844, -0.00102139, 55.0846, -55.0844, 0.999499, -55.0844, -55.0844, 0.999499, 55.0846, -55.0844, -0.00102139, 55.0846, -55.0844, -0.00102139, -55.0844, -55.0844, 0.999499, -55.0844, 55.0846, -0.00102139, -55.0844, 55.0846, 0.999499, 55.0846, 55.0846, 0.999499, -55.0844, 55.0846, -0.00102139, -55.0844, 55.0846, -0.00102139, 55.0846, 55.0846, 0.999499, 55.0846, -55.0844, -0.00102139, -55.0844, 55.0846, -0.00102139, 55.0846, 55.0846, -0.00102139, -55.0844, -55.0844, -0.00102139, -55.0844, -55.0844, -0.00102139, 55.0846, 55.0846, -0.00102139, 55.0846, 55.0846, 0.999499, -55.0844, -55.0844, 0.999499, 55.0846, -55.0844, 0.999499, -55.0844, 55.0846, 0.999499, -55.0844, 55.0846, 0.999499, 55.0846, -55.0844, 0.999499, 55.0846)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_stkm8"]
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_d1tp8"]
 data = PackedVector3Array(59.0832, -0.00102139, -55.0857, -59.085, 1.0995, -55.0857, 59.0832, 1.0995, -55.0857, 59.0832, -0.00102139, -55.0857, -59.085, -0.00102139, -55.0857, -59.085, 1.0995, -55.0857, -59.085, -0.00102139, -59.0856, 59.0832, 1.0995, -59.0856, -59.085, 1.0995, -59.0856, -59.085, -0.00102139, -59.0856, 59.0832, -0.00102139, -59.0856, 59.0832, 1.0995, -59.0856, -59.085, -0.00102139, -55.0857, -59.085, 1.0995, -59.0856, -59.085, 1.0995, -55.0857, -59.085, -0.00102139, -55.0857, -59.085, -0.00102139, -59.0856, -59.085, 1.0995, -59.0856, 59.0832, -0.00102139, -55.0857, -59.085, -0.00102139, -59.0856, -59.085, -0.00102139, -55.0857, 59.0832, -0.00102139, -55.0857, 59.0832, -0.00102139, -59.0856, -59.085, -0.00102139, -59.0856, 59.0832, -0.00102139, -59.0856, 59.0832, 1.0995, -55.0857, 59.0832, 1.0995, -59.0856, 59.0832, -0.00102139, -59.0856, 59.0832, -0.00102139, -55.0857, 59.0832, 1.0995, -55.0857, -59.085, -0.00102139, 55.0834, -59.085, 1.0995, -55.0857, -59.085, 1.0995, 55.0834, -59.085, -0.00102139, 55.0834, -59.085, -0.00102139, -55.0857, -59.085, 1.0995, -55.0857, -59.085, 1.0995, -55.0857, 59.0832, 1.0995, -59.0856, 59.0832, 1.0995, -55.0857, -59.085, 1.0995, -55.0857, -59.085, 1.0995, -59.0856, 59.0832, 1.0995, -59.0856, -55.0856, -0.00102139, -55.0857, -55.0856, 1.0995, 55.0834, -55.0856, 1.0995, -55.0857, -55.0856, -0.00102139, -55.0857, -55.0856, -0.00102139, 55.0834, -55.0856, 1.0995, 55.0834, -59.085, -0.00102139, -55.0857, -55.0856, 1.0995, -55.0857, -59.085, 1.0995, -55.0857, -59.085, -0.00102139, -55.0857, -55.0856, -0.00102139, -55.0857, -55.0856, 1.0995, -55.0857, -59.085, -0.00102139, 55.0834, -55.0856, -0.00102139, -55.0857, -59.085, -0.00102139, -55.0857, -59.085, -0.00102139, 55.0834, -55.0856, -0.00102139, 55.0834, -55.0856, -0.00102139, -55.0857, -55.0856, -0.00102139, 55.0834, -59.085, 1.0995, 55.0834, -55.0856, 1.0995, 55.0834, -55.0856, -0.00102139, 55.0834, -59.085, -0.00102139, 55.0834, -59.085, 1.0995, 55.0834, 55.0838, -0.00102139, 55.0817, 55.0838, 1.0995, -55.0857, 55.0838, 1.0995, 55.0817, 55.0838, -0.00102139, 55.0817, 55.0838, -0.00102139, -55.0857, 55.0838, 1.0995, -55.0857, -59.085, 1.0995, -55.0857, -55.0856, 1.0995, 55.0834, -59.085, 1.0995, 55.0834, -59.085, 1.0995, -55.0857, -55.0856, 1.0995, -55.0857, -55.0856, 1.0995, 55.0834, 59.0832, -0.00102139, -55.0857, 59.085, 1.0995, 55.0817, 59.0832, 1.0995, -55.0857, 59.0832, -0.00102139, -55.0857, 59.085, -0.00102139, 55.0817, 59.085, 1.0995, 55.0817, 55.0838, -0.00102139, -55.0857, 59.0832, 1.0995, -55.0857, 55.0838, 1.0995, -55.0857, 55.0838, -0.00102139, -55.0857, 59.0832, -0.00102139, -55.0857, 59.0832, 1.0995, -55.0857, 55.0838, -0.00102139, 55.0817, 59.0832, -0.00102139, -55.0857, 55.0838, -0.00102139, -55.0857, 55.0838, -0.00102139, 55.0817, 59.085, -0.00102139, 55.0817, 59.0832, -0.00102139, -55.0857, 59.085, -0.00102139, 55.0817, 55.0838, 1.0995, 55.0817, 59.085, 1.0995, 55.0817, 59.085, -0.00102139, 55.0817, 55.0838, -0.00102139, 55.0817, 55.0838, 1.0995, 55.0817, 55.0838, 1.0995, -55.0857, 59.085, 1.0995, 55.0817, 55.0838, 1.0995, 55.0817, 55.0838, 1.0995, -55.0857, 59.0832, 1.0995, -55.0857, 59.085, 1.0995, 55.0817)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3wsbc"]
@@ -482,17 +483,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_7uc5j")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0gqhi"]
-resource_name = "Asphalt"
-cull_mode = 2
-albedo_texture = ExtResource("11_rnh3w")
-metallic_texture = ExtResource("12_40yg0")
-metallic_texture_channel = 2
-roughness_texture = ExtResource("12_40yg0")
-roughness_texture_channel = 1
-normal_enabled = true
-normal_texture = ExtResource("13_n42kw")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_qpp3f"]
 _surfaces = [{
@@ -560,7 +550,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 36,
 "index_data": PackedByteArray("DwAJAAwADwAGAAkAEwAQAAEAEwAHABAAFwAIABQAFwALAAgABAAKABYABAANAAoAAgAOAAUAAgARAA4AAwASAAAAAwAVABIA"),
-"material": SubResource("StandardMaterial3D_0gqhi"),
+"material": ExtResource("14_4hlxw"),
 "name": "Asphalt",
 "primitive": 3,
 "uv_scale": Vector4(71.0917, 5.25, 0, 0),
@@ -634,18 +624,22 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("ArrayMesh_6hd3k")
 skeleton = NodePath("")
+surface_material_override/0 = ExtResource("3_5uta7")
+surface_material_override/1 = ExtResource("8_7wis3")
 
 [node name="MaterialPhysGeometryGen" parent="PlaygroundV3/Grass" node_paths=PackedStringArray("col") instance=ExtResource("4_sdshw")]
 collisions_generated = true
-col = NodePath("../@StaticBody3D@18216")
+col = NodePath("../@StaticBody3D@35654")
 
-[node name="@StaticBody3D@18216" type="StaticBody3D" parent="PlaygroundV3/Grass"]
+[node name="@StaticBody3D@35654" type="StaticBody3D" parent="PlaygroundV3/Grass"]
 
-[node name="@CollisionShape3D@18217" type="CollisionShape3D" parent="PlaygroundV3/Grass/@StaticBody3D@18216"]
-shape = SubResource("ConcavePolygonShape3D_ehx0d")
+[node name="@CollisionShape3D@35655" type="CollisionShape3D" parent="PlaygroundV3/Grass/@StaticBody3D@35654"]
+shape = SubResource("ConcavePolygonShape3D_j7xlc")
+metadata/ext_phys_material = ExtResource("10_611kh")
 
-[node name="@CollisionShape3D@18218" type="CollisionShape3D" parent="PlaygroundV3/Grass/@StaticBody3D@18216"]
-shape = SubResource("ConcavePolygonShape3D_stkm8")
+[node name="@CollisionShape3D@35656" type="CollisionShape3D" parent="PlaygroundV3/Grass/@StaticBody3D@35654"]
+shape = SubResource("ConcavePolygonShape3D_d1tp8")
+metadata/ext_phys_material = ExtResource("10_uegvn")
 
 [node name="Buildings" type="MeshInstance3D" parent="PlaygroundV3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -656,6 +650,7 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.482679, 67.5844)
 mesh = SubResource("ArrayMesh_vqqg8")
 skeleton = NodePath("")
+surface_material_override/1 = ExtResource("8_7wis3")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)

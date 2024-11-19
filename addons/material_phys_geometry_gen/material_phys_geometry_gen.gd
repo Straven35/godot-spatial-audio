@@ -30,6 +30,11 @@ var mdt : MeshDataTool
 
 var generate_single_trimesh : bool = false
 
+
+@export var default_material_mapper : String = 'res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/ExpandedPhysicsMaterialMapper.tres'
+@export var default_material_res : String = "res://Materials/"
+@export var default_phys_material : String = 'res://addons/gd_spatial_audio/ExpandedPhysicsMaterials/Materials/Concrete.tres'
+
 func _generate_collisions():
 	var _t : int = Time.get_ticks_msec()
 	gen_mesh = get_parent() if get_parent() is MeshInstance3D else null
@@ -60,8 +65,52 @@ func _generate_collisions():
 	# gen_mesh.add_child(new_mesh)
 	# new_mesh.set_owner(get_tree().get_edited_scene_root())
 
+	var _materials : Dictionary = {}
+
+	# build list of materials from file
+	# (file_name: Material)
+	# check list against material map (map.file_name coincides with material.file_name)
+	
+	if !default_material_res.is_empty():
+		var _da : DirAccess = DirAccess.open(default_material_res)
+		if _da == null:
+			print("fuck")
+		else:
+			var _mat_res : Array = _da.get_files()
+			
+			if !_mat_res.is_empty():
+				for i in _mat_res:
+					if i.ends_with(".tres"):
+						var _mat : Material = load(default_material_res + i)
+						_materials[i.trim_suffix(".tres")] = _mat
+	
 	for i in _sfc:
 		mdt = MeshDataTool.new()
+		var _mesh_mat : Material = gen_mesh.get_surface_override_material(i)
+		if _mesh_mat == null:
+			_mesh_mat = _mesh.surface_get_material(i)
+		var _mat_found : bool = false
+		var _mat_key : String
+		for m in _materials:
+			print(_materials[m])
+			print(_mesh_mat)
+			if _materials[m] != _mesh_mat:
+				continue
+			_mat_found = true
+			_mat_key = m
+			break
+		
+		var _phys_material : ExpandedPhysicsMaterial = load(default_phys_material)
+		var _map : ExpandedPhysicsMaterialMapper = load(default_material_mapper)
+		if _mat_found:
+			print("hi ", _mat_key)
+			for m in _map.ExpandedPhysicsMaterialDictionary:
+				if m != _mat_key:
+					continue
+				print(_map.ExpandedPhysicsMaterialDictionary[m])
+				_phys_material = _map.ExpandedPhysicsMaterialDictionary[m]
+				break
+		
 		mdt.create_from_surface(_mesh, i)
 		_surface.clear()
 		for k in mdt.get_face_count():
@@ -73,6 +122,7 @@ func _generate_collisions():
 		_colshape.shape = ConcavePolygonShape3D.new()
 		_colshape.shape.set_faces(_surface)
 		col.add_child(_colshape)
+		_colshape.set_meta("ext_phys_material", _phys_material)
 		_colshape.set_owner(get_tree().get_edited_scene_root())
 
 	# new_mesh.mesh = arr_mesh
