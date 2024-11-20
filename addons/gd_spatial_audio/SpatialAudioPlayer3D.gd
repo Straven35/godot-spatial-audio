@@ -427,24 +427,24 @@ func _on_update_spatial_audio(player: Node3D):
 func _on_update_reverb(player: Node3D):
 	if !_reverb_effect:
 		return
-	var room_size = 0.0
-	var wetness = 0.0
-	var damping = 0.0
-	var spread = 1.0
+	var room_size : float = 0.0
+	var wetness : float = 0.0
+	var damping : float = 0.0
+	var spread : float = 1.0
 	var largest_ray_distance : float = 0.0
 	var average_ray_distance : float = 0.0
-	var reflectionTime = 0.0
-	var reflectionFeedback = 0.4
-	var _total_raycasts_allowed = 45 + (45 * max_raycast_bounces)
+	var reflectionTime : float = 0.0
+	var reflectionFeedback : float = 0.4
+	var _total_raycasts_allowed : int = 45 + (45 * max_raycast_bounces)
 	for i in _total_raycasts_allowed:
 
 		var dist : Dictionary
 		if i < _total_distance_checks.size():
 			dist = _total_distance_checks[i]
 		if dist.is_empty():
-			reflectionTime += (max_raycast_distance * 343 * 0.01) # raycast result doesnt exist, nothing was hit, give the big echo.
-			# largest_ray_distance = max_raycast_distance
-			average_ray_distance += 1.0
+		# 	reflectionTime += (max_raycast_distance * 343 * 0.001) # raycast result doesnt exist, nothing was hit, give the big echo.
+		# 	# largest_ray_distance = max_raycast_distance
+		# 	average_ray_distance += 1.0
 			continue
 		if dist["material"]:
 			damping += dist["material"].damping
@@ -457,10 +457,12 @@ func _on_update_reverb(player: Node3D):
 			if dist["distance"] > largest_ray_distance:
 				largest_ray_distance = dist["distance"]
 			average_ray_distance += dist["distance"]
-			reflectionTime += (dist["distance"] * 343 * 0.001) # Speed of sound
-			room_size += dist["distance"]
+			reflectionTime += ((dist["distance"] / 343.0) * 1000.0) * 2.0 # round-trip time
+			room_size += (dist["distance"] / max_raycast_distance / 6.0) / float(_total_raycasts_allowed)
+			# arbitrary value of 6.0 because of hall effect
+			# no clue what the hall effect is lol that should tell you how qualified i am  
 	average_ray_distance = average_ray_distance / _total_distance_checks.size()
-	room_size = (room_size / _total_distance_checks.size()) / largest_ray_distance
+	room_size = (room_size / float(_total_distance_checks.size())) / largest_ray_distance
 	wetness = (wetness / float(_total_distance_checks.size()))
 	spread = min(1.0, average_ray_distance / largest_ray_distance)
 
@@ -618,8 +620,8 @@ func _physics_process(delta):
 			_next_turn = 0
 		_finished_init = true
 		# _next_turn = 0
-	if name == "blop2" && _finished_init:
-		print(_next_turn, "   ", _turn)
+	# if name == "blop2" && _finished_init:
+	# 	print(_next_turn, "   ", _turn)
 
 	var _this_update_time : float = 0.0
 	if _has_moved:

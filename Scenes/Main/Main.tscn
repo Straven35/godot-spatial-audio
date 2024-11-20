@@ -482,7 +482,7 @@ max_raycast_bounces = 2
 raycast_count = 4
 
 [node name="wind" parent="." instance=ExtResource("2_2ux6k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.17707, 6.46688, 51.3523)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.83511, 1.82839, 40.8051)
 stream = ExtResource("4_6em6o")
 attenuation_model = 0
 autoplay = true
