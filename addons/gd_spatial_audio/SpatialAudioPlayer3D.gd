@@ -20,6 +20,8 @@ static var _total_init_time : int = 0
 # dont touch this
 static var _finished_init : bool = false
 
+static var _begun_octree : bool = false
+
 ## maximum amount of cells for the audio pathing system to expand out to.
 @export var sweep_max : int = 25;
 ## 3 dimensional size of each grid cell to be used in the audio path sweep.
@@ -77,6 +79,7 @@ var _lowpass_filter : AudioEffectLowPassFilter
 var _eq_filter : AudioEffectEQ
 
 var _target_lowpass_cutoff : float = 20000
+var _target_lowpass_resonance : float = 0.0
 var _target_reverb_room_size : float = 0.0
 var _target_reverb_spread : float = 0.0
 var _target_reverb_wetness : float = 0.0
@@ -118,7 +121,6 @@ func _ready():
 	_next_turn += 1
 
 	_total_using_turns[_turn] = _total_using_turns[_turn] + 1
-	
 
 	# print(_total_using_turns.size())
 	# print(_total_turns)
@@ -165,6 +167,115 @@ func _ready():
 	for raycast:RayCast3D in _raycast_array:
 		raycast.target_position *= max_raycast_distance
 	AudioServer.playback_speed_scale = 1.0
+
+var _FUCKYOU : Dictionary = {}
+
+func create_octree():
+	var _bx : AABB = SpatialAudioPlayer3D.get_node_aabb(get_parent() as Node3D, true, get_parent().global_transform)
+	var _bx_origin : Vector3 = _bx.position
+	var _bx_size : Vector3 = _bx.size
+	var _in_creation := true
+	var _axis : int = 0
+	var _max_sweep_size : Vector3 = Vector3.ONE * 2
+	var _deleg_size : float = 2.0 # how much to reduce sweep size by each pass
+	var _max_delegs : int = 2 # only go down 2 reductions, end on vector3(0.5, 0.5, 0.5)
+	var _sweep_size : Vector3 = _max_sweep_size
+	var current_deleg : int = 0
+	var _starting_pos : Vector3 = _bx_origin
+	var _x_bound : float = snappedf(_bx_size.x, 0.1)
+	var _y_bound : float = snappedf(_bx_size.y, 0.1)
+	var _z_bound : float = snappedf(_bx_size.z, 0.1)
+	var _sp : ShapeCast3D = $space/hodl
+	var _sp_mesh : MeshInstance3D = $space/hodl/MeshInstance3D
+	_sp.visible = true
+
+	var _x_thing : float = -_bx_size.x
+	var _y_thing : float = -_bx_size.y
+	var _z_thing : float = -_bx_size.z
+
+	var _oct_sweeping : bool = true
+	var _oct_tracker : Array[int] = []
+	_oct_tracker.resize(_max_delegs)
+	
+	var _size_stuff : Array = [
+		Vector3(-1, -1, -1), Vector3(-1, -1, 1), Vector3(1, -1, 1),
+		Vector3(1, -1, -1), Vector3(-1, 1, -1), Vector3(-1, 1, 1), 
+		Vector3(1, 1, 1), Vector3(1, 1, -1)
+	]
+
+	_sp.global_position = _starting_pos
+	print(_starting_pos)
+	while _in_creation:
+		# go along x to max bound, then go up y, then after at max y bound, go z and repeat...
+		
+		# start z
+		# go towards z bound at a rate of 2
+		while _z_thing <= _z_bound:
+
+			while _y_thing <= _y_bound:
+
+				while _x_thing <= _x_bound:
+					
+					# do thing here...
+					while _oct_sweeping:
+						_starting_pos = Vector3(_x_thing, _y_thing, _z_thing)
+						if current_deleg > 0:
+							_sweep_size = _max_sweep_size / (_deleg_size * current_deleg)
+						else:
+							_sweep_size = _max_sweep_size
+							_sp.shape.size = _sweep_size
+							_sp_mesh.shape.size = _sweep_size
+							_sp.global_position = _starting_pos
+
+							_sp.force_shapecast_update()
+
+							if !_sp.is_colliding():
+								# we're good!!!! keep going.
+								pass
+								_FUCKYOU[_starting_pos] = {"visible": [], "tree": {}}
+								_oct_sweeping = false
+								continue
+							else:
+								current_deleg = mini(current_deleg + 1, _deleg_size)
+								pass
+							
+						# first you check the overall space. if it clears, move to next...
+						# if it fails, go in octree style and check each 8th.
+						# repeat up to _max_delegs.
+
+						_sp.shape.size = _sweep_size
+						_sp.global_position = _starting_pos
+
+						pass
+					_sp.shape.size = _sweep_size
+
+					pass
+
+				pass
+		
+		pass
+	pass
+
+
+# determines if this spatial audio player should be pooled to a nearby audio bus.
+# this can be called initially when you are creating multiple audio players in the same area
+func optimize_audiobus():
+
+	# if nearby audio players:
+		# _assign_audiobus()
+	# else if no nearby audio players:
+		# _create_audiobus
+	pass
+
+# creates a new audio bus for this spatial audio player.
+func _create_audiobus():
+	
+	pass
+
+# finds an existing audio bus from nearby spatial audio players and routes audio through them.
+func _assign_audiobus():
+	
+	pass
 
 # takes the raycast and places it in a certain predefined orientation
 # 5 cycles on x axis;
@@ -430,6 +541,7 @@ func _on_update_reverb(player: Node3D):
 	var room_size : float = 0.0
 	var wetness : float = 0.0
 	var damping : float = 0.0
+	var resonance : float = 0.0
 	var spread : float = 1.0
 	var largest_ray_distance : float = 0.0
 	var average_ray_distance : float = 0.0
@@ -447,10 +559,11 @@ func _on_update_reverb(player: Node3D):
 		# 	average_ray_distance += 1.0
 			continue
 		if dist["material"]:
-			damping += dist["material"].damping
-			wetness += dist["material"].transmission
+			# damping += dist["material"].damping
+			wetness += dist["material"].reflection
+			resonance += dist["material"].transmission_loss
 		else:
-			damping += 0.5
+			# damping += 0.5
 			wetness += 0.1
 		# Getting how long for reflections.
 		if dist["distance"] >= 0:
@@ -462,6 +575,7 @@ func _on_update_reverb(player: Node3D):
 			# arbitrary value of 6.0 because of hall effect
 			# no clue what the hall effect is lol that should tell you how qualified i am  
 	average_ray_distance = average_ray_distance / _total_distance_checks.size()
+	resonance = resonance / _total_distance_checks.size()
 	room_size = (room_size / float(_total_distance_checks.size())) / largest_ray_distance
 	wetness = (wetness / float(_total_distance_checks.size()))
 	spread = min(1.0, average_ray_distance / largest_ray_distance)
@@ -472,26 +586,28 @@ func _on_update_reverb(player: Node3D):
 	
 	reflectionFeedback = (room_size + wetness) / 2.0
 
-	# if _debug_use:
-	# 	print("DAMPING:  ", _target_reverb_damping)
-	# 	print("SPREAD: ", _target_reverb_spread)
-	# 	print("TIME:  ", _target_reverb_reflection_time)
-	# 	print("FEEDBACK:  ", _target_reverb_reflection_feedback)
-	# 	print("WETNESS:  ", _target_reverb_wetness)
-	# 	print("ROOMSIZE:  ", _target_reverb_room_size)
+	if _debug_use:
+		print("DAMPING:  ", _target_reverb_damping)
+		print("SPREAD: ", _target_reverb_spread)
+		print("TIME:  ", _target_reverb_reflection_time)
+		print("FEEDBACK:  ", _target_reverb_reflection_feedback)
+		print("WETNESS:  ", _target_reverb_wetness)
+		print("ROOMSIZE:  ", _target_reverb_room_size)
 
 	_target_reverb_dryness = 1.0;
 	
 	if _finished_ready:
 		_target_reverb_wetness = wetness;
+		_target_lowpass_resonance = resonance;
 		_target_reverb_spread = spread;
 		_target_reverb_room_size = room_size;
-		_target_reverb_damping = damping/_total_distance_checks.size()
+		_target_reverb_damping = room_size/_total_distance_checks.size()
 		_target_reverb_reflection_time = reflectionTime/_total_distance_checks.size()
 		_target_reverb_reflection_feedback = reflectionFeedback
 	else:
 		_target_reverb_wetness = 0.0;
 		_target_reverb_spread = 0.0;
+		_target_lowpass_resonance = 0.0;
 		_target_reverb_room_size = 0.0;
 		_target_reverb_damping = 0.5;
 		_target_reverb_reflection_time = 0.0
@@ -585,6 +701,7 @@ func _lerp_parameters(delta):
 	volume_db = lerp(volume_db, _target_volume_db, delta);
 	_stereo_effect.pan_pullout = lerp(_stereo_effect.pan_pullout, _target_stereo_pan_pullout, delta*3.0);
 	_lowpass_filter.cutoff_hz = lerp(_lowpass_filter.cutoff_hz, _target_lowpass_cutoff, delta*3.0);
+	_lowpass_filter.resonance = lerp(_lowpass_filter.resonance, _target_lowpass_resonance, delta*3.0);
 	_reverb_effect.wet = lerp(_reverb_effect.wet, _target_reverb_wetness * max_reverb_wetness, delta * 5.0);
 	_reverb_effect.spread = lerp(_reverb_effect.spread, _target_reverb_spread, delta * 5.0);
 	_reverb_effect.dry = lerp(_reverb_effect.dry, _target_reverb_dryness, delta * 5.0);
@@ -607,6 +724,12 @@ var _just_used_params : bool = false
 var player_camera = null
 var __rays_used_this_frame : int = 0
 
+var max_sweep_size : Vector3 = Vector3(2, 2, 2)
+var min_sweep_size : Vector3 = Vector3(0.5, 0.5, 0.5)
+var max_cell_distance : float = 8.0
+
+var created_aabb : bool = false
+
 func _physics_process(delta):
 	if !is_active:
 		return
@@ -619,6 +742,9 @@ func _physics_process(delta):
 		if (_total_turns < _total_turns_max):
 			_next_turn = 0
 		_finished_init = true
+		if !_begun_octree && name == "crook":
+			call_deferred("create_octree")
+			_begun_octree = true
 		# _next_turn = 0
 	# if name == "blop2" && _finished_init:
 	# 	print(_next_turn, "   ", _turn)
@@ -647,11 +773,13 @@ func _physics_process(delta):
 			_just_used_params = false
 			_total_distance_checks = []
 			if _debug_use:
+				# if !created_aabb:
+				# 	created_aabb = true
+				# 	print(SpatialAudioPlayer3D.get_node_aabb(get_parent() as Node3D, true, get_parent().global_transform))
 				print(name, 
 				"  Total rays: ", raycast_count, ", Max bounces per ray: ", max_raycast_bounces, 
 				", total physics ray avg time: ", max(1, _debug_usec_avg) / max(1, _debug_total_checks), " microseconds",
-				", total mesh ray avg time: ", max(1, _debug_usec_mesh_avg) / max(1, _debug_total_checks), " microseconds",
-				", first mesh result from LAST ray: ", _first_mesh.name
+				", total mesh ray avg time: ", max(1, _debug_usec_mesh_avg) / max(1, _debug_total_checks), " microseconds"
 				)
 				# var _planes_thing : PackedVector3Array = _first_mesh.mesh.get_faces()
 				# # print(_planes_thing)
@@ -829,3 +957,46 @@ func _on_hodl_body_entered(body:Node3D):
 	# 	_graph[_sweep_id].bad = true
 	print("howdy")
 	pass # Replace with function body.
+
+
+## static functions
+
+# this is a boiled down version of Node3DEditorViewport::_calculate_spatial_bounds. Gets the total AABB of a node. Recursive.
+static func get_node_aabb(thing : Node3D = null, ignore_top_level : bool = false, bounds_transform : Transform3D = Transform3D()) -> AABB:
+	var box : AABB
+	var transform : Transform3D
+
+	# we are going down the child chain, need to get each transform as necessary
+	if bounds_transform.is_equal_approx(Transform3D()):
+		transform = thing.global_transform
+	else:
+		transform = bounds_transform
+	
+	# no more nodes. return default aabb
+	if thing == null:
+		return AABB(Vector3(-0.2, -0.2, -0.2), Vector3(0.4, 0.4, 0.4))
+	
+	var top_xform : Transform3D = transform.affine_inverse() * thing.global_transform
+
+	# convert the node into visualinstance3D to have get_aabb() function. very sus
+	var visual_result : VisualInstance3D = thing as VisualInstance3D
+	if visual_result != null:
+		box = visual_result.get_aabb()
+	else:
+		box = AABB()
+	
+	# xforms the transform with the box aabb
+	box = top_xform * box
+	
+	for i : int in thing.get_child_count():
+		var child : Node3D = thing.get_child(i) as Node3D
+		if child && !(ignore_top_level && child.top_level):
+			var child_box : AABB = SpatialAudioPlayer3D.get_node_aabb(child, ignore_top_level, transform)
+			box = box.merge(child_box)
+	
+	return box
+
+# 
+static func build_scene_space():
+
+	pass

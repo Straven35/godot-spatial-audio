@@ -41,8 +41,8 @@ func _unhandled_input(event):
 			return
 		
 		print(_shape.get_meta("ext_phys_material").materialName)
-		print(_shape.get_meta("ext_phys_material").damping)
-		print(_shape.get_meta("ext_phys_material").transmission)
+		print(_shape.get_meta("ext_phys_material").reflection)
+		print(_shape.get_meta("ext_phys_material").transmission_loss)
 
 func _do_move(delta):
 	var head_basis : Basis

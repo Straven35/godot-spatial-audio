@@ -163,7 +163,7 @@ func _on_update_reverb(player: Node3D):
 	var reflectionFeedback = 0.4
 	for dist in _total_distance_checks:
 		if dist["material"]:
-			damping += dist["material"].damping
+			wetness += dist["material"].reflection
 			# wetness += min((dist["material"].reverberation * 0.5), 1.0)
 		else:
 			damping += 0.5
@@ -249,3 +249,7 @@ func _physics_process(delta):
 			if _previous_position != global_position:
 				_has_moved = true
 			_previous_position = global_position
+
+
+
+

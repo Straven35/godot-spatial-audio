@@ -15,7 +15,7 @@ var _col_shape : BoxShape3D
 var _mesh_shape : BoxMesh
 
 var _update_time : float = 0.0
-var _update_interval : float = 1.0
+var _update_interval : float = 0.25
 var _changes_detected : bool = true
 
 func _ready():
@@ -38,13 +38,13 @@ func _physics_process(_delta):
 		if _update_time >= _update_interval:
 			if _update_interval > 16.0:
 				_update_time = 0.0
-				_update_interval = 1.0
+				_update_interval = 0.25
 				return
 			_changes_detected = _collision.shape.size != size
 			if _changes_detected:
 				set_stuff()
 				_changes_detected = false
-				_update_interval = 1.0
+				_update_interval = 0.25
 			else:
 				_update_interval += _update_interval
 			_update_time = 0.0
