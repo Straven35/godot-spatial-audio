@@ -64,6 +64,7 @@ max_results = 1
 collision_mask = 9
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="space/hodl"]
+visible = false
 mesh = SubResource("BoxMesh_3mexf")
 
 [node name="spots" type="Node3D" parent="space"]

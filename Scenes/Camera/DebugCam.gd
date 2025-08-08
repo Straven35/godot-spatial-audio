@@ -86,7 +86,6 @@ func _input(event):
 		walkSpeed = max(walkSpeed - 0.1, 0.1)
 	
 	if Input.is_action_just_released("ui_cancel"):
-		print("hi")
 		mouselock = !mouselock
 		if mouselock:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
