@@ -30,7 +30,7 @@ sky = SubResource("Sky_tqrsa")
 [node name="Main" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.986343, 0.0198624, 0.163505, -0.160778, 0.331643, 0.929604, -0.0357611, -0.943196, 0.330307, -10, 0, -24)
+transform = Transform3D(0.986343, 0.0198624, 0.163505, -0.160778, 0.331643, 0.929604, -0.0357611, -0.943196, 0.330307, -17.5, -10, -50)
 shadow_enabled = true
 
 [node name="DebugCam" parent="." instance=ExtResource("1_hpre6")]
@@ -591,6 +591,24 @@ physics_material = ExtResource("1_tlck8")
 
 [node name="CsgBasicBlock17" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, -10)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(20, 10, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock76" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -44)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(20, 10, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock77" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -37)
+physics_material_override = ExtResource("8_hgv8c")
+size = Vector3(20, 10, 1)
+physics_material = ExtResource("8_hgv8c")
+
+[node name="CsgBasicBlock78" parent="csgstuff" instance=ExtResource("1_1b2o2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -31)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(20, 10, 1)
 physics_material = ExtResource("8_hgv8c")

@@ -102,7 +102,10 @@ var _target_10000hz_reduction:float = 0.0
 var _finished_ready : bool = false
 
 @onready var box_mesh : BoxMesh = BoxMesh.new()
-@onready var box_mesh_small : BoxMesh = BoxMesh.new()
+@onready var box_mesh_2 : BoxMesh = BoxMesh.new()
+@onready var box_mesh_3 : BoxMesh = BoxMesh.new()
+@onready var box_mesh_4 : BoxMesh = BoxMesh.new()
+@onready var box_mesh_5 : BoxMesh = BoxMesh.new()
 @onready var box_mesh_filled : BoxMesh = BoxMesh.new()
 @onready var box_mesh_small_filled : BoxMesh = BoxMesh.new()
 @onready var box_mat : StandardMaterial3D = StandardMaterial3D.new()
@@ -196,51 +199,58 @@ func _ready():
 		await get_tree().create_timer(5.0).timeout
 		call_deferred("create_octree")
 		await get_tree().create_timer(0.5).timeout
+
+		box_mesh.size = Vector3.ONE*8.0
+		box_mesh_2.size = Vector3.ONE*4.0
+		box_mesh_3.size = Vector3.ONE*2.0
+		box_mesh_4.size = Vector3.ONE*1.0
+		box_mesh_5.size = Vector3.ONE*0.5
+		# box_mesh_small.size = Vector3.ONE*4.0
+		box_mat.transparency = StandardMaterial3D.TRANSPARENCY_ALPHA
+		box_mat.albedo_color = Color.AQUA
+		box_mat.albedo_color.a = 0.25
+
+		box_mat_filled.transparency = StandardMaterial3D.TRANSPARENCY_ALPHA
+		box_mat_filled.albedo_color = Color.RED
+		box_mat_filled.albedo_color.a = 0.25
+		var completed_keys : Array = []
 		while creating_octree:
 			await get_tree().create_timer(5.0).timeout
 
-			# for x in 20:
-			# 	for z in 20:
-			# 		var obj : RID = RenderingServer.instance_create()
-			# 		RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
-			# 		box_mesh.material = box_mat
-			# 		RenderingServer.instance_set_base(obj, box_mesh)
-			# 		var trns : Transform3D = Transform3D(Basis.IDENTITY, Vector3(float(x), 50.0, float(z)))
-			# 		RenderingServer.instance_set_transform(obj, trns)
-			# 		bodies.push_back(obj)
 			var _keys : Array = _FUCKYOU.keys()
-
-			box_mesh.size = Vector3.ONE*5.0
-			box_mesh_filled.size = Vector3.ONE*5.0
-			box_mesh_small.size = Vector3.ONE*2.5
-			box_mat.transparency = StandardMaterial3D.TRANSPARENCY_ALPHA
-			box_mat.albedo_color = Color.AQUA
-			box_mat.albedo_color.a = 0.25
-
-			box_mat_filled.transparency = StandardMaterial3D.TRANSPARENCY_ALPHA
-			box_mat_filled.albedo_color = Color.RED
-			box_mat_filled.albedo_color.a = 0.25
-
-			box_mesh.material = box_mat
-			box_mesh_filled.material = box_mat
-			# box_mesh_small.material = box_mat
-			# box_mesh_small_filled.material = box_mat_filled
-
-			# v is vector3
-			for i in _keys.size():
+			
+			for i in range(completed_keys.size(), _keys.size()):
 				var v : Vector3 = _keys[i]
 				var k = _FUCKYOU[v]
 				if _FUCKYOU[v]["drawn"]:
 					continue
+				if _FUCKYOU[v]["has_children"]:
+					continue
 				if !k["filled"]:
 					var obj : RID = RenderingServer.instance_create()
 					RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
-					if k["connecting"].is_empty():
-						box_mesh.material = box_mat as Material
+
+					if k["size"] == box_mesh.size.x:
 						RenderingServer.instance_set_base(obj, box_mesh)
-					else:
-						box_mesh_small.material = box_mat as Material
-						RenderingServer.instance_set_base(obj, box_mesh_small)
+					elif k["size"] == box_mesh_2.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_2)
+					elif k["size"] == box_mesh_3.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_3)
+					elif k["size"] == box_mesh_4.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_4)
+					elif k["size"] == box_mesh_5.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_5)
+					
+					RenderingServer.instance_set_surface_override_material(obj, 0, box_mat)
+
+
+					# if k["connecting"].is_empty():
+					# 	box_mesh.material = box_mat as Material
+					# 	RenderingServer.instance_set_base(obj, box_mesh)
+					# else:
+					# 	box_mesh_small.material = box_mat as Material
+					# 	RenderingServer.instance_set_base(obj, box_mesh_small)
+
 					var trns : Transform3D = Transform3D(Basis.IDENTITY, v)
 					RenderingServer.instance_set_transform(obj, trns)
 					bodies.push_back(obj)
@@ -248,15 +258,28 @@ func _ready():
 					var obj : RID = RenderingServer.instance_create()
 					RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
 					# box_mesh_filled.material = box_mat_filled as Material
-					if k["connecting"].is_empty():
+					if k["size"] == box_mesh.size.x:
 						RenderingServer.instance_set_base(obj, box_mesh)
-					else:
-						RenderingServer.instance_set_base(obj, box_mesh_small)
+					elif k["size"] == box_mesh_2.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_2)
+					elif k["size"] == box_mesh_3.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_3)
+					elif k["size"] == box_mesh_4.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_4)
+					elif k["size"] == box_mesh_5.size.x:
+						RenderingServer.instance_set_base(obj, box_mesh_5)
+					
+					# if k["connecting"].is_empty():
+					# 	RenderingServer.instance_set_base(obj, box_mesh)
+					# else:
+					# 	RenderingServer.instance_set_base(obj, box_mesh_small)
 					RenderingServer.instance_set_surface_override_material(obj, 0, box_mat_filled)
 					var trns : Transform3D = Transform3D(Basis.IDENTITY, v)
 					RenderingServer.instance_set_transform(obj, trns)
 					bodies.push_back(obj)
 				_FUCKYOU[v]["drawn"] = true
+			
+			completed_keys = _keys
 
 # Called when the node enters the scene tree for the first time.
 # func _ready():
@@ -304,58 +327,50 @@ func _ready():
 @onready var _sp : ShapeCast3D = $space/hodl
 @onready var _sp_mesh : MeshInstance3D = $space/hodl/MeshInstance3D
 
-func create_octree():
-	print("sup bruh")
-	var chunk_size : Vector3 = Vector3.ONE*20
-	var chunk_offset : Vector3 = Vector3.ZERO
-
-	var octree_settings : Dictionary = {}
-	octree_settings._slice = 0
-	octree_settings._max_slices = 0
-	octree_settings._max_sweep_size = 0
-	octree_settings._deleg_size = 0
-	octree_settings._max_delegs = 0
-	octree_settings.current_deleg = 0
-	octree_settings._starting_pos = 0
-	octree_settings._slice = 0
-
-	var _bx : AABB = SpatialAudioPlayer3D.get_node_aabb(get_parent() as Node3D, true, get_parent().global_transform)
-	var _bx_origin : Vector3 = _bx.position
-	var _bx_size : Vector3 = _bx.size
-	var _in_creation := true
-	# var _axis : int = 0
-	var _slice : int = 0
-	var _max_slices : int = 7
-	var _max_sweep_size : Vector3 = Vector3.ONE*5
-	var _deleg_size : float = 2.0 # how much to reduce sweep size by each pass
-	var _max_delegs : int = 1 # only go down 1 reduction, end on vector3(0.5, 0.5, 0.5)
-	var _sweep_size : Vector3 = _max_sweep_size
-	var current_deleg : int = 0
-	var _starting_pos : Vector3 = _bx_origin
-	var _x_bound : float = snappedf(_bx_size.x, 0.1)
-	var _y_bound : float = snappedf(_bx_size.y, 0.1)
-	var _z_bound : float = snappedf(_bx_size.z, 0.1)
-	var _end_region : Vector3 = _bx.end
-	# var _end_region : Vector3 = Vector3(_x_bound, _y_bound, _z_bound)
-	_sp.visible = true
-
-	var _x_thing : float = _bx_origin.x
-	var _y_thing : float = _bx_origin.y
-	var _z_thing : float = _bx_origin.z
-
-	var _oct_sweeping : bool = true
-	var _oct_tracker : Array[int] = []
-	_oct_tracker.resize(_max_delegs)
-	
-	var _size_stuff : Array = [
+var _size_stuff : Array = [
 		Vector3(-1, -1, -1), Vector3(-1, -1, 1), Vector3(1, -1, 1),
 		Vector3(1, -1, -1), Vector3(-1, 1, -1), Vector3(-1, 1, 1), 
 		Vector3(1, 1, 1), Vector3(1, 1, -1)
 	]
 
-	_sp.global_position = _starting_pos
+func create_octree():
+	print("sup bruh")
+	var chunk_size : Vector3 = Vector3.ONE*20
+	var chunk_offset : Vector3 = Vector3.ZERO
+
+	var _bx : AABB = SpatialAudioPlayer3D.get_node_aabb(get_parent() as Node3D, true, get_parent().global_transform)
+	var _bx_origin : Vector3 = _bx.position
+	var _bx_size : Vector3 = _bx.size
+
+	var oct_settings : Dictionary = {}
+	oct_settings._slice = 0
+	oct_settings._max_slices = 7
+	oct_settings._oct_mult = 8.0
+	oct_settings._max_sweep_size = Vector3.ONE*oct_settings._oct_mult
+	oct_settings._deleg_size = 2.0 # how much to divide sweep size by each pass
+	oct_settings._max_delegs = 4 # only go down 1 reduction, end on vector3(0.5, 0.5, 0.5)
+	oct_settings.current_deleg = 0
+	oct_settings._starting_pos = _bx_origin
+	oct_settings._x_bound = snappedf(_bx_size.x+oct_settings._oct_mult, 8.0)
+	oct_settings._y_bound = snappedf(_bx_size.y+oct_settings._oct_mult, 8.0)
+	oct_settings._z_bound = snappedf(_bx_size.z+oct_settings._oct_mult, 8.0)
+	oct_settings._end_region = _bx.size
+	oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
+	oct_settings._y_thing = snappedf(_bx_origin.y-oct_settings._oct_mult, 8.0)
+	oct_settings._z_thing = snappedf(_bx_origin.z-oct_settings._oct_mult, 8.0)
+	oct_settings._oct_sweeping = true
+
+	
+	var _in_creation := true
+	# var _end_region : Vector3 = Vector3(_x_bound, _y_bound, _z_bound)
+	_sp.visible = true
+	# not using below
+	# var _oct_tracker : Array[int] = []
+	# _oct_tracker.resize(_max_delegs)
+
+	_sp.global_position = oct_settings._starting_pos
 	print(_bx)
-	print(_starting_pos, "   ", _end_region)
+	print(oct_settings._starting_pos, "   ", oct_settings._end_region)
 	while _in_creation:
 		creating_octree = true
 		# chunk stuff...
@@ -365,115 +380,153 @@ func create_octree():
 		
 		# start z
 		# go towards z bound at a rate of 2
-		while _z_thing <= _z_bound:
-			await get_tree().create_timer(0.01).timeout
-			while _y_thing <= _y_bound:
-				await get_tree().create_timer(0.01).timeout
-				while _x_thing <= _x_bound:
-					await get_tree().create_timer(0.01).timeout
+		while oct_settings._z_thing <= oct_settings._z_bound:
+			await get_tree().create_timer(0.05).timeout
+			while oct_settings._y_thing <= oct_settings._y_bound:
+				await get_tree().create_timer(0.05).timeout
+				while oct_settings._x_thing <= oct_settings._x_bound:
+					await get_tree().create_timer(0.05).timeout
 					# do thing here...
 					# check entire area. like, 1x1x1 space or smth
 					# if no collision, move to next 1x1x1 area...
 					# if collision, check 0.5x0.5x0.5 area in 1x1x1 area (8 areas)
-					_oct_sweeping = true
-					current_deleg = 0
-					_slice = 0
-					while _oct_sweeping:
-						var _parent_oct : Vector3
-						_starting_pos = Vector3(_x_thing, _y_thing, _z_thing)
-						var _i_start_pos : Vector3i = Vector3i(int(_x_thing), int(_y_thing), int(_z_thing))
-						if current_deleg == 0:
-							# have not gone down. 1x1x1
-							_sweep_size = _max_sweep_size
-							_sp.shape.size = _sweep_size
-							_sp_mesh.mesh.size = _sweep_size
-							_sp.global_position = _starting_pos
+					oct_settings._oct_sweeping = true
+					oct_settings.current_deleg = 0
+					oct_settings._slice = 0
+					oct_sweep_test(oct_settings)
+					# while oct_settings._oct_sweeping:
+					# 	var _parent_oct : Vector3
+					# 	oct_settings._starting_pos = Vector3(oct_settings._x_thing, oct_settings._y_thing, oct_settings._z_thing)
+					# 	var _i_start_pos : Vector3i = Vector3i(int(oct_settings._x_thing), int(oct_settings._y_thing), int(oct_settings._z_thing))
+					# 	if oct_settings.current_deleg == 0:
+					# 		# have not gone down. 1x1x1
+					# 		oct_settings._sweep_size = oct_settings._max_sweep_size
+					# 		_sp.shape.size = oct_settings._sweep_size
+					# 		_sp_mesh.mesh.size = oct_settings._sweep_size
+					# 		_sp.global_position = oct_settings._starting_pos
 
-							_sp.force_shapecast_update()
-							_FUCKYOU[_starting_pos] = {"connecting": [], "filled": false, "drawn": false}
-							if !_sp.is_colliding():
-								# no collision hit. write nothing to this square
-								_FUCKYOU[_starting_pos]["filled"] = false
-								_oct_sweeping = false
-								continue
-							else:
-								_FUCKYOU[_starting_pos]["filled"] = true
-								_parent_oct = _starting_pos
-								current_deleg = mini(current_deleg + 1, _deleg_size)
+					# 		_sp.force_shapecast_update()
+					# 		_FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult}
+					# 		if !_sp.is_colliding():
+					# 			# no collision hit. write nothing to this square
+					# 			_FUCKYOU[oct_settings._starting_pos]["filled"] = false
+					# 			oct_settings._oct_sweeping = false
+					# 			continue
+					# 		else:
+					# 			_FUCKYOU[oct_settings._starting_pos]["filled"] = true
+					# 			_parent_oct = oct_settings._starting_pos
+					# 			oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._deleg_size)
 							
-						else:
-							_sweep_size = _max_sweep_size / (_deleg_size * current_deleg)
-							_sp.shape.size = _sweep_size
-							_sp_mesh.mesh.size = _sweep_size
-							_sp.global_position = _starting_pos + (_size_stuff[_slice] / (_deleg_size * current_deleg))
-							var _n_start_pos = _starting_pos + (_size_stuff[_slice] / (_deleg_size * current_deleg))
+					# 	else:
+					# 		var _deleg_mult : float = (oct_settings._deleg_size * oct_settings.current_deleg)
+					# 		oct_settings._sweep_size = oct_settings._max_sweep_size / _deleg_mult
+					# 		_sp.shape.size = oct_settings._sweep_size
+					# 		_sp_mesh.mesh.size = oct_settings._sweep_size
+					# 		_sp.global_position = oct_settings._starting_pos + ((_size_stuff[oct_settings._slice] * 
+					# 		(oct_settings._oct_mult/_deleg_mult)) / _deleg_mult)
+					# 		var _n_start_pos = oct_settings._starting_pos + ((_size_stuff[oct_settings._slice] * 
+					# 		(oct_settings._oct_mult/_deleg_mult)) / _deleg_mult)
 
-							_sp.force_shapecast_update()
-							_FUCKYOU[_n_start_pos] = {"connecting": [_parent_oct], "filled": false, "drawn": false}
-							if !_sp.is_colliding():
-								# no collision hit. write nothing to this square.
-								# move on to next square
-								_FUCKYOU[_n_start_pos]["filled"] = false
-								_slice = _slice + 1 if _slice < _max_slices else 0
-								if _slice == 0:
-									_oct_sweeping = false
-								continue
-							else:
-								_FUCKYOU[_n_start_pos]["filled"] = true
-								_slice = _slice + 1 if _slice < _max_slices else 0
-								if _slice == 0:
-									_oct_sweeping = false
-								continue
-								# current_deleg = mini(current_deleg + 1, _deleg_size)
-
-						
-						# _sp.force_shapecast_update()
-						# _FUCKYOU[_starting_pos] = {"connecting": [], "filled": false}
-						# if !_sp.is_colliding():
-						# 	# no collision hit. write nothing to this square
-						# 	_FUCKYOU[_starting_pos]["filled"] = false
-						# 	_oct_sweeping = false
-						# 	continue
-						# else:
-						# 	_FUCKYOU[_starting_pos]["filled"] = true
-						# 	current_deleg = mini(current_deleg + 1, _deleg_size)
-						# 	# have to go down a level to see if we are... yknow
-						# 	pass
-						# _starting_pos = Vector3(_x_thing, _y_thing, _z_thing)
-						# if current_deleg > 0:
-						# 	_sweep_size = _max_sweep_size / (_deleg_size * current_deleg)
-						# else:
-						# 	_sweep_size = _max_sweep_size
-						# 	_sp.shape.size = _sweep_size
-						# 	_sp_mesh.mesh.size = _sweep_size
-						# 	_sp.global_position = _starting_pos
-
-						# 	_sp.force_shapecast_update()
-
-						# 	if !_sp.is_colliding():
-						# 		# we're good!!!! keep going.
-						# 		pass
-						# 		_FUCKYOU[_starting_pos] = {"visible": [], "tree": {}}
-						# 		_oct_sweeping = false
-						# 		continue
-						# 	else:
-						# 		current_deleg = mini(current_deleg + 1, _deleg_size)
-						# 		pass
-							
-						# first you check the overall space. if it clears, move to next...
-						# if it fails, go in octree style and check each 8th.
-						# repeat up to _max_delegs.
+					# 		_sp.force_shapecast_update()
+					# 		_FUCKYOU[_n_start_pos] = {"connecting": [_parent_oct], "filled": false, "drawn": false, "size": (oct_settings._oct_mult/_deleg_mult)}
+					# 		if !_sp.is_colliding():
+					# 			# no collision hit. write nothing to this square.
+					# 			# move on to next square
+					# 			_FUCKYOU[_n_start_pos]["filled"] = false
+					# 			oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
+					# 			if oct_settings._slice == 0:
+					# 				oct_settings._oct_sweeping = false
+					# 			continue
+					# 		else:
+					# 			_FUCKYOU[_n_start_pos]["filled"] = true
+					# 			oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
+					# 			if oct_settings._slice == 0:
+					# 				oct_settings._oct_sweeping = false
+					# 			continue
 					pass
-					_x_thing += 5.0
+					oct_settings._x_thing += oct_settings._oct_mult
 				pass
-				_x_thing = _bx_origin.x
-				_y_thing += 5.0
+				oct_settings._x_thing = _bx_origin.x
+				oct_settings._y_thing += oct_settings._oct_mult
 			pass
-			_y_thing = _bx_origin.y
-			_x_thing = _bx_origin.x
-			_z_thing += 5.0
+			oct_settings._y_thing = _bx_origin.y
+			oct_settings._x_thing = _bx_origin.x
+			oct_settings._z_thing += oct_settings._oct_mult
 		break
 	creating_octree = false
+	pass
+
+func oct_sweep_test(oct_settings : Dictionary, _parent_oct : Vector3 = Vector3.ZERO):
+	# for doing the testicles
+	var _sweeping : bool = true
+	print("HERE YA GO BOSS ", oct_settings.current_deleg)
+	while _sweeping:
+		if !creating_octree:
+			return
+		oct_settings._starting_pos = Vector3(oct_settings._x_thing, oct_settings._y_thing, oct_settings._z_thing)
+		var _i_start_pos : Vector3i = Vector3i(int(oct_settings._x_thing), int(oct_settings._y_thing), int(oct_settings._z_thing))
+		if oct_settings.current_deleg == 0:
+			# have not gone down. 1x1x1
+			oct_settings._sweep_size = oct_settings._max_sweep_size
+			_sp.shape.size = oct_settings._sweep_size
+			_sp_mesh.mesh.size = oct_settings._sweep_size
+			_sp.global_position = oct_settings._starting_pos
+
+			_sp.force_shapecast_update()
+			_FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult, "has_children": false}
+			if !_sp.is_colliding():
+				# no collision hit. write nothing to this square
+				_FUCKYOU[oct_settings._starting_pos]["filled"] = false
+				_sweeping = false
+				# print("nothing found. moving on")
+			else:
+				_FUCKYOU[oct_settings._starting_pos]["filled"] = true
+				_parent_oct = oct_settings._starting_pos
+				var _next_oct_settings : Dictionary = oct_settings.duplicate()
+				if _next_oct_settings.current_deleg < _next_oct_settings._max_delegs:
+					_next_oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._max_delegs)
+					# _FUCKYOU[oct_settings._starting_pos]["has_children"] = true
+					# print("bravo six going dark")
+					oct_sweep_test(_next_oct_settings, _parent_oct)
+					_sweeping = false
+					
+			# print("first return")
+			break
+			
+		else:
+			var _deleg_mult : float = (oct_settings._deleg_size ** oct_settings.current_deleg)
+
+			var _slice_seg : Vector3 = ((_size_stuff[oct_settings._slice] * 
+			(oct_settings._oct_mult/_deleg_mult)) / 2.0)
+
+			oct_settings._sweep_size = oct_settings._max_sweep_size / _deleg_mult
+			_sp.shape.size = oct_settings._sweep_size
+			_sp_mesh.mesh.size = oct_settings._sweep_size
+			_sp.global_position = _parent_oct + _slice_seg
+			var _n_start_pos = _parent_oct + _slice_seg
+
+			_sp.force_shapecast_update()
+			_FUCKYOU[_n_start_pos] = {"connecting": [_parent_oct], "filled": false, "drawn": false, "size": (oct_settings._oct_mult/_deleg_mult), "has_children": false}
+			if !_sp.is_colliding():
+				# no collision hit. write nothing to this square.
+				# move on to next square
+				_FUCKYOU[_n_start_pos]["filled"] = false
+				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
+				# print("nothing found further down. moving on baws")
+			else:
+				_FUCKYOU[_n_start_pos]["filled"] = true
+				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
+				var _next_oct_settings : Dictionary = oct_settings.duplicate()
+				if oct_settings.current_deleg < oct_settings._max_delegs:
+					_next_oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._max_delegs)
+					# _FUCKYOU[_n_start_pos]["has_children"] = true
+					# print("going further down, wish me luck")
+					oct_sweep_test(_next_oct_settings, _n_start_pos)
+			
+			if oct_settings._slice == 0: # we looped through all of em boss
+				# print("we looped through em all boss")
+				_sweeping = false
+				break
 	pass
 
 # func icles(_z_bound : Vector3, _chunk : Vector3, _origin : Vector3, ):
