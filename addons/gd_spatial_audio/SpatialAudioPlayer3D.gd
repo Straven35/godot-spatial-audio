@@ -26,6 +26,14 @@ var creating_octree : bool = false
 
 ## maximum amount of cells for the audio pathing system to expand out to.
 @export var sweep_max : int = 25;
+
+## used for octree generation
+@export var max_areas : int = 8;
+
+@export var sweep_time : float = 0.03
+
+@export var debug_show_free_areas : bool = false
+@export var debug_show_filled_areas : bool = true
 ## 3 dimensional size of each grid cell to be used in the audio path sweep.
 ## larger = bigger grid size, less precision; smaller = smaller grid size, more precision.
 @export var sweep_cell : float = 0.5;
@@ -101,6 +109,8 @@ var _target_10000hz_reduction:float = 0.0
 
 var _finished_ready : bool = false
 
+var _shapecast_array: Dictionary = {}
+
 @onready var box_mesh : BoxMesh = BoxMesh.new()
 @onready var box_mesh_2 : BoxMesh = BoxMesh.new()
 @onready var box_mesh_3 : BoxMesh = BoxMesh.new()
@@ -110,6 +120,9 @@ var _finished_ready : bool = false
 @onready var box_mesh_small_filled : BoxMesh = BoxMesh.new()
 @onready var box_mat : StandardMaterial3D = StandardMaterial3D.new()
 @onready var box_mat_filled : StandardMaterial3D = StandardMaterial3D.new()
+
+@onready var _sp : ShapeCast3D = $space/hodl
+@onready var _sp_mesh : MeshInstance3D = $space/hodl/MeshInstance3D
 
 var bodies = []
 
@@ -153,6 +166,20 @@ func _ready():
 		__ray.exclude_parent = raycast_exclude_parent
 		add_child(__ray)
 		_raycast_array.push_back(__ray)
+	
+	for i in max_areas:
+		var __area : ShapeCast3D = ShapeCast3D.new()
+		var __shape : BoxShape3D = BoxShape3D.new()
+		__shape.size = Vector3.ONE
+		__area.shape = __shape
+		__area.collide_with_areas = raycast_collide_with_areas
+		__area.collide_with_bodies = raycast_collide_with_bodies
+		__area.exclude_parent = raycast_exclude_parent
+		__area.margin = 0.01
+		__area.target_position = Vector3.ZERO
+		add_child(__area)
+		_shapecast_array[i] = {"cast": __area, "active": false}
+
 	# Make new audio bus
 	_audio_bus_idx = AudioServer.bus_count
 	_audio_bus_name = "SpatialBus#"+str(_audio_bus_idx)
@@ -227,6 +254,8 @@ func _ready():
 				if _FUCKYOU[v]["has_children"]:
 					continue
 				if !k["filled"]:
+					if !debug_show_free_areas:
+						continue
 					var obj : RID = RenderingServer.instance_create()
 					RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
 
@@ -255,18 +284,20 @@ func _ready():
 					RenderingServer.instance_set_transform(obj, trns)
 					bodies.push_back(obj)
 				else:
+					if !debug_show_filled_areas:
+						continue
 					var obj : RID = RenderingServer.instance_create()
 					RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
 					# box_mesh_filled.material = box_mat_filled as Material
-					if k["size"] == box_mesh.size.x:
+					if is_equal_approx(k["size"], box_mesh.size.x):
 						RenderingServer.instance_set_base(obj, box_mesh)
-					elif k["size"] == box_mesh_2.size.x:
+					elif is_equal_approx(k["size"], box_mesh_2.size.x):
 						RenderingServer.instance_set_base(obj, box_mesh_2)
-					elif k["size"] == box_mesh_3.size.x:
+					elif is_equal_approx(k["size"], box_mesh_3.size.x):
 						RenderingServer.instance_set_base(obj, box_mesh_3)
-					elif k["size"] == box_mesh_4.size.x:
+					elif is_equal_approx(k["size"], box_mesh_4.size.x):
 						RenderingServer.instance_set_base(obj, box_mesh_4)
-					elif k["size"] == box_mesh_5.size.x:
+					elif is_equal_approx(k["size"], box_mesh_5.size.x):
 						RenderingServer.instance_set_base(obj, box_mesh_5)
 					
 					# if k["connecting"].is_empty():
@@ -324,9 +355,6 @@ func _ready():
 # 	for i in bodies.size():
 # 		RenderingServer.free_rid(bodies[i])
 
-@onready var _sp : ShapeCast3D = $space/hodl
-@onready var _sp_mesh : MeshInstance3D = $space/hodl/MeshInstance3D
-
 var _size_stuff : Array = [
 		Vector3(-1, -1, -1), Vector3(-1, -1, 1), Vector3(1, -1, 1),
 		Vector3(1, -1, -1), Vector3(-1, 1, -1), Vector3(-1, 1, 1), 
@@ -344,10 +372,10 @@ func create_octree():
 
 	var oct_settings : Dictionary = {}
 	oct_settings._slice = 0
-	oct_settings._max_slices = 7
+	oct_settings._max_slices = _size_stuff.size()
 	oct_settings._oct_mult = 8.0
 	oct_settings._max_sweep_size = Vector3.ONE*oct_settings._oct_mult
-	oct_settings._deleg_size = 2.0 # how much to divide sweep size by each pass
+	oct_settings._deleg_size = 2.0 # how much to divide sweep size by each pass. this shouldnt ever change
 	oct_settings._max_delegs = 4 # only go down 1 reduction, end on vector3(0.5, 0.5, 0.5)
 	oct_settings.current_deleg = 0
 	oct_settings._starting_pos = _bx_origin
@@ -381,11 +409,11 @@ func create_octree():
 		# start z
 		# go towards z bound at a rate of 2
 		while oct_settings._z_thing <= oct_settings._z_bound:
-			await get_tree().create_timer(0.05).timeout
+			await get_tree().create_timer(sweep_time).timeout
 			while oct_settings._y_thing <= oct_settings._y_bound:
-				await get_tree().create_timer(0.05).timeout
+				await get_tree().create_timer(sweep_time).timeout
 				while oct_settings._x_thing <= oct_settings._x_bound:
-					await get_tree().create_timer(0.05).timeout
+					await get_tree().create_timer(sweep_time).timeout
 					# do thing here...
 					# check entire area. like, 1x1x1 space or smth
 					# if no collision, move to next 1x1x1 area...
@@ -393,7 +421,7 @@ func create_octree():
 					oct_settings._oct_sweeping = true
 					oct_settings.current_deleg = 0
 					oct_settings._slice = 0
-					oct_sweep_test(oct_settings)
+					oct_sweep_test(oct_settings, 0)
 					# while oct_settings._oct_sweeping:
 					# 	var _parent_oct : Vector3
 					# 	oct_settings._starting_pos = Vector3(oct_settings._x_thing, oct_settings._y_thing, oct_settings._z_thing)
@@ -446,19 +474,24 @@ func create_octree():
 					pass
 					oct_settings._x_thing += oct_settings._oct_mult
 				pass
-				oct_settings._x_thing = _bx_origin.x
+				oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
 				oct_settings._y_thing += oct_settings._oct_mult
 			pass
-			oct_settings._y_thing = _bx_origin.y
-			oct_settings._x_thing = _bx_origin.x
+			oct_settings._y_thing = snappedf(_bx_origin.y-oct_settings._oct_mult, 8.0)
+			oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
 			oct_settings._z_thing += oct_settings._oct_mult
 		break
 	creating_octree = false
 	pass
 
-func oct_sweep_test(oct_settings : Dictionary, _parent_oct : Vector3 = Vector3.ZERO):
+func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct : Vector3 = Vector3.ZERO):
 	# for doing the testicles
 	var _sweeping : bool = true
+	while _shapecast_array[_shapecast].active:
+		await get_tree().physics_frame
+		_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
+	_shapecast_array[_shapecast].active = true
+	var _cast : ShapeCast3D = _shapecast_array[_shapecast].cast
 	print("HERE YA GO BOSS ", oct_settings.current_deleg)
 	while _sweeping:
 		if !creating_octree:
@@ -468,16 +501,17 @@ func oct_sweep_test(oct_settings : Dictionary, _parent_oct : Vector3 = Vector3.Z
 		if oct_settings.current_deleg == 0:
 			# have not gone down. 1x1x1
 			oct_settings._sweep_size = oct_settings._max_sweep_size
-			_sp.shape.size = oct_settings._sweep_size
-			_sp_mesh.mesh.size = oct_settings._sweep_size
-			_sp.global_position = oct_settings._starting_pos
+			_cast.shape.size = oct_settings._sweep_size
+			# _sp_mesh.mesh.size = oct_settings._sweep_size
+			_cast.global_position = oct_settings._starting_pos
 
-			_sp.force_shapecast_update()
+			_cast.force_shapecast_update()
 			_FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult, "has_children": false}
-			if !_sp.is_colliding():
+			if !_cast.is_colliding():
 				# no collision hit. write nothing to this square
 				_FUCKYOU[oct_settings._starting_pos]["filled"] = false
 				_sweeping = false
+				_shapecast_array[_shapecast].active = false
 				# print("nothing found. moving on")
 			else:
 				_FUCKYOU[oct_settings._starting_pos]["filled"] = true
@@ -485,44 +519,61 @@ func oct_sweep_test(oct_settings : Dictionary, _parent_oct : Vector3 = Vector3.Z
 				var _next_oct_settings : Dictionary = oct_settings.duplicate()
 				if _next_oct_settings.current_deleg < _next_oct_settings._max_delegs:
 					_next_oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._max_delegs)
-					# _FUCKYOU[oct_settings._starting_pos]["has_children"] = true
+					_FUCKYOU[oct_settings._starting_pos]["has_children"] = true
 					# print("bravo six going dark")
-					oct_sweep_test(_next_oct_settings, _parent_oct)
+					var _next_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
+					_shapecast_array[_shapecast].active = false
+					while _shapecast_array[_next_shapecast].active:
+						await get_tree().physics_frame
+						_next_shapecast = _next_shapecast + 1 if _next_shapecast + 1 >= _shapecast_array.keys().size() else 0
+					oct_sweep_test(_next_oct_settings, _next_shapecast, _parent_oct)
 					_sweeping = false
 					
 			# print("first return")
+			_shapecast_array[_shapecast].active = false
 			break
 			
 		else:
 			var _deleg_mult : float = (oct_settings._deleg_size ** oct_settings.current_deleg)
 
-			var _slice_seg : Vector3 = ((_size_stuff[oct_settings._slice] * 
-			(oct_settings._oct_mult/_deleg_mult)) / 2.0)
+			var _slice_seg : Vector3 = ((_size_stuff[oct_settings._slice]/2) * 
+			(oct_settings._oct_mult/_deleg_mult))
 
 			oct_settings._sweep_size = oct_settings._max_sweep_size / _deleg_mult
-			_sp.shape.size = oct_settings._sweep_size
-			_sp_mesh.mesh.size = oct_settings._sweep_size
-			_sp.global_position = _parent_oct + _slice_seg
+			_cast.shape.size = oct_settings._sweep_size
+			_cast.global_position = _parent_oct + _slice_seg
 			var _n_start_pos = _parent_oct + _slice_seg
 
-			_sp.force_shapecast_update()
+			_cast.force_shapecast_update()
 			_FUCKYOU[_n_start_pos] = {"connecting": [_parent_oct], "filled": false, "drawn": false, "size": (oct_settings._oct_mult/_deleg_mult), "has_children": false}
-			if !_sp.is_colliding():
+			if !_cast.is_colliding():
 				# no collision hit. write nothing to this square.
 				# move on to next square
 				_FUCKYOU[_n_start_pos]["filled"] = false
-				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
+				var _next_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
+				_shapecast_array[_shapecast].active = false
+				while _shapecast_array[_next_shapecast].active:
+					await get_tree().physics_frame
+					_next_shapecast = _next_shapecast + 1 if _next_shapecast + 1 >= _shapecast_array.keys().size() else 0
+				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice + 1 < oct_settings._max_slices else 0
 				# print("nothing found further down. moving on baws")
 			else:
 				_FUCKYOU[_n_start_pos]["filled"] = true
-				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
+				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice + 1 < oct_settings._max_slices else 0
 				var _next_oct_settings : Dictionary = oct_settings.duplicate()
+				_shapecast_array[_shapecast].active = false
 				if oct_settings.current_deleg < oct_settings._max_delegs:
+					var _next_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
+					while _shapecast_array[_next_shapecast].active:
+						await get_tree().physics_frame
+						_next_shapecast = _next_shapecast + 1 if _next_shapecast + 1 >= _shapecast_array.keys().size() else 0
 					_next_oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._max_delegs)
-					# _FUCKYOU[_n_start_pos]["has_children"] = true
+					_next_oct_settings._slice = 0 # RESET SLICES BEFORE GOING ON TO NEXT YOU FUCKING IDIOT
+					_FUCKYOU[_n_start_pos]["has_children"] = true
 					# print("going further down, wish me luck")
-					oct_sweep_test(_next_oct_settings, _n_start_pos)
+					oct_sweep_test(_next_oct_settings, _next_shapecast, _n_start_pos)
 			
+			_shapecast_array[_shapecast].active = false
 			if oct_settings._slice == 0: # we looped through all of em boss
 				# print("we looped through em all boss")
 				_sweeping = false
