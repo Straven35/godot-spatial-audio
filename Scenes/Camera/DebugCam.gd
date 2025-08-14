@@ -1,9 +1,13 @@
 extends CharacterBody3D
-
+class_name DebugCam
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
+static var thing
+
+signal testicle
 
 var speed := 2.0
 var walkSpeed := 2.0
@@ -19,9 +23,20 @@ var ACTIVATED := false
 var mouselock := true
 var movelock := false
 
+# func _ready():
+# 	thing = self
+# 	await get_tree().create_timer(3.0).timeout
+# 	_testicles()
+
 func _physics_process(delta):
 	_do_move(delta)
 	$Control/FPS.text = str(Engine.get_frames_per_second())
+
+func _testicles():
+	print("first testicle call")
+	testicle.emit()
+	await get_tree().create_timer(1.0).timeout
+	_testicles()
 
 func _unhandled_input(event):
 	if !(event is InputEventMouseButton):

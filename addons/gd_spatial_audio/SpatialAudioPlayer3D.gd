@@ -131,6 +131,7 @@ var _FUCKYOU : Dictionary = {}
 func _ready():
 	if !is_active:
 		return
+
 	if _total_using_turns.size() == 0:
 		_total_using_turns = [0]
 		_total_turns = _total_using_turns.size()
@@ -241,6 +242,14 @@ func _ready():
 		box_mat_filled.albedo_color = Color.RED
 		box_mat_filled.albedo_color.a = 0.25
 		var completed_keys : Array = []
+
+		# var _doohicky : MultiMeshInstance3D = MultiMeshInstance3D.new()
+		# var _other_doo : MultiMeshInstance3D = MultiMeshInstance3D.new()
+		# _doohicky.multimesh.mesh = box_mesh
+		# _other_doo.multimesh.mesh = box_mesh.duplicate()
+		# _other_doo.multimesh.mesh.surface_set_material(0, box_mat_filled)
+
+
 		while creating_octree:
 			await get_tree().create_timer(5.0).timeout
 
@@ -254,63 +263,43 @@ func _ready():
 				if _FUCKYOU[v]["has_children"]:
 					continue
 				if !k["filled"]:
-					if !debug_show_free_areas:
-						continue
+					# if !debug_show_free_areas:
+					# 	continue
 					var obj : RID = RenderingServer.instance_create()
 					RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
-
-					if k["size"] == box_mesh.size.x:
-						RenderingServer.instance_set_base(obj, box_mesh)
-					elif k["size"] == box_mesh_2.size.x:
-						RenderingServer.instance_set_base(obj, box_mesh_2)
-					elif k["size"] == box_mesh_3.size.x:
-						RenderingServer.instance_set_base(obj, box_mesh_3)
-					elif k["size"] == box_mesh_4.size.x:
-						RenderingServer.instance_set_base(obj, box_mesh_4)
-					elif k["size"] == box_mesh_5.size.x:
-						RenderingServer.instance_set_base(obj, box_mesh_5)
-					
+					RenderingServer.instance_set_base(obj, box_mesh)
 					RenderingServer.instance_set_surface_override_material(obj, 0, box_mat)
 
-
-					# if k["connecting"].is_empty():
-					# 	box_mesh.material = box_mat as Material
-					# 	RenderingServer.instance_set_base(obj, box_mesh)
-					# else:
-					# 	box_mesh_small.material = box_mat as Material
-					# 	RenderingServer.instance_set_base(obj, box_mesh_small)
-
-					var trns : Transform3D = Transform3D(Basis.IDENTITY, v)
+					var bs : Basis = Basis.IDENTITY
+					bs = bs.scaled(Vector3.ONE / (8.0 / k["size"]))
+					var trns : Transform3D = Transform3D(bs, v)
 					RenderingServer.instance_set_transform(obj, trns)
 					bodies.push_back(obj)
 				else:
-					if !debug_show_filled_areas:
-						continue
-					var obj : RID = RenderingServer.instance_create()
-					RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
-					# box_mesh_filled.material = box_mat_filled as Material
-					if is_equal_approx(k["size"], box_mesh.size.x):
-						RenderingServer.instance_set_base(obj, box_mesh)
-					elif is_equal_approx(k["size"], box_mesh_2.size.x):
-						RenderingServer.instance_set_base(obj, box_mesh_2)
-					elif is_equal_approx(k["size"], box_mesh_3.size.x):
-						RenderingServer.instance_set_base(obj, box_mesh_3)
-					elif is_equal_approx(k["size"], box_mesh_4.size.x):
-						RenderingServer.instance_set_base(obj, box_mesh_4)
-					elif is_equal_approx(k["size"], box_mesh_5.size.x):
-						RenderingServer.instance_set_base(obj, box_mesh_5)
-					
-					# if k["connecting"].is_empty():
-					# 	RenderingServer.instance_set_base(obj, box_mesh)
-					# else:
-					# 	RenderingServer.instance_set_base(obj, box_mesh_small)
-					RenderingServer.instance_set_surface_override_material(obj, 0, box_mat_filled)
-					var trns : Transform3D = Transform3D(Basis.IDENTITY, v)
-					RenderingServer.instance_set_transform(obj, trns)
-					bodies.push_back(obj)
+					pass
+					# if !debug_show_filled_areas:
+					# 	continue
+					#var obj : RID = RenderingServer.instance_create()
+					#RenderingServer.instance_set_scenario(obj, get_world_3d().scenario)
+					#
+					#RenderingServer.instance_set_surface_override_material(obj, 0, box_mat_filled)
+					#var bs : Basis = Basis.IDENTITY
+					#bs = bs.scaled(Vector3.ONE / (8.0 / k["size"]))
+					#var trns : Transform3D = Transform3D(bs, v)
+					#RenderingServer.instance_set_transform(obj, trns)
+					#bodies.push_back(obj)
 				_FUCKYOU[v]["drawn"] = true
 			
 			completed_keys = _keys
+
+	# await get_tree().create_timer(randf_range(0.8, 1.5)).timeout
+	# _connect_to_thing()
+
+func _connect_to_thing():
+	DebugCam.thing.connect("testicle", _testicle_receive)
+
+func _testicle_receive():
+	print("received testicle. name: ", name)
 
 # Called when the node enters the scene tree for the first time.
 # func _ready():
@@ -409,9 +398,7 @@ func create_octree():
 		# start z
 		# go towards z bound at a rate of 2
 		while oct_settings._z_thing <= oct_settings._z_bound:
-			await get_tree().create_timer(sweep_time).timeout
 			while oct_settings._y_thing <= oct_settings._y_bound:
-				await get_tree().create_timer(sweep_time).timeout
 				while oct_settings._x_thing <= oct_settings._x_bound:
 					await get_tree().create_timer(sweep_time).timeout
 					# do thing here...
@@ -422,56 +409,6 @@ func create_octree():
 					oct_settings.current_deleg = 0
 					oct_settings._slice = 0
 					oct_sweep_test(oct_settings, 0)
-					# while oct_settings._oct_sweeping:
-					# 	var _parent_oct : Vector3
-					# 	oct_settings._starting_pos = Vector3(oct_settings._x_thing, oct_settings._y_thing, oct_settings._z_thing)
-					# 	var _i_start_pos : Vector3i = Vector3i(int(oct_settings._x_thing), int(oct_settings._y_thing), int(oct_settings._z_thing))
-					# 	if oct_settings.current_deleg == 0:
-					# 		# have not gone down. 1x1x1
-					# 		oct_settings._sweep_size = oct_settings._max_sweep_size
-					# 		_sp.shape.size = oct_settings._sweep_size
-					# 		_sp_mesh.mesh.size = oct_settings._sweep_size
-					# 		_sp.global_position = oct_settings._starting_pos
-
-					# 		_sp.force_shapecast_update()
-					# 		_FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult}
-					# 		if !_sp.is_colliding():
-					# 			# no collision hit. write nothing to this square
-					# 			_FUCKYOU[oct_settings._starting_pos]["filled"] = false
-					# 			oct_settings._oct_sweeping = false
-					# 			continue
-					# 		else:
-					# 			_FUCKYOU[oct_settings._starting_pos]["filled"] = true
-					# 			_parent_oct = oct_settings._starting_pos
-					# 			oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._deleg_size)
-							
-					# 	else:
-					# 		var _deleg_mult : float = (oct_settings._deleg_size * oct_settings.current_deleg)
-					# 		oct_settings._sweep_size = oct_settings._max_sweep_size / _deleg_mult
-					# 		_sp.shape.size = oct_settings._sweep_size
-					# 		_sp_mesh.mesh.size = oct_settings._sweep_size
-					# 		_sp.global_position = oct_settings._starting_pos + ((_size_stuff[oct_settings._slice] * 
-					# 		(oct_settings._oct_mult/_deleg_mult)) / _deleg_mult)
-					# 		var _n_start_pos = oct_settings._starting_pos + ((_size_stuff[oct_settings._slice] * 
-					# 		(oct_settings._oct_mult/_deleg_mult)) / _deleg_mult)
-
-					# 		_sp.force_shapecast_update()
-					# 		_FUCKYOU[_n_start_pos] = {"connecting": [_parent_oct], "filled": false, "drawn": false, "size": (oct_settings._oct_mult/_deleg_mult)}
-					# 		if !_sp.is_colliding():
-					# 			# no collision hit. write nothing to this square.
-					# 			# move on to next square
-					# 			_FUCKYOU[_n_start_pos]["filled"] = false
-					# 			oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
-					# 			if oct_settings._slice == 0:
-					# 				oct_settings._oct_sweeping = false
-					# 			continue
-					# 		else:
-					# 			_FUCKYOU[_n_start_pos]["filled"] = true
-					# 			oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice < oct_settings._max_slices else 0
-					# 			if oct_settings._slice == 0:
-					# 				oct_settings._oct_sweeping = false
-					# 			continue
-					pass
 					oct_settings._x_thing += oct_settings._oct_mult
 				pass
 				oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
@@ -484,6 +421,12 @@ func create_octree():
 	creating_octree = false
 	pass
 
+# need to know the up, down, and sides connected to EACH node
+# how to do without breaking every-fucking-thing>
+# a second pass perhamp?
+# another loop perhapsth?
+
+
 func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct : Vector3 = Vector3.ZERO):
 	# for doing the testicles
 	var _sweeping : bool = true
@@ -492,7 +435,7 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 		_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
 	_shapecast_array[_shapecast].active = true
 	var _cast : ShapeCast3D = _shapecast_array[_shapecast].cast
-	print("HERE YA GO BOSS ", oct_settings.current_deleg)
+	# print("HERE YA GO BOSS ", oct_settings.current_deleg)
 	while _sweeping:
 		if !creating_octree:
 			return
@@ -502,24 +445,24 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 			# have not gone down. 1x1x1
 			oct_settings._sweep_size = oct_settings._max_sweep_size
 			_cast.shape.size = oct_settings._sweep_size
-			# _sp_mesh.mesh.size = oct_settings._sweep_size
 			_cast.global_position = oct_settings._starting_pos
 
 			_cast.force_shapecast_update()
-			_FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult, "has_children": false}
+			# _FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult, "has_children": false}
 			if !_cast.is_colliding():
 				# no collision hit. write nothing to this square
+				_FUCKYOU[oct_settings._starting_pos] = {"connecting": [], "filled": false, "drawn": false, "size": oct_settings._oct_mult, "has_children": false}
 				_FUCKYOU[oct_settings._starting_pos]["filled"] = false
 				_sweeping = false
 				_shapecast_array[_shapecast].active = false
 				# print("nothing found. moving on")
 			else:
-				_FUCKYOU[oct_settings._starting_pos]["filled"] = true
+				# _FUCKYOU[oct_settings._starting_pos]["filled"] = true
 				_parent_oct = oct_settings._starting_pos
 				var _next_oct_settings : Dictionary = oct_settings.duplicate()
 				if _next_oct_settings.current_deleg < _next_oct_settings._max_delegs:
 					_next_oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._max_delegs)
-					_FUCKYOU[oct_settings._starting_pos]["has_children"] = true
+					# _FUCKYOU[oct_settings._starting_pos]["has_children"] = true
 					# print("bravo six going dark")
 					var _next_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
 					_shapecast_array[_shapecast].active = false
@@ -545,10 +488,22 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 			var _n_start_pos = _parent_oct + _slice_seg
 
 			_cast.force_shapecast_update()
-			_FUCKYOU[_n_start_pos] = {"connecting": [_parent_oct], "filled": false, "drawn": false, "size": (oct_settings._oct_mult/_deleg_mult), "has_children": false}
+			# we will optimize by only creating the dict entry when we detect a non-collision.
+			# that should cut the size down by at least a quarter
+			# (the entry is out here for debugging purposes)
+			# _FUCKYOU[_n_start_pos] = {"parent": _parent_oct, "connecting": [], "filled": false, "drawn": false, "size": (oct_settings._oct_mult/_deleg_mult), "has_children": false}
 			if !_cast.is_colliding():
 				# no collision hit. write nothing to this square.
 				# move on to next square
+				_FUCKYOU[_n_start_pos] = {
+				"parent": _parent_oct, 
+				"connecting": [], 
+				"filled": false, 
+				"drawn": false, 
+				"level": oct_settings.current_deleg,
+				"size": (oct_settings._oct_mult/_deleg_mult), 
+				"has_children": false}
+
 				_FUCKYOU[_n_start_pos]["filled"] = false
 				var _next_shapecast = _shapecast + 1 if _shapecast + 1 >= _shapecast_array.keys().size() else 0
 				_shapecast_array[_shapecast].active = false
@@ -558,7 +513,7 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice + 1 < oct_settings._max_slices else 0
 				# print("nothing found further down. moving on baws")
 			else:
-				_FUCKYOU[_n_start_pos]["filled"] = true
+				# _FUCKYOU[_n_start_pos]["filled"] = true
 				oct_settings._slice = oct_settings._slice + 1 if oct_settings._slice + 1 < oct_settings._max_slices else 0
 				var _next_oct_settings : Dictionary = oct_settings.duplicate()
 				_shapecast_array[_shapecast].active = false
@@ -569,7 +524,7 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 						_next_shapecast = _next_shapecast + 1 if _next_shapecast + 1 >= _shapecast_array.keys().size() else 0
 					_next_oct_settings.current_deleg = mini(oct_settings.current_deleg + 1, oct_settings._max_delegs)
 					_next_oct_settings._slice = 0 # RESET SLICES BEFORE GOING ON TO NEXT YOU FUCKING IDIOT
-					_FUCKYOU[_n_start_pos]["has_children"] = true
+					# _FUCKYOU[_n_start_pos]["has_children"] = true
 					# print("going further down, wish me luck")
 					oct_sweep_test(_next_oct_settings, _next_shapecast, _n_start_pos)
 			
@@ -580,74 +535,16 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 				break
 	pass
 
-# func icles(_z_bound : Vector3, _chunk : Vector3, _origin : Vector3, ):
-# 	while _z_thing <= _z_bound:
 
-# 		while _y_thing <= _y_bound:
+func oct_connect_test():
+	# how do dis?
+	# start at top of dict list, get dirs of octree
+	# while do thing
+	# get next oct (always unfilled)
+	# get surrounding octs (take _size_stuff and mult it by size again)
+	# i guess... we just check boxes huh?
+	pass
 
-# 			while _x_thing <= _x_bound:
-				
-# 				# do thing here...
-# 				# check entire area. like, 1x1x1 space or smth
-# 				# if no collision, move to next 1x1x1 area...
-# 				# if collision, check 0.5x0.5x0.5 area in 1x1x1 area (8 areas)
-# 				_oct_sweeping = true
-# 				while _oct_sweeping:
-# 					_starting_pos = Vector3(_x_thing, _y_thing, _z_thing)
-# 					var _i_start_pos : Vector3i = Vector3i(int(_x_thing), int(_y_thing), int(_z_thing))
-# 					if current_deleg == 0:
-# 						# have not gone down. 1x1x1
-# 						_sweep_size = _max_sweep_size
-# 						_sp.shape.size = _sweep_size
-# 						_sp_mesh.mesh.size = _sweep_size
-# 						_sp.global_position = _starting_pos
-
-# 						_sp.force_shapecast_update()
-# 						_FUCKYOU[_starting_pos] = {"connecting": [], "filled": false}
-# 						if !_sp.is_colliding():
-# 							# no collision hit. write nothing to this square
-# 							_FUCKYOU[_starting_pos]["filled"] = false
-# 							_oct_sweeping = false
-# 							continue
-# 						else:
-# 							_FUCKYOU[_starting_pos]["filled"] = true
-# 							current_deleg = mini(current_deleg + 1, _deleg_size)
-						
-# 					else:
-# 						_sweep_size = _max_sweep_size / (_deleg_size * current_deleg)
-# 						_sp.shape.size = _sweep_size
-# 						_sp_mesh.mesh.size = _sweep_size
-# 						_sp.global_position = _starting_pos + (_size_stuff[_slice] / (_deleg_size * current_deleg))
-# 						var _n_start_pos = _starting_pos + (_size_stuff[_slice] / (_deleg_size * current_deleg))
-
-# 						_sp.force_shapecast_update()
-# 						_FUCKYOU[_n_start_pos] = {"connecting": [], "filled": false}
-# 						if !_sp.is_colliding():
-# 							# no collision hit. write nothing to this square.
-# 							# move on to next square
-# 							_FUCKYOU[_n_start_pos]["filled"] = false
-# 							_slice = _slice + 1 if _slice < _max_slices else 0
-# 							if _slice == 0:
-# 								_oct_sweeping = false
-# 							continue
-# 						else:
-# 							_FUCKYOU[_n_start_pos]["filled"] = true
-# 							_slice = _slice + 1 if _slice < _max_slices else 0
-# 							if _slice == 0:
-# 								_oct_sweeping = false
-# 							continue
-
-# 				pass
-# 				_x_thing += 5.0
-# 			pass
-# 			_x_thing = -_bx_size.x
-# 			_y_thing += 5.0
-# 		pass
-# 		_y_thing = -_bx_size.y
-# 		_x_thing = -_bx_size.x
-# 		_z_thing += 5.0
-# 		break
-# 	pass
 
 # determines if this spatial audio player should be pooled to a nearby audio bus.
 # this can be called initially when you are creating multiple audio players in the same area
@@ -1357,6 +1254,9 @@ func _on_hodl_body_entered(body:Node3D):
 static func get_node_aabb(thing : Node3D = null, ignore_top_level : bool = false, bounds_transform : Transform3D = Transform3D()) -> AABB:
 	var box : AABB
 	var transform : Transform3D
+
+	#need to check if we are all the way up in the hierarchy
+	
 
 	# we are going down the child chain, need to get each transform as necessary
 	if bounds_transform.is_equal_approx(Transform3D()):

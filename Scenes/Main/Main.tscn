@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bwbk37btcxme5"]
+[gd_scene load_steps=107 format=3 uid="uid://bwbk37btcxme5"]
 
 [ext_resource type="PackedScene" uid="uid://b8gor0xpq18o2" path="res://Scenes/csg/CSGBasicBlock.tscn" id="1_1b2o2"]
 [ext_resource type="PackedScene" uid="uid://blshtb86lciak" path="res://Scenes/Camera/DebugCam.tscn" id="1_hpre6"]
@@ -27,6 +27,270 @@ sky_material = SubResource("ProceduralSkyMaterial_mlksx")
 background_mode = 2
 sky = SubResource("Sky_tqrsa")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_rk00j"]
+size = Vector3(20, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_inj1x"]
+size = Vector3(8, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c0fqp"]
+size = Vector3(21, 1, 21)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rnxiu"]
+size = Vector3(1, 6.5, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_08ixn"]
+size = Vector3(1, 6.5, 17)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_onmbj"]
+size = Vector3(1, 11, 19)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n73mx"]
+size = Vector3(1, 11, 19)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3yn7g"]
+size = Vector3(3, 2, 19)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rgdqu"]
+size = Vector3(20, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tbigl"]
+size = Vector3(1, 3, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5fbu0"]
+size = Vector3(1, 20, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o7h14"]
+size = Vector3(1, 10, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_el3wj"]
+size = Vector3(20, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xv4i4"]
+size = Vector3(20, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fv83u"]
+size = Vector3(20, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vhfw6"]
+size = Vector3(20, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y5nt4"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hc5lc"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wf5yf"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ctkf"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dfur8"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fibv6"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5y3hd"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uk6p7"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o102i"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tkpq3"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hmq5a"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gmrob"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_84u2t"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tg1bi"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_85asp"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_djcm5"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aai0b"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_commc"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gfhau"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dgig8"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_is5vo"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqe8p"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rc067"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hg6dd"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3jjg7"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j4eda"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j605c"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tm2cr"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2a88i"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kg7nn"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bmv2k"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fsqvy"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ism8a"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dvorg"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x3wvj"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8vpyw"]
+size = Vector3(1, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_874mw"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_58sdw"]
+size = Vector3(20, 15, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t5we4"]
+size = Vector3(1, 15, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a2lrn"]
+size = Vector3(1, 15, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j0jt7"]
+size = Vector3(1, 3, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rluil"]
+size = Vector3(3, 1, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rwi5n"]
+size = Vector3(5, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ellhx"]
+size = Vector3(5, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pfnap"]
+size = Vector3(15, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6wemy"]
+size = Vector3(15, 1, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s08pm"]
+size = Vector3(11, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_thuhq"]
+size = Vector3(11, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m34vo"]
+size = Vector3(5, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5lm2h"]
+size = Vector3(5, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lha12"]
+size = Vector3(5, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m5n58"]
+size = Vector3(5, 1, 5.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jvkee"]
+size = Vector3(8, 1, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4vi1y"]
+size = Vector3(8, 5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3c1sw"]
+size = Vector3(8, 5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7h0rt"]
+size = Vector3(1, 5, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4kp87"]
+size = Vector3(1, 5, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_deevi"]
+size = Vector3(1, 2, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6gww6"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k4id0"]
+size = Vector3(35, 1, 45)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l5vi8"]
+size = Vector3(3, 1, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i81fi"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hedo5"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gt5iq"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_me12b"]
+size = Vector3(1, 3, 7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i47kp"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnqao"]
+size = Vector3(3, 1, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wa87k"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nr5w0"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pf8wd"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b4j5k"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ka4e"]
+size = Vector3(1, 3, 1)
+
 [node name="Main" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -41,7 +305,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.18931, 2.46688, 0.0741999)
 stream = ExtResource("3_qckxd")
 autoplay = true
 max_distance = 50.0
-sweep_max = 3
+sweep_max = 4
 max_areas = 64
 debug_show_free_areas = true
 debug_show_filled_areas = false
@@ -526,11 +790,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(20, 3, 1)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17260" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock"]
+shape = SubResource("BoxShape3D_rk00j")
+
 [node name="CsgBasicBlock68" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 2, 10)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(8, 3, 1)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17262" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock68"]
+shape = SubResource("BoxShape3D_inj1x")
 
 [node name="CsgBasicBlock69" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 0, 0)
@@ -538,11 +808,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(21, 1, 21)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17264" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock69"]
+shape = SubResource("BoxShape3D_c0fqp")
+
 [node name="CsgBasicBlock70" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 6.75, 0.5)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(1, 6.5, 20)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17266" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock70"]
+shape = SubResource("BoxShape3D_rnxiu")
 
 [node name="CsgBasicBlock71" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 19, 6.75, 10)
@@ -550,11 +826,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(1, 6.5, 17)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17268" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock71"]
+shape = SubResource("BoxShape3D_08ixn")
+
 [node name="CsgBasicBlock72" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(-0.707107, -0.707107, -6.18172e-08, -0.707107, 0.707107, -6.18172e-08, 8.74228e-08, 0, -1, 24, 13.75, 0)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(1, 11, 19)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17270" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock72"]
+shape = SubResource("BoxShape3D_onmbj")
 
 [node name="CsgBasicBlock73" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(0.707107, 0.707107, -2.56055e-08, -0.707107, 0.707107, -6.18172e-08, -2.56055e-08, 6.18172e-08, 1, 14, 13.75, 0)
@@ -562,11 +844,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(1, 11, 19)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17272" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock73"]
+shape = SubResource("BoxShape3D_n73mx")
+
 [node name="CsgBasicBlock74" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 17.75, 0)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(3, 2, 19)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17274" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock74"]
+shape = SubResource("BoxShape3D_3yn7g")
 
 [node name="CsgBasicBlock4" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10)
@@ -574,11 +862,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(20, 3, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17276" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock4"]
+shape = SubResource("BoxShape3D_rgdqu")
+
 [node name="CsgBasicBlock5" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2, 0)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 3, 20)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17278" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock5"]
+shape = SubResource("BoxShape3D_tbigl")
 
 [node name="CsgBasicBlock6" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 40)
@@ -586,11 +880,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 20, 100)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17280" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock6"]
+shape = SubResource("BoxShape3D_5fbu0")
+
 [node name="CsgBasicBlock16" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 5, 40)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 100)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17282" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock16"]
+shape = SubResource("BoxShape3D_o7h14")
 
 [node name="CsgBasicBlock17" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, -10)
@@ -598,11 +898,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(20, 10, 1)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17284" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock17"]
+shape = SubResource("BoxShape3D_el3wj")
+
 [node name="CsgBasicBlock76" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -44)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(20, 10, 1)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17286" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock76"]
+shape = SubResource("BoxShape3D_xv4i4")
 
 [node name="CsgBasicBlock77" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -37)
@@ -610,11 +916,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(20, 10, 1)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17288" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock77"]
+shape = SubResource("BoxShape3D_fv83u")
+
 [node name="CsgBasicBlock78" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, -31)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(20, 10, 1)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17290" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock78"]
+shape = SubResource("BoxShape3D_vhfw6")
 
 [node name="CsgBasicBlock23" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 5, 56)
@@ -622,11 +934,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17292" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock23"]
+shape = SubResource("BoxShape3D_y5nt4")
+
 [node name="CsgBasicBlock24" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17294" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock24"]
+shape = SubResource("BoxShape3D_hc5lc")
 
 [node name="CsgBasicBlock25" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 5, 56)
@@ -634,11 +952,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17296" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock25"]
+shape = SubResource("BoxShape3D_wf5yf")
+
 [node name="CsgBasicBlock26" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17298" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock26"]
+shape = SubResource("BoxShape3D_1ctkf")
 
 [node name="CsgBasicBlock27" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 5, 56)
@@ -646,11 +970,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17300" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock27"]
+shape = SubResource("BoxShape3D_dfur8")
+
 [node name="CsgBasicBlock28" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17302" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock28"]
+shape = SubResource("BoxShape3D_fibv6")
 
 [node name="CsgBasicBlock29" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 5, 56)
@@ -658,11 +988,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17304" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock29"]
+shape = SubResource("BoxShape3D_5y3hd")
+
 [node name="CsgBasicBlock30" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17306" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock30"]
+shape = SubResource("BoxShape3D_uk6p7")
 
 [node name="CsgBasicBlock31" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 5, 56)
@@ -670,11 +1006,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17308" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock31"]
+shape = SubResource("BoxShape3D_o102i")
+
 [node name="CsgBasicBlock32" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17310" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock32"]
+shape = SubResource("BoxShape3D_tkpq3")
 
 [node name="CsgBasicBlock33" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 5, 56)
@@ -682,11 +1024,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17312" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock33"]
+shape = SubResource("BoxShape3D_hmq5a")
+
 [node name="CsgBasicBlock34" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17314" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock34"]
+shape = SubResource("BoxShape3D_gmrob")
 
 [node name="CsgBasicBlock35" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 5, 56)
@@ -694,11 +1042,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17316" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock35"]
+shape = SubResource("BoxShape3D_84u2t")
+
 [node name="CsgBasicBlock36" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17318" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock36"]
+shape = SubResource("BoxShape3D_tg1bi")
 
 [node name="CsgBasicBlock37" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 5, 56)
@@ -706,11 +1060,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17320" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock37"]
+shape = SubResource("BoxShape3D_85asp")
+
 [node name="CsgBasicBlock38" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17322" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock38"]
+shape = SubResource("BoxShape3D_djcm5")
 
 [node name="CsgBasicBlock39" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 5, 56)
@@ -718,11 +1078,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17324" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock39"]
+shape = SubResource("BoxShape3D_aai0b")
+
 [node name="CsgBasicBlock40" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17326" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock40"]
+shape = SubResource("BoxShape3D_commc")
 
 [node name="CsgBasicBlock41" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 5, 56)
@@ -730,11 +1096,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17328" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock41"]
+shape = SubResource("BoxShape3D_gfhau")
+
 [node name="CsgBasicBlock42" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17330" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock42"]
+shape = SubResource("BoxShape3D_dgig8")
 
 [node name="CsgBasicBlock43" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 5, 56)
@@ -742,11 +1114,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17332" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock43"]
+shape = SubResource("BoxShape3D_is5vo")
+
 [node name="CsgBasicBlock44" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17334" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock44"]
+shape = SubResource("BoxShape3D_oqe8p")
 
 [node name="CsgBasicBlock45" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 56)
@@ -754,11 +1132,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17336" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock45"]
+shape = SubResource("BoxShape3D_rc067")
+
 [node name="CsgBasicBlock46" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17338" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock46"]
+shape = SubResource("BoxShape3D_hg6dd")
 
 [node name="CsgBasicBlock47" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 5, 56)
@@ -766,11 +1150,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17340" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock47"]
+shape = SubResource("BoxShape3D_3jjg7")
+
 [node name="CsgBasicBlock48" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17342" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock48"]
+shape = SubResource("BoxShape3D_j4eda")
 
 [node name="CsgBasicBlock49" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 5, 56)
@@ -778,11 +1168,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17344" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock49"]
+shape = SubResource("BoxShape3D_j605c")
+
 [node name="CsgBasicBlock50" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17346" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock50"]
+shape = SubResource("BoxShape3D_tm2cr")
 
 [node name="CsgBasicBlock51" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 5, 56)
@@ -790,11 +1186,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17348" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock51"]
+shape = SubResource("BoxShape3D_2a88i")
+
 [node name="CsgBasicBlock52" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17350" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock52"]
+shape = SubResource("BoxShape3D_kg7nn")
 
 [node name="CsgBasicBlock53" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 5, 56)
@@ -802,11 +1204,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17352" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock53"]
+shape = SubResource("BoxShape3D_bmv2k")
+
 [node name="CsgBasicBlock54" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17354" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock54"]
+shape = SubResource("BoxShape3D_fsqvy")
 
 [node name="CsgBasicBlock55" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 5, 56)
@@ -814,11 +1222,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17356" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock55"]
+shape = SubResource("BoxShape3D_ism8a")
+
 [node name="CsgBasicBlock56" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17358" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock56"]
+shape = SubResource("BoxShape3D_dvorg")
 
 [node name="CsgBasicBlock57" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 5, 56)
@@ -826,11 +1240,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17360" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock57"]
+shape = SubResource("BoxShape3D_x3wvj")
+
 [node name="CsgBasicBlock59" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, 56)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 9, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17362" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock59"]
+shape = SubResource("BoxShape3D_8vpyw")
 
 [node name="CsgBasicBlock58" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 5, 56)
@@ -838,11 +1258,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 10, 1)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17364" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock58"]
+shape = SubResource("BoxShape3D_874mw")
+
 [node name="CsgBasicBlock18" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, -23)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(20, 15, 1)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17366" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock18"]
+shape = SubResource("BoxShape3D_58sdw")
 
 [node name="CsgBasicBlock19" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 8, -17)
@@ -850,11 +1276,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 15, 15)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17368" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock19"]
+shape = SubResource("BoxShape3D_t5we4")
+
 [node name="CsgBasicBlock20" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 8, -17)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 15, 15)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17370" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock20"]
+shape = SubResource("BoxShape3D_a2lrn")
 
 [node name="CsgBasicBlock7" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2, 30)
@@ -862,11 +1294,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(1, 3, 40)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17372" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock7"]
+shape = SubResource("BoxShape3D_j0jt7")
+
 [node name="CsgBasicBlock8" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 30)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(3, 1, 40)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17374" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock8"]
+shape = SubResource("BoxShape3D_rluil")
 
 [node name="CsgBasicBlock9" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 12)
@@ -874,11 +1312,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(5, 1, 5.5)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17376" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock9"]
+shape = SubResource("BoxShape3D_rwi5n")
+
 [node name="CsgBasicBlock10" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 18)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(5, 1, 5.5)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17378" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock10"]
+shape = SubResource("BoxShape3D_ellhx")
 
 [node name="CsgBasicBlock11" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4, 24)
@@ -886,11 +1330,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(15, 1, 5.5)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17380" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock11"]
+shape = SubResource("BoxShape3D_pfnap")
+
 [node name="CsgBasicBlock75" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 24)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(15, 1, 5)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17382" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock75"]
+shape = SubResource("BoxShape3D_6wemy")
 
 [node name="CsgBasicBlock66" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 27)
@@ -898,11 +1348,17 @@ physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(11, 3, 1)
 physics_material = ExtResource("8_hgv8c")
 
+[node name="@CollisionShape3D@17384" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock66"]
+shape = SubResource("BoxShape3D_s08pm")
+
 [node name="CsgBasicBlock67" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 21)
 physics_material_override = ExtResource("8_hgv8c")
 size = Vector3(11, 3, 1)
 physics_material = ExtResource("8_hgv8c")
+
+[node name="@CollisionShape3D@17386" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock67"]
+shape = SubResource("BoxShape3D_thuhq")
 
 [node name="CsgBasicBlock12" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 30)
@@ -910,11 +1366,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(5, 1, 5.5)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17388" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock12"]
+shape = SubResource("BoxShape3D_m34vo")
+
 [node name="CsgBasicBlock13" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 36)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(5, 1, 5.5)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17390" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock13"]
+shape = SubResource("BoxShape3D_5lm2h")
 
 [node name="CsgBasicBlock14" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 42)
@@ -922,11 +1384,17 @@ physics_material_override = ExtResource("1_tlck8")
 size = Vector3(5, 1, 5.5)
 physics_material = ExtResource("1_tlck8")
 
+[node name="@CollisionShape3D@17392" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock14"]
+shape = SubResource("BoxShape3D_lha12")
+
 [node name="CsgBasicBlock15" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, 48)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(5, 1, 5.5)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17394" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock15"]
+shape = SubResource("BoxShape3D_m5n58")
 
 [node name="CsgBasicBlock60" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 5, 48)
@@ -935,12 +1403,18 @@ size = Vector3(8, 1, 8)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17396" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock60"]
+shape = SubResource("BoxShape3D_jvkee")
+
 [node name="CsgBasicBlock61" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 3, 52)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(8, 5, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17398" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock61"]
+shape = SubResource("BoxShape3D_4vi1y")
 
 [node name="CsgBasicBlock62" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 3, 44)
@@ -949,12 +1423,18 @@ size = Vector3(8, 5, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17400" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock62"]
+shape = SubResource("BoxShape3D_3c1sw")
+
 [node name="CsgBasicBlock63" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 3, 48)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(1, 5, 8)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17402" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock63"]
+shape = SubResource("BoxShape3D_7h0rt")
 
 [node name="CsgBasicBlock64" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 3, 50)
@@ -963,6 +1443,9 @@ size = Vector3(1, 5, 4)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17404" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock64"]
+shape = SubResource("BoxShape3D_4kp87")
+
 [node name="CsgBasicBlock65" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 4, 46)
 physics_material_override = ExtResource("1_m0wam")
@@ -970,10 +1453,16 @@ size = Vector3(1, 2, 4)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17406" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock65"]
+shape = SubResource("BoxShape3D_deevi")
+
 [node name="CsgBasicBlock2" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(20, 1, 20)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17408" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock2"]
+shape = SubResource("BoxShape3D_6gww6")
 
 [node name="CsgBasicBlock21" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 33)
@@ -982,6 +1471,9 @@ size = Vector3(35, 1, 45)
 material = ExtResource("6_3rje8")
 physics_material = ExtResource("7_dcqm8")
 
+[node name="@CollisionShape3D@17410" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock21"]
+shape = SubResource("BoxShape3D_k4id0")
+
 [node name="CsgBasicBlock22" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 53)
 physics_material_override = ExtResource("7_dcqm8")
@@ -989,11 +1481,17 @@ size = Vector3(3, 1, 6)
 material = ExtResource("6_3rje8")
 physics_material = ExtResource("7_dcqm8")
 
+[node name="@CollisionShape3D@17412" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock22"]
+shape = SubResource("BoxShape3D_l5vi8")
+
 [node name="CsgBasicBlock3" parent="csgstuff" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 physics_material_override = ExtResource("1_tlck8")
 size = Vector3(20, 1, 20)
 physics_material = ExtResource("1_tlck8")
+
+[node name="@CollisionShape3D@17414" type="CollisionShape3D" parent="csgstuff/CsgBasicBlock3"]
+shape = SubResource("BoxShape3D_i81fi")
 
 [node name="BellPlayer" type="Node3D" parent="."]
 script = ExtResource("12_vfy3s")
@@ -1032,12 +1530,18 @@ size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17416" type="CollisionShape3D" parent="pillars/CsgBasicBlock75"]
+shape = SubResource("BoxShape3D_hedo5")
+
 [node name="CsgBasicBlock76" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17418" type="CollisionShape3D" parent="pillars/CsgBasicBlock76"]
+shape = SubResource("BoxShape3D_gt5iq")
 
 [node name="CsgBasicBlock77" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, -6)
@@ -1046,12 +1550,18 @@ size = Vector3(1, 3, 7)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17420" type="CollisionShape3D" parent="pillars/CsgBasicBlock77"]
+shape = SubResource("BoxShape3D_me12b")
+
 [node name="CsgBasicBlock78" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17422" type="CollisionShape3D" parent="pillars/CsgBasicBlock78"]
+shape = SubResource("BoxShape3D_i47kp")
 
 [node name="CsgBasicBlock84" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)
@@ -1060,12 +1570,18 @@ size = Vector3(3, 1, 3)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17424" type="CollisionShape3D" parent="pillars/CsgBasicBlock84"]
+shape = SubResource("BoxShape3D_qnqao")
+
 [node name="CsgBasicBlock79" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17426" type="CollisionShape3D" parent="pillars/CsgBasicBlock79"]
+shape = SubResource("BoxShape3D_wa87k")
 
 [node name="CsgBasicBlock80" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 0)
@@ -1074,12 +1590,18 @@ size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17428" type="CollisionShape3D" parent="pillars/CsgBasicBlock80"]
+shape = SubResource("BoxShape3D_nr5w0")
+
 [node name="CsgBasicBlock81" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 5)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17430" type="CollisionShape3D" parent="pillars/CsgBasicBlock81"]
+shape = SubResource("BoxShape3D_pf8wd")
 
 [node name="CsgBasicBlock82" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
@@ -1088,12 +1610,18 @@ size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
 
+[node name="@CollisionShape3D@17432" type="CollisionShape3D" parent="pillars/CsgBasicBlock82"]
+shape = SubResource("BoxShape3D_b4j5k")
+
 [node name="CsgBasicBlock83" parent="pillars" instance=ExtResource("1_1b2o2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 5)
 physics_material_override = ExtResource("1_m0wam")
 size = Vector3(1, 3, 1)
 material = ExtResource("6_xbdyh")
 physics_material = ExtResource("1_m0wam")
+
+[node name="@CollisionShape3D@17434" type="CollisionShape3D" parent="pillars/CsgBasicBlock83"]
+shape = SubResource("BoxShape3D_0ka4e")
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 20, 100)

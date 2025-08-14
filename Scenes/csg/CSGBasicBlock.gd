@@ -3,6 +3,7 @@ extends StaticBody3D
 class_name CSGBasicBlock
 
 @export var size : Vector3 = Vector3.ONE
+@export var use_shape_for_size : bool = false
 @export var material : Material
 @export var physics_material : ExpandedPhysicsMaterial
 
@@ -31,6 +32,9 @@ func _ready():
 	_mesh.mesh = _mesh_shape
 	add_child(_collision)
 	add_child(_mesh)
+	_collision.set_owner(get_tree().get_edited_scene_root())
+	# _mesh.set_owner(get_tree().get_edited_scene_root())
+
 
 func _physics_process(_delta):
 	if Engine.is_editor_hint:
@@ -52,6 +56,10 @@ func _physics_process(_delta):
 # var _planes : Array[Plane] = []
 
 func set_stuff():
+	if use_shape_for_size:
+		size = _collision.shape.size
+		position = _collision.global_position
+		_collision.position = Vector3.ZERO
 	_collision.shape.size = size
 	_mesh.mesh.size = size
 	physics_material_override = physics_material
