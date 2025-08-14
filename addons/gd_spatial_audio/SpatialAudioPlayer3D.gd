@@ -19,7 +19,7 @@ static var _total_using_turns : Array
 static var _total_init_time : int = 0
 # dont touch this
 static var _finished_init : bool = false
-
+# dont touch this
 static var _begun_octree : bool = false
 
 var creating_octree : bool = false
@@ -350,6 +350,8 @@ var _size_stuff : Array = [
 		Vector3(1, 1, 1), Vector3(1, 1, -1)
 	]
 
+var perma_sound_stuff : Dictionary = {}
+
 func create_octree():
 	print("sup bruh")
 	var chunk_size : Vector3 = Vector3.ONE*20
@@ -358,6 +360,8 @@ func create_octree():
 	var _bx : AABB = SpatialAudioPlayer3D.get_node_aabb(get_parent() as Node3D, true, get_parent().global_transform)
 	var _bx_origin : Vector3 = _bx.position
 	var _bx_size : Vector3 = _bx.size
+
+	perma_sound_stuff.bx = _bx
 
 	var oct_settings : Dictionary = {}
 	oct_settings._slice = 0
@@ -377,6 +381,9 @@ func create_octree():
 	oct_settings._z_thing = snappedf(_bx_origin.z-oct_settings._oct_mult, 8.0)
 	oct_settings._oct_sweeping = true
 
+	perma_sound_stuff.def_oct_settings = oct_settings.duplicate()
+	perma_sound_stuff.start = snapped(_bx_origin, Vector3.ONE*8.0)
+	perma_sound_stuff.end = snapped(_bx.end, Vector3.ONE*8.0)
 	
 	var _in_creation := true
 	# var _end_region : Vector3 = Vector3(_x_bound, _y_bound, _z_bound)
@@ -543,6 +550,14 @@ func oct_connect_test():
 	# get next oct (always unfilled)
 	# get surrounding octs (take _size_stuff and mult it by size again)
 	# i guess... we just check boxes huh?
+	var in_loop := true
+
+	# var starting_pos : Vector3 = 
+
+	# while in_loop:
+
+	# 	pass
+
 	pass
 
 
@@ -1254,10 +1269,11 @@ func _on_hodl_body_entered(body:Node3D):
 static func get_node_aabb(thing : Node3D = null, ignore_top_level : bool = false, bounds_transform : Transform3D = Transform3D()) -> AABB:
 	var box : AABB
 	var transform : Transform3D
-
+	var __thing
 	#need to check if we are all the way up in the hierarchy
 	
-
+	if thing.name == "Main":
+		print(bounds_transform.origin)
 	# we are going down the child chain, need to get each transform as necessary
 	if bounds_transform.is_equal_approx(Transform3D()):
 		transform = thing.global_transform
