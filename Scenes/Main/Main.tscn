@@ -31,7 +31,7 @@ sky = SubResource("Sky_tqrsa")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -99.6351)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.986343, 0.0198624, 0.163505, -0.160778, 0.331643, 0.929604, -0.0357611, -0.943196, 0.330307, -17.5, -10, -50)
+transform = Transform3D(0.986343, 0.0198624, 0.163505, -0.160778, 0.331643, 0.929604, -0.0357611, -0.943196, 0.330307, -17.1588, -4.78391, -60.6504)
 shadow_enabled = true
 
 [node name="DebugCam" parent="." instance=ExtResource("1_hpre6")]
@@ -50,7 +50,6 @@ sweep_cell = 1.0
 update_frequency_seconds = 0.25
 max_reverb_wetness = 1.0
 max_stereo_distance = 8.0
-max_raycast_bounces = 2
 raycast_count = 4
 
 [node name="crook2" parent="." instance=ExtResource("2_2ux6k")]

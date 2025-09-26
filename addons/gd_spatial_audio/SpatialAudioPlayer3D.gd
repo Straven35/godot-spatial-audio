@@ -38,6 +38,7 @@ var creating_octree : bool = false
 ## larger = bigger grid size, less precision; smaller = smaller grid size, more precision.
 @export var sweep_cell : float = 0.5;
 @export var can_sweep : bool = false;
+@export var octree_debug_material : Material;
 @export var is_active : bool = true;
 @export var max_raycast_distance: float = 100.0;
 @export var update_frequency_seconds: float = 0.25 + randf()*0.5; # Don't want to do them all at the same time
@@ -236,7 +237,7 @@ func _ready():
 		# box_mesh_small.size = Vector3.ONE*4.0
 		box_mat.transparency = StandardMaterial3D.TRANSPARENCY_ALPHA
 		box_mat.albedo_color = Color.AQUA
-		box_mat.albedo_color.a = 0.25
+		box_mat.albedo_color.a = 0.05
 
 		box_mat_filled.transparency = StandardMaterial3D.TRANSPARENCY_ALPHA
 		box_mat_filled.albedo_color = Color.RED
@@ -357,8 +358,10 @@ func create_octree():
 	var chunk_size : Vector3 = Vector3.ONE*20
 	var chunk_offset : Vector3 = Vector3.ZERO
 
-	var _bx : AABB = SpatialAudioPlayer3D.get_node_aabb(get_parent() as Node3D, true, get_parent().global_transform)
-	var _bx_origin : Vector3 = _bx.position
+	var _main_scene : Node3D = get_tree().current_scene as Node3D
+	var _bx : AABB = SpatialAudioPlayer3D.get_node_aabb(get_tree().current_scene as Node3D, true, get_parent().global_transform)
+	print(_main_scene.global_position)
+	var _bx_origin : Vector3 = _bx.position + _main_scene.global_position
 	var _bx_size : Vector3 = _bx.size
 
 	perma_sound_stuff.bx = _bx
@@ -371,19 +374,20 @@ func create_octree():
 	oct_settings._deleg_size = 2.0 # how much to divide sweep size by each pass. this shouldnt ever change
 	oct_settings._max_delegs = 4 # only go down 1 reduction, end on vector3(0.5, 0.5, 0.5)
 	oct_settings.current_deleg = 0
-	oct_settings._starting_pos = _bx_origin
-	oct_settings._x_bound = snappedf(_bx_size.x+oct_settings._oct_mult, 8.0)
-	oct_settings._y_bound = snappedf(_bx_size.y+oct_settings._oct_mult, 8.0)
-	oct_settings._z_bound = snappedf(_bx_size.z+oct_settings._oct_mult, 8.0)
-	oct_settings._end_region = _bx.size
-	oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
-	oct_settings._y_thing = snappedf(_bx_origin.y-oct_settings._oct_mult, 8.0)
-	oct_settings._z_thing = snappedf(_bx_origin.z-oct_settings._oct_mult, 8.0)
+	# oct_settings._starting_pos = _bx_origin
+	oct_settings._x_bound = snappedf(_bx_origin.x+_bx_size.x+oct_settings._oct_mult, oct_settings._oct_mult)
+	oct_settings._y_bound = snappedf(_bx_origin.y+_bx_size.y+oct_settings._oct_mult, oct_settings._oct_mult)
+	oct_settings._z_bound = snappedf(_bx_origin.z+_bx_size.z+oct_settings._oct_mult, oct_settings._oct_mult)
+	oct_settings._end_region = _bx_origin + _bx_size
+	oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, oct_settings._oct_mult)
+	oct_settings._y_thing = snappedf(_bx_origin.y-oct_settings._oct_mult, oct_settings._oct_mult)
+	oct_settings._z_thing = snappedf(_bx_origin.z-oct_settings._oct_mult, oct_settings._oct_mult)
+	oct_settings._starting_pos = snapped(_bx_origin - Vector3.ONE*oct_settings._oct_mult, oct_settings._max_sweep_size)
 	oct_settings._oct_sweeping = true
 
 	perma_sound_stuff.def_oct_settings = oct_settings.duplicate()
-	perma_sound_stuff.start = snapped(_bx_origin, Vector3.ONE*8.0)
-	perma_sound_stuff.end = snapped(_bx.end, Vector3.ONE*8.0)
+	perma_sound_stuff.start = snapped(_bx_origin, oct_settings._max_sweep_size)
+	perma_sound_stuff.end = snapped(_bx_origin + _bx_size, oct_settings._max_sweep_size)
 	
 	var _in_creation := true
 	# var _end_region : Vector3 = Vector3(_x_bound, _y_bound, _z_bound)
@@ -393,7 +397,6 @@ func create_octree():
 	# _oct_tracker.resize(_max_delegs)
 
 	_sp.global_position = oct_settings._starting_pos
-	print(_bx)
 	print(oct_settings._starting_pos, "   ", oct_settings._end_region)
 	while _in_creation:
 		creating_octree = true
@@ -418,11 +421,11 @@ func create_octree():
 					oct_sweep_test(oct_settings, 0)
 					oct_settings._x_thing += oct_settings._oct_mult
 				pass
-				oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
+				oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, oct_settings._oct_mult)
 				oct_settings._y_thing += oct_settings._oct_mult
 			pass
-			oct_settings._y_thing = snappedf(_bx_origin.y-oct_settings._oct_mult, 8.0)
-			oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, 8.0)
+			oct_settings._y_thing = snappedf(_bx_origin.y-oct_settings._oct_mult, oct_settings._oct_mult)
+			oct_settings._x_thing = snappedf(_bx_origin.x-oct_settings._oct_mult, oct_settings._oct_mult)
 			oct_settings._z_thing += oct_settings._oct_mult
 		break
 	creating_octree = false
@@ -433,6 +436,7 @@ func create_octree():
 # a second pass perhamp?
 # another loop perhapsth?
 
+var print_first_time : bool = true
 
 func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct : Vector3 = Vector3.ZERO):
 	# for doing the testicles
@@ -447,6 +451,9 @@ func oct_sweep_test(oct_settings : Dictionary, _shapecast : int = 0, _parent_oct
 		if !creating_octree:
 			return
 		oct_settings._starting_pos = Vector3(oct_settings._x_thing, oct_settings._y_thing, oct_settings._z_thing)
+		if print_first_time:
+			print(oct_settings._starting_pos)
+			print_first_time = false
 		var _i_start_pos : Vector3i = Vector3i(int(oct_settings._x_thing), int(oct_settings._y_thing), int(oct_settings._z_thing))
 		if oct_settings.current_deleg == 0:
 			# have not gone down. 1x1x1
@@ -879,7 +886,7 @@ func _on_update_reverb(player: Node3D):
 			# arbitrary value of 6.0 because of hall effect
 			# no clue what the hall effect is lol that should tell you how qualified i am  
 	average_ray_distance = average_ray_distance / _total_distance_checks.size()
-	resonance = resonance / _total_distance_checks.size()
+	resonance = resonance / float(_total_distance_checks.size())
 	room_size = (room_size / float(_total_distance_checks.size())) / largest_ray_distance
 	wetness = (wetness / float(_total_distance_checks.size()))
 	spread = min(1.0, average_ray_distance / largest_ray_distance)
@@ -1037,7 +1044,7 @@ var created_aabb : bool = false
 func _physics_process(delta):
 	if !is_active:
 		return
-	if get_world_3d() != null:
+	if get_world_3d() != null && _scenario == null:
 		_scenario = get_world_3d().scenario
 	_last_update_time += delta
 	_loop_rotation(delta)
@@ -1272,8 +1279,8 @@ static func get_node_aabb(thing : Node3D = null, ignore_top_level : bool = false
 	var __thing
 	#need to check if we are all the way up in the hierarchy
 	
-	if thing.name == "Main":
-		print(bounds_transform.origin)
+	# if thing.name == "Main":
+	# 	print(bounds_transform.origin)
 	# we are going down the child chain, need to get each transform as necessary
 	if bounds_transform.is_equal_approx(Transform3D()):
 		transform = thing.global_transform
